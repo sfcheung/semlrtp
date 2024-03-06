@@ -27,3 +27,4 @@ Config/testthat/edition: 3
 Imports:
     lavaan
 URL: https://sfcheung.github.io/semlrtp/
+Config/Needs/website: rmarkdown
