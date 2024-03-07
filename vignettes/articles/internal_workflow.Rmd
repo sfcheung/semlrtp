@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 library(DiagrammeR)
 ```
 
-# The Workflow of `semlrtp()`
+# The Workflow of `lrtp()`
 
 ```{r fig-lrtp, fig.cap = "Workflow of `semlrtp::lrtp()`", echo = FALSE}
 mermaid("
