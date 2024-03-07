@@ -92,8 +92,8 @@ Cheung</h4>
 <h2 id="the-workflow-of-lrtp">The Workflow of <code>lrtp()</code><a class="anchor" aria-label="anchor" href="#the-workflow-of-lrtp"></a>
 </h2>
 <div class="figure">
-<div id="htmlwidget-d07935a3acba0a3fbfe1" style="width:400px;height:700px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d07935a3acba0a3fbfe1">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[[\"Call free_pars() to identify desired free parameters\"]]\n  B[[\"Call lrt() to do LRT for each free parameter\"]]\n  C[\"Get the parameter estimates data frame\"]\n  D[[\"Call match_ptable_est() for mapping parameter table rows to\\nparameter estimates data frame rows\"]]\n  E[\"Insert LRT p-values to the parameter estimates data frame\"]\n  F[[\"Call copy_est_attributes() to add info necessary\nfor printing the results in lavaan style\"]]\n  Z([\"Return the parameter estimates data frame\"])\n  AA:::startend --> A:::subnode\n  A --> B:::subnode\n  B --> C\n  C --> D:::subnode\n  D --> E\n  E --> F:::subnode\n  F --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-56a01086d543bd307ab9" style="width:400px;height:700px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-56a01086d543bd307ab9">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[[\"Call free_pars() to identify desired free parameters\"]]\n  B[[\"Call lrt() to do LRT for each free parameter\"]]\n  C[\"Get the parameter estimates data frame\"]\n  D[[\"Call match_ptable_est() for mapping parameter table rows to\\nparameter estimates data frame rows\"]]\n  E[\"Insert LRT p-values to the parameter estimates data frame\"]\n  F[[\"Call copy_est_attributes() to add info necessary\nfor printing the results in lavaan style\"]]\n  Z([\"Return the parameter estimates data frame\"])\n  AA:::startend --> A:::subnode\n  A --> B:::subnode\n  B --> C\n  C --> D:::subnode\n  D --> E\n  E --> F:::subnode\n  F --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/lrtp.html">semlrtp::lrtp()</a></code>
 </p>
 </div>
@@ -102,8 +102,8 @@ Workflow of <code><a href="../reference/lrtp.html">semlrtp::lrtp()</a></code>
 <h2 id="the-workflow-of-free_pars">The Workflow of <code>free_pars()</code><a class="anchor" aria-label="anchor" href="#the-workflow-of-free_pars"></a>
 </h2>
 <div class="figure">
-<div id="htmlwidget-95fd2317f0fc4232b40a" style="width:400px;height:600px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-95fd2317f0fc4232b40a">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[\"Identify rows in parameter table\nmatching the required operators\"]\n  B[\"Identify rows of variances\"]\n  D[\"Identify rows of error variances\"]\n  E[\"Identify rows of error covariances\"]\n  F[\"Select rows based on the requirements\"]\n  Z([\"Return the row numbers\"])\n  AA:::startend --> A\n  A --> B\n  B --> D\n  D --> E\n  E --> F\n  F --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-95f8ff147081875e0cc9" style="width:400px;height:600px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-95f8ff147081875e0cc9">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[\"Identify rows in parameter table\nmatching the required operators\"]\n  B[\"Identify rows of variances\"]\n  D[\"Identify rows of error variances\"]\n  E[\"Identify rows of error covariances\"]\n  F[\"Select rows based on the requirements\"]\n  Z([\"Return the row numbers\"])\n  AA:::startend --> A\n  A --> B\n  B --> D\n  D --> E\n  E --> F\n  F --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code>semlrtp:::free_pars()</code>
 </p>
 </div>
@@ -112,8 +112,8 @@ Workflow of <code>semlrtp:::free_pars()</code>
 <h2 id="the-workflow-of-lrt">The Workflow of <code>lrt()</code><a class="anchor" aria-label="anchor" href="#the-workflow-of-lrt"></a>
 </h2>
 <div class="figure">
-<div id="htmlwidget-c15e24c4a3ee2054cfb1" style="width:400px;height:400px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c15e24c4a3ee2054cfb1">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[[\"Call fix_to_zero() to fix the requested parameter to 0\"]]\n  B[\"Call lavaan::lavTestLRT() to do the LR test\"]\n  C[\"Store the results in a list, along with other info\"]\n  Z([\"Return the output\"])\n  AA:::startend --> A:::subnode\n  A --> B\n  B --> C\n  C --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-cd119753dc0aaf68c07c" style="width:400px;height:400px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-cd119753dc0aaf68c07c">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[[\"Call fix_to_zero() to fix the requested parameter to 0\"]]\n  B[\"Call lavaan::lavTestLRT() to do the LR test\"]\n  C[\"Store the results in a list, along with other info\"]\n  Z([\"Return the output\"])\n  AA:::startend --> A:::subnode\n  A --> B\n  B --> C\n  C --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code>semlrtp:::lrt()</code>
 </p>
 </div>
@@ -122,8 +122,8 @@ Workflow of <code>semlrtp:::lrt()</code>
 <h2 id="the-workflow-of-fix_to_zero">The Workflow of <code>fix_to_zero()</code><a class="anchor" aria-label="anchor" href="#the-workflow-of-fix_to_zero"></a>
 </h2>
 <div class="figure">
-<div id="htmlwidget-c2acd866907601a8602a" style="width:500px;height:600px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c2acd866907601a8602a">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[\"Set columns such as 'free' to 0\"]\n  B[\"Extract slots from the lavaan object\"]\n  C[\"Fit a model with the updated parameter table\"]\n  D{{\"Check if the model df is reduced by one\"}}\n  E2[\"Store the results in a list, along with other info\"]\n  E1([\"Error: Df change not 1\"])\n  Z([\"Return the output\"])\n  AA:::startend --> A\n  A --> B\n  B --> C\n  C --> D\n  D -- 1 df --> E2\n  D -- Not 1 df --> E1:::errornode\n  E2 --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-ca7b54202627f7054967" style="width:500px;height:600px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ca7b54202627f7054967">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[\"Set columns such as 'free' to 0\"]\n  B[\"Extract slots from the lavaan object\"]\n  C[\"Fit a model with the updated parameter table\"]\n  D{{\"Check if the model df is reduced by one\"}}\n  E2[\"Store the results in a list, along with other info\"]\n  E1([\"Error: Df change not 1\"])\n  Z([\"Return the output\"])\n  AA:::startend --> A\n  A --> B\n  B --> C\n  C --> D\n  D -- 1 df --> E2\n  D -- Not 1 df --> E1:::errornode\n  E2 --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code>semlrtp:::fix_to_zero()</code>
 </p>
 </div>
