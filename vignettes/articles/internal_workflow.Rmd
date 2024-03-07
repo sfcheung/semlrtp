@@ -62,19 +62,17 @@ flowchart TD
   AA([\"Start\"])
   A[\"Identify rows in parameter table\nmatching the required operators\"]
   B[\"Identify rows of variances\"]
-  C[\"Identify rows of factor loadings\"]
   D[\"Identify rows of error variances\"]
-  E[\"Identify rows of intercepts\"]
+  E[\"Identify rows of error covariances\"]
   F[\"Select rows based on the requirements\"]
   Z([\"Return the row numbers\"])
   AA:::startend --> A
   A --> B
-  B --> C
-  C --> D
+  B --> D
   D --> E
   E --> F
   F --> Z:::startend
-", height = 700, width = 400)
+", height = 600, width = 400)
 ```
 
 # The Workflow of `lrt()`
