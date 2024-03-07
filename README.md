@@ -6,7 +6,9 @@
 [![R-CMD-check](https://github.com/sfcheung/semlrtp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/semlrtp/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.0.0.9001, updated on 2024-02-27, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
+**EXPERIMENTAL! DO NOT USE IT FOR NOW!**
+
+(Version 0.0.0.9006, updated on 2024-03-07, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
 
 # semlrtp: Likelihood Ratio Test p-Values for Structural Equation Models
 

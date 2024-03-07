@@ -1,0 +1,77 @@
+---
+title: "Get Started"
+author: "Shu Fai Cheung"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    number_sections: true
+vignette: >
+  %\VignetteIndexEntry{Get Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+csl: apa.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width  =  6,
+  fig.height =  6,
+  fig.align = "center",
+  fig.path = ""
+)
+```
+
+# WORK-IN-PROGRESS
+
+# Data
+
+```{r}
+library(lavaan)
+library(semlrtp)
+# Use a smaller sample to show the impact of using LRT p-values
+set.seed(1234)
+data(data_sem16)
+mod <-
+"
+f1 =~ x1 + x2 + x3
+f2 =~ x5 + x6 + x7
+f3 =~ x9 + x10 + x11
+f4 =~ x13 + x14 + x15
+f3 ~ f1 + f2
+f4 ~ f3
+"
+fit <- cfa(mod,
+           data_sem16,
+           group = "group")
+fit_nogp <- cfa(mod,
+                data_sem16)
+```
+
+# LRT *p*-values
+
+```{r}
+fit_lrtp <- lrtp(fit)
+fit_lrtp
+```
+
+```{r}
+fit_lrtp_b <- lrtp(fit,
+                   op = "~")
+fit_lrtp_b
+```
+
+```{r}
+fit_nogp_lrtp <- lrtp(fit_nogp)
+fit_nogp_lrtp
+```
+
+```{r}
+fit_nogp_lrtp_b <- lrtp(fit_nogp,
+                        op = "~")
+fit_nogp_lrtp_b
+```
+
+# References

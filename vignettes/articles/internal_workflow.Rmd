@@ -1,0 +1,127 @@
+---
+title: "Technical Appendix: The Internal Workflow of Main Functions"
+author: "Shu Fai Cheung"
+output:
+  html_document:
+    toc: true
+    number_sections: false
+bibliography: references.bib
+csl: apa.csl
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r echo = FALSE}
+library(DiagrammeR)
+```
+
+# The Workflow of `lrtp()`
+
+```{r fig-lrtp, fig.cap = "Workflow of `semlrtp::lrtp()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef subnode fill:#FFFFDD;
+
+  AA([\"Start\"])
+  A[[\"Call free_pars() to identify desired free parameters\"]]
+  B[[\"Call lrt() to do LRT for each free parameter\"]]
+  C[\"Get the parameter estimates data frame\"]
+  D[[\"Call match_ptable_est() for mapping parameter table rows to\\nparameter estimates data frame rows\"]]
+  E[\"Insert LRT p-values to the parameter estimates data frame\"]
+  F[[\"Call copy_est_attributes() to add info necessary\nfor printing the results in lavaan style\"]]
+  Z([\"Return the parameter estimates data frame\"])
+  AA:::startend --> A:::subnode
+  A --> B:::subnode
+  B --> C
+  C --> D:::subnode
+  D --> E
+  E --> F:::subnode
+  F --> Z:::startend
+", height = 700, width = 400)
+```
+
+# The Workflow of `free_pars()`
+
+```{r fig-free_pars, fig.cap = "Workflow of `semlrtp:::free_pars()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef subnode fill:#FFFFDD;
+
+  AA([\"Start\"])
+  A[\"Identify rows in parameter table\nmatching the required operators\"]
+  B[\"Identify rows of variances\"]
+  D[\"Identify rows of error variances\"]
+  E[\"Identify rows of error covariances\"]
+  F[\"Select rows based on the requirements\"]
+  Z([\"Return the row numbers\"])
+  AA:::startend --> A
+  A --> B
+  B --> D
+  D --> E
+  E --> F
+  F --> Z:::startend
+", height = 600, width = 400)
+```
+
+# The Workflow of `lrt()`
+
+```{r fig-lrt, fig.cap = "Workflow of `semlrtp:::lrt()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef subnode fill:#FFFFDD;
+
+  AA([\"Start\"])
+  A[[\"Call fix_to_zero() to fix the requested parameter to 0\"]]
+  B[\"Call lavaan::lavTestLRT() to do the LR test\"]
+  C[\"Store the results in a list, along with other info\"]
+  Z([\"Return the output\"])
+  AA:::startend --> A:::subnode
+  A --> B
+  B --> C
+  C --> Z:::startend
+", height = 400, width = 400)
+```
+
+
+# The Workflow of `fix_to_zero()`
+
+```{r fig-fix_to_zero, fig.cap = "Workflow of `semlrtp:::fix_to_zero()`", echo = FALSE}
+mermaid("
+flowchart TD
+  classDef default fill:#EEEEFF;
+  classDef errornode fill:#FFDDDD;
+  classDef startend fill:#DDFFDD;
+  classDef subnode fill:#FFFFDD;
+
+  AA([\"Start\"])
+  A[\"Set columns such as 'free' to 0\"]
+  B[\"Extract slots from the lavaan object\"]
+  C[\"Fit a model with the updated parameter table\"]
+  D{{\"Check if the model df is reduced by one\"}}
+  E2[\"Store the results in a list, along with other info\"]
+  E1([\"Error: Df change not 1\"])
+  Z([\"Return the output\"])
+  AA:::startend --> A
+  A --> B
+  B --> C
+  C --> D
+  D -- 1 df --> E2
+  D -- Not 1 df --> E1:::errornode
+  E2 --> Z:::startend
+", height = 600, width = 500)
+```
