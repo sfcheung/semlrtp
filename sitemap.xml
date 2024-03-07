@@ -7,6 +7,15 @@
     <loc>https://sfcheung.github.io/semlrtp/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/semlrtp/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/semlrtp/articles/internal_workflow.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/semlrtp/articles/semlrtp.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/semlrtp/authors.html</loc>
   </url>
   <url>
@@ -16,6 +25,21 @@
     <loc>https://sfcheung.github.io/semlrtp/news/index.html</loc>
   </url>
   <url>
+    <loc>https://sfcheung.github.io/semlrtp/reference/data_sem16.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/semlrtp/reference/fix_to_zero.html</loc>
+  </url>
+  <url>
     <loc>https://sfcheung.github.io/semlrtp/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/semlrtp/reference/lrt.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/semlrtp/reference/lrtp.html</loc>
+  </url>
+  <url>
+    <loc>https://sfcheung.github.io/semlrtp/reference/print.lrtp.html</loc>
   </url>
 </urlset>

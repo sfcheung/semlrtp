@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,15 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
+  <a class="nav-link" href="../articles/semlrtp.html">Get started</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/internal_workflow.html">Technical Appendix: The Internal Workflow of Main Functions</a>
+  </div>
+</li>
+<li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
 <li class="active nav-item">
@@ -27,7 +36,13 @@
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
-      <ul class="navbar-nav"></ul></div>
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/sfcheung/semlrtp/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div>
 
     
   </div>
@@ -35,13 +50,20 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Changelog</h1>
-      
+      <small>Source: <a href="https://github.com/sfcheung/semlrtp/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9001" id="semlrtp-0009001">semlrtp 0.0.0.9001<a class="anchor" aria-label="anchor" href="#semlrtp-0009001"></a></h2>
-<ul><li>Initialize the package. (0.0.0.9000)</li>
+<h2 class="pkg-version" data-toc-text="0.0.0.9006" id="semlrtp-0009006">semlrtp 0.0.0.9006<a class="anchor" aria-label="anchor" href="#semlrtp-0009006"></a></h2>
+<ul><li>Initialized the package. (0.0.0.9000)</li>
 <li>Setup <code>pkgdown</code> site. (0.0.0.9001)</li>
+<li>Added a dataset for testing.</li>
+<li>Added <code>free_pars()</code> (an internal function), with tests. (0.0.0.9002)</li>
+<li>Added <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code>, with tests. (0.0.0.9002)</li>
+<li>Added <code><a href="../reference/lrt.html">lrt()</a></code>, with tests. (0.0.0.9003)</li>
+<li>Added <code><a href="../reference/lrtp.html">lrtp()</a></code> and its print method, with tests. (0.0.0.9004)</li>
+<li>Added a vignette, <code>Get Started</code>. (0.0.0.9005)</li>
+<li>Fixed issues with vignettes. (0.0.0.9006)</li>
 </ul></div>
   </main></div>
 
