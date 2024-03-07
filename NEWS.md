@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9004
+# semlrtp 0.0.0.9005
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -10,3 +10,5 @@
 - Added `lrt()`, with tests. (0.0.0.9003)
 - Added `lrtp()` and its print method,
   with tests. (0.0.0.9004)
+- Added a vignette, `Get Started`.
+  (0.0.0.9005)
