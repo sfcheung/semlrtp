@@ -28,3 +28,6 @@ Imports:
     lavaan
 URL: https://sfcheung.github.io/semlrtp/
 Config/Needs/website: rmarkdown
+Depends: 
+    R (>= 2.10)
+LazyData: true
