@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9003
+# semlrtp 0.0.0.9004
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -8,3 +8,5 @@
 - Added `fix_to_zero()`, with tests.
   (0.0.0.9002)
 - Added `lrt()`, with tests. (0.0.0.9003)
+- Added `lrtp()` and its print method,
+  with tests. (0.0.0.9004)
