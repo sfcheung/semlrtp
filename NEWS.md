@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9005
+# semlrtp 0.0.0.9006
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -12,3 +12,5 @@
   with tests. (0.0.0.9004)
 - Added a vignette, `Get Started`.
   (0.0.0.9005)
+- Fixed issues with vignettes.
+  (0.0.0.9006)
