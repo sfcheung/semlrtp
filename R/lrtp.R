@@ -101,16 +101,22 @@ lrtp <- function(fit,
     tmp1 <- which(colnames(out0) == "pvalue")
     tmp2 <- ncol(out0)
     out <- cbind(out0[, 1:tmp1],
+                 Chisq = NA,
                  LRTp = NA,
                  out0[, (tmp1 + 1):tmp2])
     class(out) <- class(out0)
     if (length(ids) > 0) {
         ids_out <- as.numeric(names(lrt_out))
         est_id <- match_id$est_id[match(ids_out, match_id$id)]
+        lrt_chisqs <- sapply(lrt_out,
+                             function(x) {
+                                 unname(x$lrt[2, "Chisq diff"])
+                               })
         lrt_pvalues <- sapply(lrt_out,
                               function(x) {
                                   unname(x$lrt[2, "Pr(>Chisq)"])
                                 })
+        out[est_id, "Chisq"] <- lrt_chisqs
         out[est_id, "LRTp"] <- lrt_pvalues
         attr(out, "lrt") <- lrt_out
       }

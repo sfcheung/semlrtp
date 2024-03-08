@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9008
+# semlrtp 0.0.0.9009
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -20,3 +20,6 @@
   (z statistics, Wald p-values,
   Wald confidence intervals).
   (0.0.0.9008)
+- The chi-squared difference for each
+  LRT *p*-value will also be printed.
+  (0.0.0.9009)

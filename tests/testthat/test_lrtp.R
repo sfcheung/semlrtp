@@ -48,6 +48,8 @@ fit_lrtp_df <- as.data.frame(fit_lrtp)
 test_that("CFA multiple group", {
   expect_true(is.numeric(fit_lrtp_df[c(22:24, 58:60), "LRTp"]))
   expect_true(all(is.na(fit_lrtp_df[-c(22:24, 58:60), "LRTp"])))
+  expect_true(is.numeric(fit_lrtp_df[c(22:24, 58:60), "Chisq"]))
+  expect_true(all(is.na(fit_lrtp_df[-c(22:24, 58:60), "Chisq"])))
 })
 
 fit_lrtp_std <- lrtp(fit, standardized = TRUE)
