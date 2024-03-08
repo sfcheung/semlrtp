@@ -65,3 +65,11 @@ test_that("print.lrtp: wald_stats", {
   expect_true(any(grepl("z-value", capture.output(print(fit_lrtp, wald_stats = TRUE)), fixed = TRUE)))
   expect_true(any(grepl("P(>|z|)", capture.output(print(fit_lrtp, wald_stats = TRUE)), fixed = TRUE)))
 })
+
+# ci = FALSE or similar cases
+
+test_that("Options on parameter estimates", {
+  expect_no_error(lrtp(fit, ci = FALSE))
+  expect_no_error(lrtp(fit, pvalue = FALSE))
+  expect_no_error(lrtp(fit, se = FALSE, z = FALSE, ci = FALSE))
+})
