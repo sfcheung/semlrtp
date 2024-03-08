@@ -54,6 +54,3 @@ fit_lrtp_std <- lrtp(fit, standardized = TRUE)
 test_that("CFA multiple group, std", {
   expect_true("std.all" %in% colnames(fit_lrtp_std))
 })
-
-# TODO:
-# More tests

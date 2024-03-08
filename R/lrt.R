@@ -61,8 +61,6 @@ lrt <- function(fit,
       }
     fit_i <- fix_to_zero(fit,
                          par_id = par_id)
-    # TODO:
-    # Need to determine the appropriate method to do LRT
     lrt_out <- lavaan::lavTestLRT(fit,
                                   fit_i$fit0)
     out <- list(lrt = lrt_out,

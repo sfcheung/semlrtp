@@ -56,10 +56,6 @@ fix_to_zero <- function(fit,
     if (isFALSE(ptable[par_id, "free"] > 0)) {
         stop("The target parameter is not free in the object.")
       }
-    # TODO:
-    # Check if par_id is involved in any constraints
-    # Check if par_id is already labelled
-    # Check if par_id is used in user-defined variable(s)
     ptable_i <- ptable
     ptable_i[par_id, "free"] <- 0
     ptable_i[par_id, "ustart"] <- 0
@@ -71,8 +67,6 @@ fix_to_zero <- function(fit,
     slot_mod <- fit@Model
     slot_smp <- fit@SampleStats
     slot_dat <- fit@Data
-    # TODO: What to do with SEs?
-    # slot_opt$se <- "none"
 
     suppressWarnings(fit_i <- lavaan::lavaan(
                             model = ptable_i,
@@ -84,7 +78,6 @@ fix_to_zero <- function(fit,
     df <- lavaan::fitMeasures(fit, "df")
     df_i <- lavaan::fitMeasures(fit_i, "df")
     if (isTRUE(df_i - df != 1)) {
-        # Should return NA instead of error
         stop("Failed to make a one-df change.")
       }
     ptable_out <- lavaan::parameterTable(fit_i)

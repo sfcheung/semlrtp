@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9006
+# semlrtp 0.0.0.9007
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -14,3 +14,4 @@
   (0.0.0.9005)
 - Fixed issues with vignettes.
   (0.0.0.9006)
+- Moved "TODOs" to issues. (0.0.0.9007)
