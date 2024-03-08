@@ -98,12 +98,25 @@ lrtp <- function(fit,
     ptable <- lavaan::parameterTable(fit)
     match_id <- match_ptable_est(ptable = ptable,
                                  est = ptable)
-    tmp1 <- which(colnames(out0) == "pvalue")
+    tmp0 <- colnames(out0)
+    tmp4 <- match(c("est", "se", "z", "pvalue"), tmp0)
+    if (all(is.na(tmp4))) {
+        tmp1 <- which(colnames(out0) == "exo")
+      } else {
+        tmp4 <- tmp4[!is.na(tmp4)]
+        tmp1 <- tmp4[length(tmp4)]
+      }
     tmp2 <- ncol(out0)
-    out <- cbind(out0[, 1:tmp1],
-                 Chisq = NA,
-                 LRTp = NA,
-                 out0[, (tmp1 + 1):tmp2])
+    if (tmp2 == tmp1) {
+        out <- cbind(out0,
+                     Chisq = NA,
+                     LRTp = NA)
+      } else {
+        out <- cbind(out0[, 1:tmp1],
+                     Chisq = NA,
+                     LRTp = NA,
+                     out0[, (tmp1 + 1):tmp2])
+      }
     class(out) <- class(out0)
     if (length(ids) > 0) {
         ids_out <- as.numeric(names(lrt_out))

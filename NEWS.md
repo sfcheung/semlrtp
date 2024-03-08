@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9009
+# semlrtp 0.0.0.9010
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -23,3 +23,5 @@
 - The chi-squared difference for each
   LRT *p*-value will also be printed.
   (0.0.0.9009)
+- Fixed a bug with inserting columns
+  in `lrtp()`. (0.0.0.9010)
