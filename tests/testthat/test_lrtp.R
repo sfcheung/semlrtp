@@ -54,3 +54,12 @@ fit_lrtp_std <- lrtp(fit, standardized = TRUE)
 test_that("CFA multiple group, std", {
   expect_true("std.all" %in% colnames(fit_lrtp_std))
 })
+
+# Print
+
+test_that("print.lrtp: wald_stats", {
+  expect_false(any(grepl("z-value", capture.output(print(fit_lrtp)), fixed = TRUE)))
+  expect_false(any(grepl("P(>|z|)", capture.output(print(fit_lrtp)), fixed = TRUE)))
+  expect_true(any(grepl("z-value", capture.output(print(fit_lrtp, wald_stats = TRUE)), fixed = TRUE)))
+  expect_true(any(grepl("P(>|z|)", capture.output(print(fit_lrtp, wald_stats = TRUE)), fixed = TRUE)))
+})

@@ -20,6 +20,13 @@
 #' the default, only parameters with
 #' LRT *p*-values will be printed.
 #'
+#' @param wald_stats Logical. If `TRUE`,
+#' the usual Wald statistics (e.g.,
+#' z statistics,
+#' *p*-values, CIs) are printed. `FALSE`
+#' by default, assuming that users
+#' prefer using LRT statistics.
+#'
 #' @param output The format of the
 #' printout. If `"text"`, then the
 #' style in the [summary()]
@@ -55,6 +62,7 @@
 print.lrtp <- function(x,
                        digits = 3,
                        lrtp_only = TRUE,
+                       wald_stats = FALSE,
                        output = c("text", "data.frame"),
                        ...) {
     output <- match.arg(output)
@@ -76,6 +84,12 @@ print.lrtp <- function(x,
     out1$LRTp <- LRTptxt
     if (lrtp_only) {
         out1 <- out1[!LRTp_NA, ]
+      }
+    if (!wald_stats) {
+        out1$z <- NULL
+        out1$pvalue <- NULL
+        out1$ci.lower <- NULL
+        out1$ci.upper <- NULL
       }
     if (output == "data.frame") {
         out1 <- data.frame(out1)
