@@ -81,6 +81,12 @@ fix_to_zero <- function(fit,
         stop("Failed to make a one-df change.")
       }
     ptable_out <- lavaan::parameterTable(fit_i)
+    if (!identical(ptable_out[par_id, "est"], 0)) {
+        stop("Parameter failed to be fixed to zero.")
+      }
+    if (ptable_out[par_id, "se"] != 0) {
+        stop("Fixed parameter does not have 0 SE.")
+      }
     out <- list(fit0 = fit_i,
                 fit1 = NULL,
                 par_id = par_id,
