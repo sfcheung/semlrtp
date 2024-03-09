@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9011
+# semlrtp 0.0.0.9012
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -29,3 +29,7 @@
   free parameters which are actually
   fixed due to an equality constraint
   on a constant. (0.0.0.9011)
+- Updated `fix_to_zero()` to check
+  whether the requested parameter is
+  successfully fixed to zero.
+  (0.0.0.9012)
