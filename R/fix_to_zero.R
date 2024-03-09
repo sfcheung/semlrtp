@@ -9,14 +9,38 @@
 #'
 #' @return
 #' A `fix_to_zero`-class object, which
-#' is a list with the element `fit0`
-#' storing the `lavaan` output of the
-#' refitted object, `fit1` storing the
-#' original `lavaan` output if requested
-#' (`NULL` otherwise), `par_id` storing
-#' the row number of the designated free
-#' parameter, and `call` storing the
-#' original call.
+#' is a list with these elements:call
+#'
+#' - `fit0` is the `lavaan` output of the
+#' refitted object. `NA` if the fit
+#' failed for some reasons.
+#'
+#' - `fit1` is the original `lavaan`
+#' output if `store_fit` is `TRUE`. It
+#' is `NULL` otherwise
+#'
+#' - `par_id` is the row number of the
+#' designated free parameter.
+#'
+#' - `call` is the original call to this
+#' function.
+#'
+#' - `ptable0` is the parameter table
+#' of with the designated parameter fixed
+#' to zero. It can be used for diagnostic
+#' purpose if the fit failed.
+#'
+#' - `fit0_error` is the error
+#' message in refitting, if any. If
+#' no error, it is `NA``.
+#'
+#' - `vcov_msg` is the message generated
+#' when using [lavaan::lavInspect()] to
+#' get the variance-covariance matrix
+#' of the parameter estimates of the
+#' refitted model. If `TRUE`, then no
+#' error nor warning. Can be used for
+#' diagnostic purposes.
 #'
 #' @param fit A `lavaan`-class object.
 #'
@@ -80,38 +104,49 @@ fix_to_zero <- function(fit,
     slot_smp <- fit@SampleStats
     slot_dat <- fit@Data
 
-    suppressWarnings(fit_i <- lavaan::lavaan(
-                            model = ptable_i,
-                            slotOptions = slot_opt,
-                            slotSampleStats = slot_smp,
-                            slotData = slot_dat))
-
+    fit0_error <- tryCatch(suppressWarnings(fit_i <- lavaan::lavaan(
+                                model = ptable_i,
+                                slotOptions = slot_opt,
+                                slotSampleStats = slot_smp,
+                                slotData = slot_dat)),
+                            error = function(e) e)
+    fit0_has_error <- inherits(fit0_error, "error")
+    if (fit0_has_error) {
+        fit_i <- NA
+        vcov_msg <- NA
+      } else {
     # Check df
-    df <- lavaan::fitMeasures(fit, "df")
-    df_i <- lavaan::fitMeasures(fit_i, "df")
-    if (isTRUE(df_i - df != 1)) {
-        stop("Failed to make a one-df change.")
-      }
-    vcov_msg <- tryCatch(vcov_chk <- lavaan::lavInspect(fit_i, "vcov"),
-                         error = function(e) e,
-                         warning = function(w) w)
-    if (inherits(vcov_msg, "warning") ||
-        is.null(vcov_chk) ||
-        inherits(vcov_msg, "error")) {
-        stop("VCOV cannot be computed. The model may not be identified")
-      }
-    ptable_out <- lavaan::parameterTable(fit_i)
-    if (!isTRUE(all.equal(ptable_out[par_id, "est"], 0))) {
-        stop("Parameter failed to be fixed to zero.")
-      }
-    if (!(isTRUE(all.equal(ptable_out[par_id, "se"], 0)) ||
-          (is.na(ptable_out[par_id, "se"])))) {
-        stop("Fixed parameter does not have 0 SE.")
+        df <- lavaan::fitMeasures(fit, "df")
+        df_i <- lavaan::fitMeasures(fit_i, "df")
+        if (isTRUE(df_i - df != 1)) {
+            stop("Failed to make a one-df change.")
+          }
+        vcov_msg <- tryCatch(vcov_chk <- lavaan::lavInspect(fit_i, "vcov"),
+                            error = function(e) e,
+                            warning = function(w) w)
+        if (inherits(vcov_msg, "warning") ||
+            is.null(vcov_chk) ||
+            inherits(vcov_msg, "error")) {
+            stop("VCOV cannot be computed. The model may not be identified")
+          }
+        ptable_out <- lavaan::parameterTable(fit_i)
+        if (!isTRUE(all.equal(ptable_out[par_id, "est"], 0))) {
+            stop("Parameter failed to be fixed to zero.")
+          }
+        if (!(isTRUE(all.equal(ptable_out[par_id, "se"], 0)) ||
+              (is.na(ptable_out[par_id, "se"])))) {
+            stop("Fixed parameter does not have 0 SE.")
+          }
       }
     out <- list(fit0 = fit_i,
                 fit1 = NULL,
                 par_id = par_id,
-                call = match.call())
+                call = match.call(),
+                ptable0 = ptable_i,
+                fit0_error = ifelse(fit0_has_error,
+                                    fit0_error,
+                                    NA),
+                vcov_msg = vcov_msg)
     if (store_fit) {
         out$fit1 <- fit
       }
