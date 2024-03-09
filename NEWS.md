@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9012
+# semlrtp 0.0.0.9013
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -33,3 +33,9 @@
   whether the requested parameter is
   successfully fixed to zero.
   (0.0.0.9012)
+- Updated `fix_to_zero()` to handle
+  parameters involved in internal a
+  equality constraint (e.g, constrained
+  to be equal between groups by
+  the `group.equal` argument of
+  `lavaan::lavaan()`). (0.0.0.9013)
