@@ -57,10 +57,18 @@ fix_to_zero <- function(fit,
         stop("The target parameter is not free in the object.")
       }
     ptable_i <- ptable
-    ptable_i[par_id, "free"] <- 0
-    ptable_i[par_id, "ustart"] <- 0
-    ptable_i[par_id, "start"] <- 0
-    ptable_i[par_id, "est"] <- 0
+
+    if (constrained_by_plabel(ptable = ptable, par_id = par_id)) {
+        ptable_i <- lavaan::lav_partable_add(ptable,
+                                             list(lhs = ptable[par_id, "plabel"],
+                                                  op = "==",
+                                                  rhs = "0"))
+      } else {
+        ptable_i[par_id, "free"] <- 0
+        ptable_i[par_id, "ustart"] <- 0
+        ptable_i[par_id, "start"] <- 0
+        ptable_i[par_id, "est"] <- 0
+      }
 
     slot_opt <- fit@Options
     slot_pat <- fit@ParTable
@@ -81,10 +89,10 @@ fix_to_zero <- function(fit,
         stop("Failed to make a one-df change.")
       }
     ptable_out <- lavaan::parameterTable(fit_i)
-    if (!identical(ptable_out[par_id, "est"], 0)) {
+    if (!isTRUE(all.equal(ptable_out[par_id, "est"], 0))) {
         stop("Parameter failed to be fixed to zero.")
       }
-    if (!((ptable_out[par_id, "se"] == 0) ||
+    if (!(isTRUE(all.equal(ptable_out[par_id, "se"], 0)) ||
           (is.na(ptable_out[par_id, "se"])))) {
         stop("Fixed parameter does not have 0 SE.")
       }
@@ -97,4 +105,22 @@ fix_to_zero <- function(fit,
       }
     class(out) <- c("fix_to_zero", class(out))
     out
+  }
+
+#' @noRd
+
+constrained_by_plabel <- function(ptable,
+                                  par_id) {
+    plabel_i <- ptable[par_id, "plabel"]
+    ids_eq <- which(ptable$op == "==")
+    if (length(ids_eq) == 0) {
+        return(FALSE)
+      }
+    plabels_eq <- unique(c(ptable$lhs[ids_eq],
+                           ptable$rhs[ids_eq]))
+    if (plabel_i %in% plabels_eq) {
+        return(TRUE)
+      } else {
+        return(FALSE)
+      }
   }
