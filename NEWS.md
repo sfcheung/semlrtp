@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9014
+# semlrtp 0.0.0.9015
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -41,3 +41,7 @@
   `lavaan::lavaan()`). (0.0.0.9013)
 - Updated `fix_to_zero()` to handle
   labelled parameters. (0.0.0.9014)
+- Updated `fix_to_zero()` to check the
+  VCOV of the modified model. If failed
+  to get VCOV, the modified model may
+  not be identified. (0.0.0.9015)

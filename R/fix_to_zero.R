@@ -92,6 +92,14 @@ fix_to_zero <- function(fit,
     if (isTRUE(df_i - df != 1)) {
         stop("Failed to make a one-df change.")
       }
+    vcov_msg <- tryCatch(vcov_chk <- lavaan::lavInspect(fit_i, "vcov"),
+                         error = function(e) e,
+                         warning = function(w) w)
+    if (inherits(vcov_msg, "warning") ||
+        is.null(vcov_chk) ||
+        inherits(vcov_msg, "error")) {
+        stop("VCOV cannot be computed. The model may not be identified")
+      }
     ptable_out <- lavaan::parameterTable(fit_i)
     if (!isTRUE(all.equal(ptable_out[par_id, "est"], 0))) {
         stop("Parameter failed to be fixed to zero.")
