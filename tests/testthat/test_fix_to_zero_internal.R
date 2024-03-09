@@ -13,7 +13,7 @@ fit <- sem(mod, data_sem16, group = "group",
            group.equal = "regressions")
 
 
-test_that("Factor covariances", {
+test_that("Constrained internally", {
   expect_no_error(fix_to_zero(fit, par_id = 59))
   expect_no_error(fix_to_zero(fit, par_id = 13))
 })
