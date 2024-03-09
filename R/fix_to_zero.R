@@ -84,7 +84,8 @@ fix_to_zero <- function(fit,
     if (!identical(ptable_out[par_id, "est"], 0)) {
         stop("Parameter failed to be fixed to zero.")
       }
-    if (ptable_out[par_id, "se"] != 0) {
+    if (!((ptable_out[par_id, "se"] == 0) ||
+          (is.na(ptable_out[par_id, "se"])))) {
         stop("Fixed parameter does not have 0 SE.")
       }
     out <- list(fit0 = fit_i,
