@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9013
+# semlrtp 0.0.0.9014
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -39,3 +39,5 @@
   to be equal between groups by
   the `group.equal` argument of
   `lavaan::lavaan()`). (0.0.0.9013)
+- Updated `fix_to_zero()` to handle
+  labelled parameters. (0.0.0.9014)

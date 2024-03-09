@@ -57,10 +57,14 @@ fix_to_zero <- function(fit,
         stop("The target parameter is not free in the object.")
       }
     ptable_i <- ptable
-
     if (constrained_by_plabel(ptable = ptable, par_id = par_id)) {
         ptable_i <- lavaan::lav_partable_add(ptable,
                                              list(lhs = ptable[par_id, "plabel"],
+                                                  op = "==",
+                                                  rhs = "0"))
+      } else if (ptable_i[par_id, "label"] != "") {
+        ptable_i <- lavaan::lav_partable_add(ptable,
+                                             list(lhs = ptable[par_id, "label"],
                                                   op = "==",
                                                   rhs = "0"))
       } else {
