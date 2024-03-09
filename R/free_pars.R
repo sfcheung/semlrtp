@@ -82,6 +82,8 @@ free_pars <- function(fit,
                              (ptable$rhs %in% dvs) &
                              (ptable$lhs != ptable$rhs)
     ids_error_covariances <- which(ids_error_covariances)
+    ids_se_na <- which(is.na(ptable$se))
+    ids_labelled_constrained <- ids_labelled_constrained_const(ptable)
     i <- intersect(which((ptable$free > 0)), ids_op)
     if (no_variances) {
         i <- setdiff(i, ids_variances)
@@ -92,6 +94,24 @@ free_pars <- function(fit,
     if (no_error_covariances) {
         i <- setdiff(i, ids_error_covariances)
       }
+    i <- setdiff(i, ids_se_na)
+    i <- setdiff(i, ids_labelled_constrained)
     ids_final <- ids[i]
     ids_final
+  }
+
+#' @noRd
+
+ids_labelled_constrained_const <- function(ptable) {
+    # Find parameters that are:
+    # - labelled
+    # - The labels are constrained to a constant
+    rhs_num <- suppressWarnings(sapply(ptable$rhs, as.numeric))
+    const_constraints <- (ptable$op == "==") & !is.na(rhs_num)
+    labelled_constrained <- unique(ptable$lhs[const_constraints])
+    rhs_lbd <- ptable$rhs %in% labelled_constrained
+    labelled_constrained2 <- unique(ptable$lhs[rhs_lbd])
+    out <- which(ptable$label %in% c(labelled_constrained,
+                                     labelled_constrained2))
+    out
   }

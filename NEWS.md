@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9010
+# semlrtp 0.0.0.9011
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -25,3 +25,7 @@
   (0.0.0.9009)
 - Fixed a bug with inserting columns
   in `lrtp()`. (0.0.0.9010)
+- `free_pars()` can identify apparently
+  free parameters which are actually
+  fixed due to an equality constraint
+  on a constant. (0.0.0.9011)
