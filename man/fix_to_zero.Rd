@@ -20,14 +20,33 @@ Default is \code{FALSE}.}
 }
 \value{
 A \code{fix_to_zero}-class object, which
-is a list with the element \code{fit0}
-storing the \code{lavaan} output of the
-refitted object, \code{fit1} storing the
-original \code{lavaan} output if requested
-(\code{NULL} otherwise), \code{par_id} storing
-the row number of the designated free
-parameter, and \code{call} storing the
-original call.
+is a list with these elements:call
+\itemize{
+\item \code{fit0} is the \code{lavaan} output of the
+refitted object. \code{NA} if the fit
+failed for some reasons.
+\item \code{fit1} is the original \code{lavaan}
+output if \code{store_fit} is \code{TRUE}. It
+is \code{NULL} otherwise
+\item \code{par_id} is the row number of the
+designated free parameter.
+\item \code{call} is the original call to this
+function.
+\item \code{ptable0} is the parameter table
+of with the designated parameter fixed
+to zero. It can be used for diagnostic
+purpose if the fit failed.
+\item \code{fit0_error} is the error
+message in refitting, if any. If
+no error, it is `NA``.
+\item \code{vcov_msg} is the message generated
+when using \code{\link[lavaan:lavInspect]{lavaan::lavInspect()}} to
+get the variance-covariance matrix
+of the parameter estimates of the
+refitted model. If \code{TRUE}, then no
+error nor warning. Can be used for
+diagnostic purposes.
+}
 }
 \description{
 It fixes a designated free parameter

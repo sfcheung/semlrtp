@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9015
+# semlrtp 0.0.0.9016
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -45,3 +45,6 @@
   VCOV of the modified model. If failed
   to get VCOV, the modified model may
   not be identified. (0.0.0.9015)
+- Updated `lrt()`, `lrtp()`, and
+  `print.lrtp()` to handle error in
+  doing the LR test. (0.0.0.9016)
