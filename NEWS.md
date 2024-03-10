@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9016
+# semlrtp 0.0.0.9017
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -48,3 +48,5 @@
 - Updated `lrt()`, `lrtp()`, and
   `print.lrtp()` to handle error in
   doing the LR test. (0.0.0.9016)
+- Updated the theme of the `pkgdown`
+  site. (0.0.0.9017)
