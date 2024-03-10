@@ -78,21 +78,20 @@ lrt <- function(fit,
     fit_i <- fix_to_zero(fit,
                          par_id = par_id)
     fit0 <- fit_i$fit0
+    lrt_out <- NA
+    lrt_msg <- NA
     if (inherits(fit0, "lavaan")) {
         lrt_msg <- tryCatch(lrt_out <- lavaan::lavTestLRT(fit,
                                                           fit0),
                                error = function(e) e,
                                warning = function(w) w)
-      } else {
-        lrt_msg <- NA
-        lrt_out <- NA
       }
     lrt_status <- c(NotOK = -1)
     if (inherits(lrt_out, "anova")) {
         if (inherits(lrt_msg, "error") ||
             inherits(lrt_msg, "warning")) {
               lrt_out <- NA
-              lrt_status <- c(OK = 0)
+              lrt_status <- c(NotOK = -1)
             } else {
               lrt_status <- c(OK = 0)
             }
