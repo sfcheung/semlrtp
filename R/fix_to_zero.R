@@ -13,7 +13,13 @@
 #'
 #' - `fit0` is the `lavaan` output of the
 #' refitted object. `NA` if the fit
-#' failed for some reasons.
+#' failed for some reasons. A model
+#' must converged, passed `lavaan`'s
+#' post check, variance covariance
+#' matrix of estimates can be computed,
+#' and has one more degree of freedom
+#' than the original model to be
+#' considered acceptable.
 #'
 #' - `fit1` is the original `lavaan`
 #' output if `store_fit` is `TRUE`. It
@@ -34,6 +40,11 @@
 #' message in refitting, if any. If
 #' no error, it is `NA``.
 #'
+#' - `vcov_ok` is `TRUE` if the variance
+#' covariance matrix of the estimates
+#' can be computed without error nor
+#' warning. `FALSE` otherwise.
+#'
 #' - `vcov_msg` is the message generated
 #' when using [lavaan::lavInspect()] to
 #' get the variance-covariance matrix
@@ -41,6 +52,25 @@
 #' refitted model. If `TRUE`, then no
 #' error nor warning. Can be used for
 #' diagnostic purposes.
+#'
+#' - `converged`: Whether the modified
+#' model converged.
+#'
+#' - `post_check_passed`: Whether the
+#' solution of the modified model passed
+#' `lavaan`s post check.
+#'
+#' - `fit_not_ok`: If the fit failed
+#' for some reasons, the fit object,
+#' if available, is stored in this
+#' element rather than in `fit0`. such
+#' that the fit object can be retrieved
+#' for diagnostic purposed if necessary.
+#'
+#' - `df_diff_one`: Whether the
+#' difference in model degrees of
+#' freedom between the modified model
+#' and the original model is one.
 #'
 #' @param fit A `lavaan`-class object.
 #'
@@ -115,28 +145,78 @@ fix_to_zero <- function(fit,
         fit_i <- NA
         vcov_msg <- NA
       } else {
-    # Check df
+
+        fit0_converged <- lavaan::lavTech(fit_i, "converged")
+
+        fit0_check_passed <- suppressWarnings(lavaan::lavTech(fit_i, "post.check"))
+
         df <- lavaan::fitMeasures(fit, "df")
-        df_i <- lavaan::fitMeasures(fit_i, "df")
-        if (isTRUE(df_i - df != 1)) {
-            stop("Failed to make a one-df change.")
+        if (!fit0_converged) {
+            slot_opt2 <- slot_opt
+            slot_opt2$optim.force.converged <- TRUE
+            slot_opt2$do.fit <- FALSE
+            tmp_error <- tryCatch(suppressWarnings(fit_tmp <- lavaan::lavaan(
+                                        model = ptable_i,
+                                        slotOptions = slot_opt2,
+                                        slotSampleStats = slot_smp,
+                                        slotData = slot_dat)),
+                                    error = function(e) e)
+            if (inherits(tmp_error, "error")) {
+                fit0_df_diff_one <- NA
+              } else {
+                df_i <- lavaan::fitMeasures(fit_tmp, "df")
+                if (isTRUE((df_i - df) == 1)) {
+                    fit0_df_diff_one <- TRUE
+                  } else {
+                    fit0_df_diff_one <- FALSE
+                  }
+              }
+          } else {
+            df_i <- lavaan::fitMeasures(fit_i, "df")
+            if (isTRUE((df_i - df) == 1)) {
+                fit0_df_diff_one <- TRUE
+              } else {
+                fit0_df_diff_one <- FALSE
+              }
           }
+
         vcov_msg <- tryCatch(vcov_chk <- lavaan::lavInspect(fit_i, "vcov"),
                             error = function(e) e,
                             warning = function(w) w)
         if (inherits(vcov_msg, "warning") ||
             is.null(vcov_chk) ||
             inherits(vcov_msg, "error")) {
-            stop("VCOV cannot be computed. The model may not be identified")
+            # stop("VCOV cannot be computed. The model may not be identified")
+            fit0_vcov_ok <- FALSE
+          } else {
+            fit0_vcov_ok <- TRUE
           }
+
         ptable_out <- lavaan::parameterTable(fit_i)
         if (!isTRUE(all.equal(ptable_out[par_id, "est"], 0))) {
-            stop("Parameter failed to be fixed to zero.")
+            # stop("Parameter failed to be fixed to zero.")
+            fit0_really_zero <- FALSE
+          } else {
+            fit0_really_zero <- TRUE
           }
+
         if (!(isTRUE(all.equal(ptable_out[par_id, "se"], 0)) ||
               (is.na(ptable_out[par_id, "se"])))) {
-            stop("Fixed parameter does not have 0 SE.")
+            # stop("Fixed parameter does not have 0 SE.")
+            fit0_really_zero <- FALSE
+          } else {
+            fit0_really_zero <- TRUE && fit0_really_zero
           }
+      }
+
+    if (!all(fit0_converged,
+             fit0_check_passed,
+             fit0_vcov_ok,
+             fit0_df_diff_one)) {
+        fit_not_ok <- fit_i
+        fit_i <- NA
+      } else {
+        fit_not_ok <- NA
       }
     out <- list(fit0 = fit_i,
                 fit1 = NULL,
@@ -146,7 +226,12 @@ fix_to_zero <- function(fit,
                 fit0_error = ifelse(fit0_has_error,
                                     fit0_error,
                                     NA),
-                vcov_msg = vcov_msg)
+                vcov_ok = fit0_vcov_ok,
+                vcov_msg = vcov_msg,
+                converged = fit0_converged,
+                post_check_passed = fit0_check_passed,
+                fit_not_ok = fit_not_ok,
+                df_diff_one = fit0_df_diff_one)
     if (store_fit) {
         out$fit1 <- fit
       }

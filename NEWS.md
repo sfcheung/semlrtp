@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9017
+# semlrtp 0.0.0.9018
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -50,3 +50,15 @@
   doing the LR test. (0.0.0.9016)
 - Updated the theme of the `pkgdown`
   site. (0.0.0.9017)
+- Revised several functions such that
+  problems in fitting the modified model
+  are recorded, instead of raising an
+  error. The structure of the output
+  of `lrt()` and `fix_to_zero()` are also
+  modified to include indicators of
+  error. To avoid unnecessarily storing
+  many copies of the original fit
+  object, a change is made in the output
+  of `lrt()` which will some times break
+  code for previous versions of
+  `semlrtp`. (0.0.0.9018)
