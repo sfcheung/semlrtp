@@ -17,8 +17,10 @@ f1 ~~ 0*f2
 "
 suppressWarnings(fit1b <- sem(mod1b, data_sem16))
 
-test_that("Models not identified", {
-  expect_error(fix_to_zero(fit1, par_id = 13))
+test_that("Models not identified by VCOV", {
+  out <- fix_to_zero(fit1, par_id = 13)
+  expect_true(is.na(out$fit0))
+  expect_false(out$vcov_ok)
 })
 
 # Need to add tests for

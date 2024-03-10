@@ -4,7 +4,7 @@
 \alias{lrt}
 \title{Fix a Free Parameter to Zero and do LR Test}
 \usage{
-lrt(fit, par_id)
+lrt(fit, par_id, store_fit = FALSE)
 }
 \arguments{
 \item{fit}{A \code{lavaan}-class object.}
@@ -13,6 +13,10 @@ lrt(fit, par_id)
 number of the free parameter in the
 parameter table of \code{fit} to be
 fixed.}
+
+\item{store_fit}{Logical. If \code{TRUE},
+\code{fit} will be stored in the output.
+Default is \code{FALSE}.}
 }
 \value{
 A \code{lrt}-class object, which is a
@@ -23,11 +27,11 @@ If there is an error message or
 warning, it is set to \code{NA}.
 \item \code{par_id}: The row number of the
 designated free parameters.
-\item \code{fit0}: The \code{lavaan} output of the
-modified model, with the designated
-free parameter fixed to zero.
 \item \code{fit1}: The original \code{lavaan}
-output.
+output, if \code{store_fit} is \code{TRUE}.
+\code{NA} otherwise.
+\item \code{fix_to_zero}: The output of
+\code{fit_to_zero()}.
 \item \code{call}: The call to this function.
 \item \code{lrt_status}: Integer. If 0, then
 there is no error nor warning
@@ -68,7 +72,7 @@ fit <- sem(mod, data_sem16)
 out <- lrt(fit, par_id = 15)
 out$lrt
 parameterEstimates(fit)[15, ]
-parameterEstimates(out$fit0)[15, ]
+parameterEstimates(out$fix_to_zero$fit0)[15, ]
 
 }
 \author{

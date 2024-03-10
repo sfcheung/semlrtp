@@ -21,12 +21,12 @@
 #' - `par_id`: The row number of the
 #' designated free parameters.
 #'
-#' - `fit0`: The `lavaan` output of the
-#' modified model, with the designated
-#' free parameter fixed to zero.
-#'
 #' - `fit1`: The original `lavaan`
-#' output.
+#' output, if `store_fit` is `TRUE`.
+#' `NA` otherwise.
+#'
+#' - `fix_to_zero`: The output of
+#' `fit_to_zero()`.
 #'
 #' - `call`: The call to this function.
 #'
@@ -51,6 +51,10 @@
 #' parameter table of `fit` to be
 #' fixed.
 #'
+#' @param store_fit Logical. If `TRUE`,
+#' `fit` will be stored in the output.
+#' Default is `FALSE`.
+#'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
 #' @examples
@@ -66,12 +70,13 @@
 #' out <- lrt(fit, par_id = 15)
 #' out$lrt
 #' parameterEstimates(fit)[15, ]
-#' parameterEstimates(out$fit0)[15, ]
+#' parameterEstimates(out$fix_to_zero$fit0)[15, ]
 #'
 #' @export
 
 lrt <- function(fit,
-                par_id) {
+                par_id,
+                store_fit = FALSE) {
     if (isFALSE(inherits(fit, "lavaan"))) {
         stop("The fit object is not a lavaan object.")
       }
@@ -100,8 +105,10 @@ lrt <- function(fit,
       }
     out <- list(lrt = lrt_out,
                 par_id = par_id,
-                fit0 = fit0,
-                fit1 = fit,
+                fit1 = ifelse(store_fit,
+                              fit,
+                              NA),
+                fix_to_zero = fit_i,
                 call = match.call(),
                 lrt_status = lrt_status,
                 lrt_msg = lrt_msg)
