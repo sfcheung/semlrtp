@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9018</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9017" id="semlrtp-0009017">semlrtp 0.0.0.9017<a class="anchor" aria-label="anchor" href="#semlrtp-0009017"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.0.0.9018" id="semlrtp-0009018">semlrtp 0.0.0.9018<a class="anchor" aria-label="anchor" href="#semlrtp-0009018"></a></h2>
 <ul><li>Initialized the package. (0.0.0.9000)</li>
 <li>Setup <code>pkgdown</code> site. (0.0.0.9001)</li>
 <li>Added a dataset for testing.</li>
@@ -76,6 +76,7 @@
 <li>Updated <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code> to check the VCOV of the modified model. If failed to get VCOV, the modified model may not be identified. (0.0.0.9015)</li>
 <li>Updated <code><a href="../reference/lrt.html">lrt()</a></code>, <code><a href="../reference/lrtp.html">lrtp()</a></code>, and <code><a href="../reference/print.lrtp.html">print.lrtp()</a></code> to handle error in doing the LR test. (0.0.0.9016)</li>
 <li>Updated the theme of the <code>pkgdown</code> site. (0.0.0.9017)</li>
+<li>Revised several functions such that problems in fitting the modified model are recorded, instead of raising an error. The structure of the output of <code><a href="../reference/lrt.html">lrt()</a></code> and <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code> are also modified to include indicators of error. To avoid unnecessarily storing many copies of the original fit object, a change is made in the output of <code><a href="../reference/lrt.html">lrt()</a></code> which will some times break code for previous versions of <code>semlrtp</code>. (0.0.0.9018)</li>
 </ul></div>
   </main></div>
 

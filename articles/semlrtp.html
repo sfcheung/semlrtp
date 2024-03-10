@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9018</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -161,7 +161,10 @@ Cheung</h4>
 <span><span class="co">#&gt; Covariances:</span></span>
 <span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
 <span><span class="co">#&gt;   f1 ~~                                               </span></span>
-<span><span class="co">#&gt;     f2                0.082    0.060    1.835    0.176</span></span></code></pre></div>
+<span><span class="co">#&gt;     f2                0.082    0.060   Failed   Failed</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; NOTE: 'Failed' indicates that LRT p-value is requested but the </span></span>
+<span><span class="co">#&gt; likelihood ratio test failed.</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_lrtp_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit</span>,</span>
 <span>                   op <span class="op">=</span> <span class="st">"~"</span><span class="op">)</span></span>

@@ -14,7 +14,7 @@ likelihood ratio test."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9018</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@ likelihood ratio test.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lrt</span><span class="op">(</span><span class="va">fit</span>, <span class="va">par_id</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lrt</span><span class="op">(</span><span class="va">fit</span>, <span class="va">par_id</span>, store_fit <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -81,6 +81,12 @@ number of the free parameter in the
 parameter table of <code>fit</code> to be
 fixed.</p></dd>
 
+
+<dt>store_fit</dt>
+<dd><p>Logical. If <code>TRUE</code>,
+<code>fit</code> will be stored in the output.
+Default is <code>FALSE</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -92,11 +98,11 @@ If there is an error message or
 warning, it is set to <code>NA</code>.</p></li>
 <li><p><code>par_id</code>: The row number of the
 designated free parameters.</p></li>
-<li><p><code>fit0</code>: The <code>lavaan</code> output of the
-modified model, with the designated
-free parameter fixed to zero.</p></li>
 <li><p><code>fit1</code>: The original <code>lavaan</code>
-output.</p></li>
+output, if <code>store_fit</code> is <code>TRUE</code>.
+<code>NA</code> otherwise.</p></li>
+<li><p><code>fix_to_zero</code>: The output of
+<code>fit_to_zero()</code>.</p></li>
 <li><p><code>call</code>: The call to this function.</p></li>
 <li><p><code>lrt_status</code>: Integer. If 0, then
 there is no error nor warning
@@ -148,7 +154,7 @@ the original model.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">15</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lhs op rhs   est    se     z pvalue ci.lower ci.upper</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15  f1 ~~  f2 0.057 0.028 2.005  0.045    0.001    0.112</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">fit0</span><span class="op">)</span><span class="op">[</span><span class="fl">15</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">fix_to_zero</span><span class="op">$</span><span class="va">fit0</span><span class="op">)</span><span class="op">[</span><span class="fl">15</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    lhs op rhs est se  z pvalue ci.lower ci.upper</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15  f1 ~~  f2   0  0 NA     NA        0        0</span>
 <span class="r-in"><span></span></span>

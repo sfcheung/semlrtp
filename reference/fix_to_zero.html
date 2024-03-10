@@ -12,7 +12,7 @@ in a lavaan object to zero and refit the model."><!-- mathjax --><script src="ht
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9017</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9018</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,7 +92,13 @@ Default is <code>FALSE</code>.</p></dd>
 <p>A <code>fix_to_zero</code>-class object, which
 is a list with these elements:call</p><ul><li><p><code>fit0</code> is the <code>lavaan</code> output of the
 refitted object. <code>NA</code> if the fit
-failed for some reasons.</p></li>
+failed for some reasons. A model
+must converged, passed <code>lavaan</code>'s
+post check, variance covariance
+matrix of estimates can be computed,
+and has one more degree of freedom
+than the original model to be
+considered acceptable.</p></li>
 <li><p><code>fit1</code> is the original <code>lavaan</code>
 output if <code>store_fit</code> is <code>TRUE</code>. It
 is <code>NULL</code> otherwise</p></li>
@@ -107,6 +113,10 @@ purpose if the fit failed.</p></li>
 <li><p><code>fit0_error</code> is the error
 message in refitting, if any. If
 no error, it is `NA``.</p></li>
+<li><p><code>vcov_ok</code> is <code>TRUE</code> if the variance
+covariance matrix of the estimates
+can be computed without error nor
+warning. <code>FALSE</code> otherwise.</p></li>
 <li><p><code>vcov_msg</code> is the message generated
 when using <code><a href="https://rdrr.io/pkg/lavaan/man/lavInspect.html" class="external-link">lavaan::lavInspect()</a></code> to
 get the variance-covariance matrix
@@ -114,6 +124,21 @@ of the parameter estimates of the
 refitted model. If <code>TRUE</code>, then no
 error nor warning. Can be used for
 diagnostic purposes.</p></li>
+<li><p><code>converged</code>: Whether the modified
+model converged.</p></li>
+<li><p><code>post_check_passed</code>: Whether the
+solution of the modified model passed
+<code>lavaan</code>s post check.</p></li>
+<li><p><code>fit_not_ok</code>: If the fit failed
+for some reasons, the fit object,
+if available, is stored in this
+element rather than in <code>fit0</code>. such
+that the fit object can be retrieved
+for diagnostic purposed if necessary.</p></li>
+<li><p><code>df_diff_one</code>: Whether the
+difference in model degrees of
+freedom between the modified model
+and the original model is one.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
