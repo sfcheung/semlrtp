@@ -48,6 +48,8 @@ fit_lrtp_df <- as.data.frame(fit_lrtp)
 test_that("CFA multiple group", {
   expect_true(is.numeric(fit_lrtp_df[c(22:24, 58:60), "LRTp"]))
   expect_true(all(is.na(fit_lrtp_df[-c(22:24, 58:60), "LRTp"])))
+  expect_true(is.numeric(fit_lrtp_df[c(22:24, 58:60), "Chisq"]))
+  expect_true(all(is.na(fit_lrtp_df[-c(22:24, 58:60), "Chisq"])))
 })
 
 fit_lrtp_std <- lrtp(fit, standardized = TRUE)
@@ -55,5 +57,19 @@ test_that("CFA multiple group, std", {
   expect_true("std.all" %in% colnames(fit_lrtp_std))
 })
 
-# TODO:
-# More tests
+# Print
+
+test_that("print.lrtp: wald_stats", {
+  expect_false(any(grepl("z-value", capture.output(print(fit_lrtp)), fixed = TRUE)))
+  expect_false(any(grepl("P(>|z|)", capture.output(print(fit_lrtp)), fixed = TRUE)))
+  expect_true(any(grepl("z-value", capture.output(print(fit_lrtp, wald_stats = TRUE)), fixed = TRUE)))
+  expect_true(any(grepl("P(>|z|)", capture.output(print(fit_lrtp, wald_stats = TRUE)), fixed = TRUE)))
+})
+
+# ci = FALSE or similar cases
+
+test_that("Options on parameter estimates", {
+  expect_no_error(lrtp(fit, ci = FALSE))
+  expect_no_error(lrtp(fit, pvalue = FALSE))
+  expect_no_error(lrtp(fit, se = FALSE, z = FALSE, ci = FALSE))
+})

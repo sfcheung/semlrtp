@@ -59,6 +59,3 @@ test_that("CFA multiple group", {
   expect_equal(lrt_i$lrt[2, "Chisq diff"],
                lrt_i_check[2, "Chisq diff"])
 })
-
-# TODO:
-# More tests

@@ -98,20 +98,52 @@ lrtp <- function(fit,
     ptable <- lavaan::parameterTable(fit)
     match_id <- match_ptable_est(ptable = ptable,
                                  est = ptable)
-    tmp1 <- which(colnames(out0) == "pvalue")
+    tmp0 <- colnames(out0)
+    tmp4 <- match(c("est", "se", "z", "pvalue"), tmp0)
+    if (all(is.na(tmp4))) {
+        tmp1 <- which(colnames(out0) == "exo")
+      } else {
+        tmp4 <- tmp4[!is.na(tmp4)]
+        tmp1 <- tmp4[length(tmp4)]
+      }
     tmp2 <- ncol(out0)
-    out <- cbind(out0[, 1:tmp1],
-                 LRTp = NA,
-                 out0[, (tmp1 + 1):tmp2])
+    if (tmp2 == tmp1) {
+        out <- cbind(out0,
+                     LRT = NA,
+                     Chisq = NA,
+                     LRTp = NA)
+      } else {
+        out <- cbind(out0[, 1:tmp1],
+                     LRT = NA,
+                     Chisq = NA,
+                     LRTp = NA,
+                     out0[, (tmp1 + 1):tmp2])
+      }
     class(out) <- class(out0)
     if (length(ids) > 0) {
         ids_out <- as.numeric(names(lrt_out))
         est_id <- match_id$est_id[match(ids_out, match_id$id)]
+        lrt_status <- sapply(lrt_out, `[[`, "lrt_status")
+        lrt_raw <- sapply(lrt_out, `[[`, "lrt")
+        lrt_chisqs <- sapply(lrt_out,
+                             function(x) {
+                                 if (inherits(x$lrt, "anova")) {
+                                     return(unname(x$lrt[2, "Chisq diff"]))
+                                   } else {
+                                     return(NA)
+                                   }
+                               })
         lrt_pvalues <- sapply(lrt_out,
                               function(x) {
-                                  unname(x$lrt[2, "Pr(>Chisq)"])
+                                 if (inherits(x$lrt, "anova")) {
+                                     return(unname(x$lrt[2, "Pr(>Chisq)"]))
+                                   } else {
+                                     return(NA)
+                                   }
                                 })
+        out[est_id, "Chisq"] <- lrt_chisqs
         out[est_id, "LRTp"] <- lrt_pvalues
+        out[est_id, "LRT"] <- lrt_status
         attr(out, "lrt") <- lrt_out
       }
     attr(out, "call") <- match.call

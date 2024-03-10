@@ -4,16 +4,16 @@ url: https://sfcheung.github.io/semlrtp/
 
 template:
   bootstrap: 5
-  bootswatch: simplex
+  bootswatch: lumen
   theme: a11y-light
   bslib:
     pkgdown-nav-height: 100px
     bg: "#EFEFEF"
     fg: "#000000"
-    # primary: "#0051A8"
+    primary: "#9598E8"
     link-color: "#0000A0"
-    base_font: {google: "Cabin"}
-    heading_font: {google: "Cabin"}
+    base_font: {google: "Fira Sans"}
+    heading_font: {google: "Fira Sans"}
     code_font: {google: "Cousine"}
   includes:
     in_header: <meta name="google-site-verification" content="0VLBmFnW_UJFI-7gXnORPBsWxqZwmzuGpK-TeVRLBjQ" />

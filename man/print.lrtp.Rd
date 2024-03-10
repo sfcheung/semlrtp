@@ -4,7 +4,14 @@
 \alias{print.lrtp}
 \title{Print a \code{lrtp}- Class Object}
 \usage{
-\method{print}{lrtp}(x, digits = 3, lrtp_only = TRUE, output = c("text", "data.frame"), ...)
+\method{print}{lrtp}(
+  x,
+  digits = 3,
+  lrtp_only = TRUE,
+  wald_stats = FALSE,
+  output = c("text", "data.frame"),
+  ...
+)
 }
 \arguments{
 \item{x}{A \code{lrtp}-class object.}
@@ -16,6 +23,13 @@ decimal places to print. Default is
 \item{lrtp_only}{Logical. If \code{TRUE},
 the default, only parameters with
 LRT \emph{p}-values will be printed.}
+
+\item{wald_stats}{Logical. If \code{TRUE},
+the usual Wald statistics (e.g.,
+z statistics,
+\emph{p}-values, CIs) are printed. \code{FALSE}
+by default, assuming that users
+prefer using LRT statistics.}
 
 \item{output}{The format of the
 printout. If \code{"text"}, then the

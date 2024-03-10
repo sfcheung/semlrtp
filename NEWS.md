@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9006
+# semlrtp 0.0.0.9017
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -14,3 +14,39 @@
   (0.0.0.9005)
 - Fixed issues with vignettes.
   (0.0.0.9006)
+- Moved "TODOs" to issues. (0.0.0.9007)
+- By default, the method `print.lrtp()`
+  will not print Wald statistics
+  (z statistics, Wald p-values,
+  Wald confidence intervals).
+  (0.0.0.9008)
+- The chi-squared difference for each
+  LRT *p*-value will also be printed.
+  (0.0.0.9009)
+- Fixed a bug with inserting columns
+  in `lrtp()`. (0.0.0.9010)
+- `free_pars()` can identify apparently
+  free parameters which are actually
+  fixed due to an equality constraint
+  on a constant. (0.0.0.9011)
+- Updated `fix_to_zero()` to check
+  whether the requested parameter is
+  successfully fixed to zero.
+  (0.0.0.9012)
+- Updated `fix_to_zero()` to handle
+  parameters involved in internal a
+  equality constraint (e.g, constrained
+  to be equal between groups by
+  the `group.equal` argument of
+  `lavaan::lavaan()`). (0.0.0.9013)
+- Updated `fix_to_zero()` to handle
+  labelled parameters. (0.0.0.9014)
+- Updated `fix_to_zero()` to check the
+  VCOV of the modified model. If failed
+  to get VCOV, the modified model may
+  not be identified. (0.0.0.9015)
+- Updated `lrt()`, `lrtp()`, and
+  `print.lrtp()` to handle error in
+  doing the LR test. (0.0.0.9016)
+- Updated the theme of the `pkgdown`
+  site. (0.0.0.9017)
