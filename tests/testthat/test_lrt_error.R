@@ -22,4 +22,7 @@ test_that("Trap LRT error", {
   expect_true(is.na(lrt_i$lrt))
   expect_true(lrt_i$lrt_status != 0)
   expect_true(inherits(lrt_i$lrt_msg, "error"))
+  lrtp_i <- lrtp(fit)
+  expect_true(all(lrtp_i$LRT[1:3] != 0))
+  expect_output(print(lrtp_i), "Failed")
 })
