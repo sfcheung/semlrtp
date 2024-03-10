@@ -19,6 +19,8 @@ A \code{lrt}-class object, which is a
 list with the following elements:
 \itemize{
 \item \code{lrt}: The output of \code{\link[lavaan:lavTestLRT]{lavaan::lavTestLRT()}}.
+If there is an error message or
+warning, it is set to \code{NA}.
 \item \code{par_id}: The row number of the
 designated free parameters.
 \item \code{fit0}: The \code{lavaan} output of the
@@ -27,6 +29,18 @@ free parameter fixed to zero.
 \item \code{fit1}: The original \code{lavaan}
 output.
 \item \code{call}: The call to this function.
+\item \code{lrt_status}: Integer. If 0, then
+there is no error nor warning
+in the likelihood ratio test and
+\code{\link[lavaan:lavTestLRT]{lavaan::lavTestLRT()}} returns a
+table (\code{data.frame}) of the test.
+If -1, then something is wrong,
+e.g., an error or warning occurred.
+\item \code{lrt_msg}: If something is wrong
+when doing the likelihood ratio
+test, this is the error or warning
+message. If no error nor warning,
+this is \code{NA}.
 }
 }
 \description{
