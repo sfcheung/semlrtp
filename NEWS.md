@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9018
+# semlrtp 0.0.0.9019
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -62,3 +62,6 @@
   of `lrt()` which will some times break
   code for previous versions of
   `semlrtp`. (0.0.0.9018)
+- `no_variances` in `lrtp()` revised
+  to handle only variances, not
+  error variances. (0.0.0.9019)
