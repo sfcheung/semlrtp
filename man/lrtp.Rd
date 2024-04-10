@@ -25,8 +25,9 @@ by other arguments. Default is
 
 \item{no_variances}{Logical. If
 \code{TRUE}, the default, then all
-free variances, including error
-variances, are excluded.}
+free variances are excluded.
+(Error variances are handled
+by \code{no_error_variances}.)}
 
 \item{no_error_variances}{Logical,
 If \code{TRUE}, the default, then all
