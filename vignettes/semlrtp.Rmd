@@ -1,6 +1,6 @@
 ---
 title: "Get Started"
-author: "Shu Fai Cheung"
+author: "Shu Fai Cheung & Mark Hok Chio Lai"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
@@ -73,5 +73,14 @@ fit_nogp_lrtp_b <- lrtp(fit_nogp,
                         op = "~")
 fit_nogp_lrtp_b
 ```
+
+Allow error variances
+
+```{r}
+fit_nogp_lrtp_evar <- lrtp(fit_nogp,
+                           no_error_variances = FALSE)
+fit_nogp_lrtp_evar
+```
+
 
 # References

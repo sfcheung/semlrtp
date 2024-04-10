@@ -60,9 +60,6 @@ free_pars <- function(fit,
     if (isFALSE(inherits(fit, "lavaan"))) {
         stop("The fit object is not a lavaan object.")
       }
-    if (no_variances) {
-        no_error_variances <- TRUE
-      }
     ptable <- lavaan::parameterTable(fit)
     q <- nrow(ptable)
     ids <- seq_len(q)
@@ -77,6 +74,7 @@ free_pars <- function(fit,
                            (ptable$rhs %in% dvs) &
                            (ptable$lhs == ptable$rhs)
     ids_error_variances <- which(ids_error_variances)
+    ids_variances <- setdiff(ids_variances, ids_error_variances)
     ids_error_covariances <- (ptable$op == "~~") &
                              (ptable$lhs %in% dvs) &
                              (ptable$rhs %in% dvs) &

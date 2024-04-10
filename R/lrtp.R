@@ -31,8 +31,9 @@
 #'
 #' @param no_variances Logical. If
 #' `TRUE`, the default, then all
-#' free variances, including error
-#' variances, are excluded.
+#' free variances are excluded.
+#' (Error variances are handled
+#'  by `no_error_variances`.)
 #'
 #' @param no_error_variances Logical,
 #' If `TRUE`, the default, then all

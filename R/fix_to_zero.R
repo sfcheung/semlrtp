@@ -110,6 +110,10 @@ fix_to_zero <- function(fit,
     if (isFALSE(ptable[par_id, "free"] > 0)) {
         stop("The target parameter is not free in the object.")
       }
+    par_lhs <- ptable[par_id, "lhs"]
+    par_op <- ptable[par_id, "op"]
+    par_rhs <- ptable[par_id, "rhs"]
+    par_gp <- ptable[par_id, "group"]
     ptable_i <- ptable
     if (constrained_by_plabel(ptable = ptable, par_id = par_id)) {
         ptable_i <- lavaan::lav_partable_add(ptable,
@@ -126,6 +130,26 @@ fix_to_zero <- function(fit,
         ptable_i[par_id, "ustart"] <- 0
         ptable_i[par_id, "start"] <- 0
         ptable_i[par_id, "est"] <- 0
+      }
+    # Is it a variance?
+    if ((par_lhs == par_rhs) && (par_op == "~~")) {
+        is_variance <- TRUE
+        # Fix covariance to zero
+        tmp1 <- (ptable_i[, "lhs"] == par_lhs) &
+                (ptable_i[, "op"] == "~~") &
+                (ptable_i[, "rhs"] != par_lhs) &
+                (ptable_i[, "group"] == par_gp)
+        tmp2 <- (ptable_i[, "rhs"] == par_lhs) &
+                (ptable_i[, "op"] == "~~") &
+                (ptable_i[, "lhs"] != par_lhs) &
+                (ptable_i[, "group"] == par_gp)
+        tmp <- tmp1 | tmp2
+        ptable_i[tmp, "free"] <- 0
+        ptable_i[tmp, "ustart"] <- 0
+        ptable_i[tmp, "start"] <- 0
+        ptable_i[tmp, "est"] <- 0
+      } else {
+        is_variance <- FALSE
       }
 
     slot_opt <- fit@Options
@@ -208,11 +232,10 @@ fix_to_zero <- function(fit,
             fit0_really_zero <- TRUE && fit0_really_zero
           }
       }
-
     if (!all(fit0_converged,
              fit0_check_passed,
              fit0_vcov_ok,
-             fit0_df_diff_one)) {
+             ifelse(is_variance, TRUE, fit0_df_diff_one))) {
         fit_not_ok <- fit_i
         fit_i <- NA
       } else {
