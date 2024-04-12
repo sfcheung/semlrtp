@@ -35,6 +35,19 @@ test_that("Labelled parameters", {
   expect_no_error(fix_to_zero(fit_nogp, par_id = 14))
 })
 
+test_that("Labelled variance parameters", {
+  ## linear growth model with a time-varying covariate
+  growth1 <- "
+  # intercept and slope with fixed coefficients
+    i =~ 1*t1 + 1*t2 + 1*t3 + 1*t4
+    s =~ 0*t1 + 1*t2 + 2*t3 + 3*t4
+  # variances
+    s ~~ phi22 * s
+"
+  fit <- growth(growth1, data = lavaan::Demo.growth)
+  expect_no_error(fix_to_zero(fit, par_id = 9))
+})
+
 # Need to add tests for
 # Free parameters involved in any constraints
 # Free parameters already labelled

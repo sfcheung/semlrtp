@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9019
+# semlrtp 0.0.0.9020
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -65,3 +65,5 @@
 - `no_variances` in `lrtp()` revised
   to handle only variances, not
   error variances. (0.0.0.9019)
+- Fixed a bug with labelled variance.
+  (0.0.0.9020)

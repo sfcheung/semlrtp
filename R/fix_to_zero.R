@@ -135,19 +135,19 @@ fix_to_zero <- function(fit,
     if ((par_lhs == par_rhs) && (par_op == "~~")) {
         is_variance <- TRUE
         # Fix covariance to zero
-        tmp1 <- (ptable_i[, "lhs"] == par_lhs) &
-                (ptable_i[, "op"] == "~~") &
-                (ptable_i[, "rhs"] != par_lhs) &
-                (ptable_i[, "group"] == par_gp)
-        tmp2 <- (ptable_i[, "rhs"] == par_lhs) &
-                (ptable_i[, "op"] == "~~") &
-                (ptable_i[, "lhs"] != par_lhs) &
-                (ptable_i[, "group"] == par_gp)
+        tmp1 <- (ptable_i$lhs == par_lhs) &
+                (ptable_i$op == "~~") &
+                (ptable_i$rhs != par_lhs) &
+                (ptable_i$group == par_gp)
+        tmp2 <- (ptable_i$rhs == par_lhs) &
+                (ptable_i$op == "~~") &
+                (ptable_i$lhs != par_lhs) &
+                (ptable_i$group == par_gp)
         tmp <- tmp1 | tmp2
-        ptable_i[tmp, "free"] <- 0
-        ptable_i[tmp, "ustart"] <- 0
-        ptable_i[tmp, "start"] <- 0
-        ptable_i[tmp, "est"] <- 0
+        ptable_i$free[tmp] <- 0
+        ptable_i$ustart[tmp] <- 0
+        ptable_i$start[tmp] <- 0
+        ptable_i$est[tmp] <- 0
       } else {
         is_variance <- FALSE
       }
