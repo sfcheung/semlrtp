@@ -6,11 +6,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9019</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9020</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9019" id="semlrtp-0009019">semlrtp 0.0.0.9019<a class="anchor" aria-label="anchor" href="#semlrtp-0009019"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.0.0.9020" id="semlrtp-0009020">semlrtp 0.0.0.9020<a class="anchor" aria-label="anchor" href="#semlrtp-0009020"></a></h2>
 <ul><li>Initialized the package. (0.0.0.9000)</li>
 <li>Setup <code>pkgdown</code> site. (0.0.0.9001)</li>
 <li>Added a dataset for testing.</li>
@@ -79,6 +79,7 @@
 <li>Revised several functions such that problems in fitting the modified model are recorded, instead of raising an error. The structure of the output of <code><a href="../reference/lrt.html">lrt()</a></code> and <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code> are also modified to include indicators of error. To avoid unnecessarily storing many copies of the original fit object, a change is made in the output of <code><a href="../reference/lrt.html">lrt()</a></code> which will some times break code for previous versions of <code>semlrtp</code>. (0.0.0.9018)</li>
 <li>
 <code>no_variances</code> in <code><a href="../reference/lrtp.html">lrtp()</a></code> revised to handle only variances, not error variances. (0.0.0.9019)</li>
+<li>Fixed a bug with labelled variance. (0.0.0.9020)</li>
 </ul></div>
   </main></div>
 
@@ -88,7 +89,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
     </footer></div>
