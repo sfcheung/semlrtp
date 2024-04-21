@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9021
+# semlrtp 0.0.0.9022
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -70,4 +70,8 @@
 - Added an internal function
   `lhs_to_par_id()` for converting
   model syntax string to parameter
-  table row number (0.0.0.9021)
+  table row number. (0.0.0.9021)
+- Updated `lrt()` to allow users
+  to use model syntax or parameter
+  label to specify the target
+  parameter. (0.0.0.9022)

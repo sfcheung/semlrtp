@@ -19,7 +19,7 @@
 #' the label of a labelled parameter.
 #'
 #' @param group Either a string or
-#' an integer. For a multigorup model,
+#' an integer. For a multigroup model,
 #' it should be either the label of
 #' a group or the group number. Raise
 #' an warning if specified for a

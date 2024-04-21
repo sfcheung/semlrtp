@@ -60,3 +60,11 @@ test_that("lhs_one_par: error", {
   expect_warning(lhs_to_par_id(fit = fit_nogp, par = "f3 ~~ f2", group = "Pasteur"))
 })
 
+# lrt()
+
+test_that("CFA multiple group", {
+  expect_no_error(lrt_1 <- lrt(fit, par_id = "f1 =~ x2", group = "Pasteur"))
+  expect_no_error(lrt_2 <- lrt(fit_nogp, par_id = "f1 =~ x2"))
+  expect_no_error(lrt_3 <- lrt(fit, par_id = "d2"))
+  expect_no_error(lrt_4 <- lrt(fit_nogp, par_id = "b"))
+})
