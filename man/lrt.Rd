@@ -4,19 +4,29 @@
 \alias{lrt}
 \title{Fix a Free Parameter to Zero and do LR Test}
 \usage{
-lrt(fit, par_id, store_fit = FALSE)
+lrt(fit, par_id, store_fit = FALSE, group = NULL)
 }
 \arguments{
 \item{fit}{A \code{lavaan}-class object.}
 
-\item{par_id}{An integer. The row
+\item{par_id}{It can be an integer.
+or a string. If it is an integer,
+it should be the row
 number of the free parameter in the
 parameter table of \code{fit} to be
-fixed.}
+fixed. If it is a string, it must be
+a valid \code{lavaan} model syntax, or
+the label of a labelled parameter.}
 
 \item{store_fit}{Logical. If \code{TRUE},
 \code{fit} will be stored in the output.
 Default is \code{FALSE}.}
+
+\item{group}{If a model syntax
+is used in \code{par_id} and the model
+is a multigroup model, this should
+be either the group label or the
+group number of the parameter.}
 }
 \value{
 A \code{lrt}-class object, which is a
@@ -74,6 +84,14 @@ out$lrt
 parameterEstimates(fit)[15, ]
 parameterEstimates(out$fix_to_zero$fit0)[15, ]
 
+# Can use model syntax for par_id
+
+out <- lrt(fit, par_id = "f1 =~ x3")
+out$lrt
+
+}
+\seealso{
+\code{\link[=print.lrt]{print.lrt()}}
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}

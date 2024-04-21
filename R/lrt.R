@@ -46,14 +46,26 @@
 #'
 #' @param fit A `lavaan`-class object.
 #'
-#' @param par_id An integer. The row
+#' @param par_id It can be an integer.
+#' or a string. If it is an integer,
+#' it should be the row
 #' number of the free parameter in the
 #' parameter table of `fit` to be
-#' fixed.
+#' fixed. If it is a string, it must be
+#' a valid `lavaan` model syntax, or
+#' the label of a labelled parameter.
 #'
 #' @param store_fit Logical. If `TRUE`,
 #' `fit` will be stored in the output.
 #' Default is `FALSE`.
+#'
+#' @param group If a model syntax
+#' is used in `par_id` and the model
+#' is a multigroup model, this should
+#' be either the group label or the
+#' group number of the parameter.
+#'
+#' @seealso [print.lrt()]
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -72,13 +84,27 @@
 #' parameterEstimates(fit)[15, ]
 #' parameterEstimates(out$fix_to_zero$fit0)[15, ]
 #'
+#' # Can use model syntax for par_id
+#'
+#' out <- lrt(fit, par_id = "f1 =~ x3")
+#' out$lrt
+#'
 #' @export
 
 lrt <- function(fit,
                 par_id,
-                store_fit = FALSE) {
+                store_fit = FALSE,
+                group = NULL) {
     if (isFALSE(inherits(fit, "lavaan"))) {
         stop("The fit object is not a lavaan object.")
+      }
+    if (missing(par_id)) {
+        stop("par_id must be supplied.")
+      }
+    if (!isTRUE(is.numeric(par_id))) {
+        par_id <- lhs_to_par_id(fit = fit,
+                                par = par_id,
+                                group = group)
       }
     fit_i <- fix_to_zero(fit,
                          par_id = par_id)
@@ -103,8 +129,12 @@ lrt <- function(fit,
       } else {
         lrt_out <- NA
       }
+    pt <- lavaan::parameterTable(fit)
+    tmp <- lavaan::lav_partable_labels(pt)
+    par_label <- tmp[par_id]
     out <- list(lrt = lrt_out,
                 par_id = par_id,
+                par_label = par_label,
                 fit1 = ifelse(store_fit,
                               fit,
                               NA),
