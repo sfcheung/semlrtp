@@ -127,6 +127,7 @@ lrt <- function(fit,
       } else {
         lrt_out <- NA
       }
+    pt <- lavaan::parameterTable(fit)
     tmp <- lavaan::lav_partable_labels(pt)
     par_label <- tmp[par_id]
     out <- list(lrt = lrt_out,
