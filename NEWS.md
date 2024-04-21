@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9022
+# semlrtp 0.0.0.9023
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -75,3 +75,5 @@
   to use model syntax or parameter
   label to specify the target
   parameter. (0.0.0.9022)
+- Added a print method for the output
+  of `lrt()`. (0.0.0.9023)
