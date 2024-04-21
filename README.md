@@ -8,7 +8,7 @@
 
 **EXPERIMENTAL! DO NOT USE IT FOR NOW!**
 
-(Version 0.0.0.9020, updated on 2024-04-12, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
+(Version 0.0.0.9021, updated on 2024-04-21, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
 
 # semlrtp: Likelihood Ratio Test p-Values for Structural Equation Models
 

@@ -15,7 +15,15 @@
 #' @param fit A `lavaan`-class object.
 #'
 #' @param par A string, which must be
-#' a valid `lavaan` model syntax.
+#' a valid `lavaan` model syntax, or
+#' the label of a labelled parameter.
+#'
+#' @param group Either a string or
+#' an integer. For a multigorup model,
+#' it should be either the label of
+#' a group or the group number. Raise
+#' an warning if specified for a
+#' single-group model.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -36,13 +44,34 @@ lhs_to_par_id <- function(fit = NULL,
     if (length(par) != 1) {
         stop("par must be one single string.")
       }
+
     pt <- lavaan::parameterTable(fit)
+
+    # Is it a label?
+    is_label <- FALSE
+    par_syn <- tryCatch(lavaan::lavParseModelString(par,
+                                           parser = "new",
+                                           as.data.frame. = TRUE),
+                        error = function(e) e)
+    if (inherits(par_syn, "error")) {
+        par_label <- match(par, pt$label)
+        if (!is.na(par_label)) {
+            is_label <- TRUE
+          } else {
+            stop(sQuote(par),
+                 " is not a valid model syntax nor a label.")
+          }
+      }
+
     ngroups <- lavaan::lavInspect(fit, "ngroups")
     has_groups <- isTRUE(ngroups > 1)
-    if (has_groups && is.null(group)) {
+    if (!has_groups && !is.null(group)) {
+        warning("group ignored in single-group models.")
+      }
+    if (has_groups && is.null(group) && !is_label) {
         stop("group must be set for a multigroup model.")
       }
-    if (has_groups) {
+    if (has_groups && !is_label) {
         gplabels <- lavaan::lavInspect(fit, "group.label")
         if (is.character(group)) {
             gpid <- match(group, gplabels)
@@ -65,28 +94,29 @@ lhs_to_par_id <- function(fit = NULL,
         gpid <- NULL
       }
 
-    par_syn <- lavaan::lavParseModelString(par,
-                                           parser = "new",
-                                           as.data.frame. = TRUE)
-    if (has_groups) {
-        par_syn$group <- gpid
+    if (is_label) {
+        pt2 <- pt[pt$label == par, ][1, ]
       } else {
-        par_syn$group <- 1
-      }
-    par_syn <- par_syn[, c("lhs", "op", "rhs", "group")]
-    # For `~~`
-    if (identical(par_syn$op, "~~")) {
-        tmp <- par_syn
-        tmp$lhs <- par_syn$rhs
-        tmp$rhs <- par_syn$lhs
-        par_syn <- rbind(par_syn,
-                         tmp)
-      }
-    pt2 <- merge(par_syn,
-                 pt[, c("lhs", "op", "rhs", "group", "id")])
-    if (nrow(pt2) == 0) {
-        stop(par,
-             " not found in the parameter table.")
+        if (has_groups) {
+            par_syn$group <- gpid
+          } else {
+            par_syn$group <- 1
+          }
+        par_syn <- par_syn[, c("lhs", "op", "rhs", "group")]
+        # For `~~`
+        if (identical(par_syn$op, "~~")) {
+            tmp <- par_syn
+            tmp$lhs <- par_syn$rhs
+            tmp$rhs <- par_syn$lhs
+            par_syn <- rbind(par_syn,
+                            tmp)
+          }
+        pt2 <- merge(par_syn,
+                    pt[, c("lhs", "op", "rhs", "group", "id")])
+        if (nrow(pt2) == 0) {
+            stop(par,
+                " not found in the parameter table.")
+          }
       }
     return(pt2$id)
   }
