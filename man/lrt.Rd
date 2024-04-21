@@ -90,6 +90,9 @@ out <- lrt(fit, par_id = "f1 =~ x3")
 out$lrt
 
 }
+\seealso{
+\code{\link[=print.lrt]{print.lrt()}}
+}
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
 }
