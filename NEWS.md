@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9020
+# semlrtp 0.0.0.9021
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -67,3 +67,7 @@
   error variances. (0.0.0.9019)
 - Fixed a bug with labelled variance.
   (0.0.0.9020)
+- Added an internal function
+  `lhs_to_par_id()` for converting
+  model syntax string to parameter
+  table row number (0.0.0.9021)
