@@ -122,7 +122,7 @@ flowchart TD
   %% D{{\"Check if the model df is reduced by one\"}}
   E2[\"Store the results in a list, along with other info\"]
   %%E1([\"Error: Df change not 1\"])
-  Z([\"Return the output\"])
+  Z([\"Return a 'fit_to_zero' object\"])
   AA:::startend --> A0
   A0 -- Yes --> A0A
   A0 -- No --> A0B
