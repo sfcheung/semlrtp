@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9025</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,8 +107,8 @@ fitted by <code>lavaan</code>.</p>
 <p>What we called the LRT <em>p</em>-value of a parameter is simply the
 <em>p</em>-value of the likelihood ratio test (LRT, a.k.a. <span class="math inline">\(\chi^2\)</span> difference test) comparing the
 fitted model with the model with this parameter fixed to zero. It is not
-new but we are not aware of using it as the default <em>p</em>-value in
-testing model parameters. The package <a href="https://sfcheung.github.io/semlrtp/"><code>semlrtp</code></a> is
+new but we are not aware of packages using it as the default
+<em>p</em>-value in testing model parameters. The package <a href="https://sfcheung.github.io/semlrtp/"><code>semlrtp</code></a> is
 developed to facilitate the use of this <em>p</em>-value.</p>
 </div>
 <div class="section level2">
@@ -160,7 +160,7 @@ structural model for the factors:</p>
 <div class="section level3">
 <h3 id="lrt-p-values-for-selected-parameters">LRT <em>p</em>-Values For Selected Parameters<a class="anchor" aria-label="anchor" href="#lrt-p-values-for-selected-parameters"></a>
 </h3>
-<p>If the default settings are what desired, we can compute the LRT
+<p>If we use the default settings, we can compute the LRT
 <em>p</em>-values just by calling <code><a href="../reference/lrtp.html">lrtp()</a></code> on the
 <code>lavann</code> output.</p>
 <p>By default, LRT <em>p</em>-values will be computed only for
@@ -202,7 +202,7 @@ test when a parameter is fixed to zero.</p>
 the likelihood ratio test (LRT) <em>p</em>-value (a.k.a. the <span class="math inline">\(\chi^2\)</span> difference test) when this
 parameter is fitted to zero.</p>
 <p>For example, we fix the path from <code>f2</code> to <code>f3</code>
-and then do an LR test:</p>
+to zero and then do an LR test:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_f3_f2</span> <span class="op">&lt;-</span></span>
 <span><span class="st">"</span></span>
@@ -231,15 +231,16 @@ to <code>f2</code> is significant.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="why-lrt-p-value">WHy LRT <em>p</em>-Value<a class="anchor" aria-label="anchor" href="#why-lrt-p-value"></a>
+<h2 id="why-lrt-p-value">Why LRT <em>p</em>-Value<a class="anchor" aria-label="anchor" href="#why-lrt-p-value"></a>
 </h2>
 <p>The example above illustrates the importance of the LRT
-<em>p</em>-value. The usual <em>p</em> values in <code>lavaan</code>
-(and many other SEM programs) are Wald-based <em>p</em>-values, which is
-an approximation of the LRT <em>p</em>-value when a parameter is fixed
-to zero. They are approximationa and so can be different from the LRT
-<em>p</em>-value, and they may also depends on the parameterization
-<span class="citation">(Gonzalez &amp; Griffin, 2001)</span>.</p>
+<em>p</em>-value. The usual <em>p</em>-values in <code>lavaan</code>
+(and many other SEM programs) are Wald-based <em>p</em>-values. The
+Wald-based p-value is an approximation of the LRT <em>p</em>-value when
+a parameter is fixed to zero. It is an approximation and so can be
+different from the LRT <em>p</em>-value. Moreover, they may also depend
+on the parameterization <span class="citation">(Gonzalez &amp; Griffin,
+2001)</span>.</p>
 <p>For example, we can fit the same model by changing the indicators
 being fixed to 1.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -275,7 +276,8 @@ those for the regression paths are displayed)</p>
 <span><span class="co">#&gt;     f2                0.505    0.276    1.828    0.067   -0.036    1.047</span></span>
 <span><span class="co">#&gt;   f4 ~                                                                  </span></span>
 <span><span class="co">#&gt;     f3                0.683    0.148    4.599    0.000    0.392    0.974</span></span></code></pre>
-<p>The Wald <em>p</em>-value is 0.067, even larger than 0.052.</p>
+<p>The Wald <em>p</em>-value is 0.067, even larger than 0.052 in the
+original model.</p>
 <p>However, the LRT <em>p</em>-values are the same:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit2_lrtp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span>
