@@ -20,33 +20,41 @@ Default is \code{FALSE}.}
 }
 \value{
 A \code{fix_to_zero}-class object, which
-is a list with these elements:call
+is a list with these elements:
 \itemize{
 \item \code{fit0} is the \code{lavaan} output of the
 refitted object. \code{NA} if the fit
-failed for some reasons. A model
-must converged, passed \code{lavaan}'s
-post check, variance covariance
-matrix of estimates can be computed,
-and has one more degree of freedom
-than the original model to be
-considered acceptable.
+failed for some reasons. To be
+considered an acceptable solution,
+the optimization must converge,
+the solution passes \code{lavaan}'s
+post check,
+the variance-covariance matrix of
+estimates successfully computed,
+and the increase in the model
+degree of freedom equal to the
+expected change.
 \item \code{fit1} is the original \code{lavaan}
 output if \code{store_fit} is \code{TRUE}. It
-is \code{NULL} otherwise
+is \code{NULL} if \code{store_fit} is \code{FALSE},
+the default.
 \item \code{par_id} is the row number of the
-designated free parameter.
+designated free parameter in the
+parameter table.
 \item \code{call} is the original call to this
 function.
 \item \code{ptable0} is the parameter table
-of with the designated parameter fixed
+with the designated parameter fixed
 to zero. It can be used for diagnostic
 purpose if the fit failed.
 \item \code{fit0_error} is the error
-message in refitting, if any. If
+message in refitting the model
+(\code{ptable0}), if
+any. If
 no error, it is `NA``.
-\item \code{vcov_ok} is \code{TRUE} if the variance
-covariance matrix of the estimates
+\item \code{vcov_ok} is \code{TRUE} if the
+variance-covariance matrix of the
+estimates
 can be computed without error nor
 warning. \code{FALSE} otherwise.
 \item \code{vcov_msg} is the message generated
@@ -56,10 +64,12 @@ of the parameter estimates of the
 refitted model. If \code{TRUE}, then no
 error nor warning. Can be used for
 diagnostic purposes.
-\item \code{converged}: Whether the modified
-model converged.
+\item \code{converged}: Whether refitting
+the modified model (\code{ptable0})
+converged.
 \item \code{post_check_passed}: Whether the
-solution of the modified model passed
+solution of the modified model
+(\code{ptable0}) passed
 \code{lavaan}s post check.
 \item \code{fit_not_ok}: If the fit failed
 for some reasons, the fit object,
@@ -70,7 +80,12 @@ for diagnostic purposed if necessary.
 \item \code{df_diff_one}: Whether the
 difference in model degrees of
 freedom between the modified model
-and the original model is one.
+and the original model is one. If
+a variance is fitted to zero, related
+covariance(s) is/are also fitted to
+zero and so the difference in
+model degrees of freedom can be
+legitimately greater than one.
 }
 }
 \description{
@@ -81,6 +96,11 @@ in a lavaan object to zero and refit the model.
 It modifies the parameter
 table of a \code{lavaan}-class object and
 then fits the model again.
+
+Users should usually call
+\code{\link[=lrtp]{lrtp()}} directly instead of calling
+this function. It is exported for
+developers.
 }
 \examples{
 library(lavaan)
@@ -95,6 +115,9 @@ fit <- sem(mod, data_sem16)
 out <- fix_to_zero(fit, par_id = 15)
 summary(out$fit0)
 
+}
+\seealso{
+\code{\link[=lrtp]{lrtp()}}
 }
 \author{
 Shu Fai Cheung \url{https://orcid.org/0000-0002-9871-9448}
