@@ -1,16 +1,16 @@
-#' @title Print a `lrt`- Class Object
+#' @title Print an 'lrt'- Class Object
 #'
 #' @description Print the content of
-#' a `lrt`-class object.
+#' an `lrt`-class object.
 #'
-#' @details The print method for the
-#' output of [lrt()].
+#' @details It is the print method for
+#' the output of [lrt()].
 #'
 #' @return
 #' `x` is returned invisibly.
 #' Called for its side effect.
 #'
-#' @param x A `lrt`-class object.
+#' @param x An `lrt`-class object.
 #'
 #' @param digits Integer. The number of
 #' decimal places to print. Default is
