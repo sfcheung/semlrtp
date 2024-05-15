@@ -88,8 +88,8 @@ flowchart TD
   AA([\"Start\"])
   A[[\"Call fix_to_zero() to fix the requested parameter to 0\"]]
   B[\"Call lavaan::lavTestLRT() to do the LR test\"]
-  C[\"Store the results in a list, along with other info\"]
-  Z([\"Return the output\"])
+  C[\"Store the results and other info\"]
+  Z([\"Return an 'lrt' object\"])
   AA:::startend --> A:::subnode
   A --> B
   B --> C
