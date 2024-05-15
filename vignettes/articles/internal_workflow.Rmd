@@ -38,7 +38,7 @@ flowchart TD
   D[[\"Call match_ptable_est() for mapping parameter table rows to\\nparameter estimates data frame rows\"]]
   E[\"Insert LRT p-values to the parameter estimates data frame\"]
   F[[\"Call copy_est_attributes() to add info necessary\nfor printing the results in lavaan style\"]]
-  Z([\"Return the parameter estimates data frame\"])
+  Z([\"Return a 'lrtp' object\"])
   AA:::startend --> A:::subnode
   A --> B:::subnode
   B --> C
