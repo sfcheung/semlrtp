@@ -29,18 +29,17 @@
 #' by other arguments. Default is
 #' `c("~", "~~")`.
 #'
-#' @param no_variances. Logical. If
+#' @param no_variances Logical. If
 #' `TRUE`, the default, then all
-#' free variances, including error
-#' variances, are excluded.
+#' free variances are excluded.
+#' (Error variances are handled
+#'  by `no_error_variances`.)
 #'
-#' @param no_error_variances. Logical,
+#' @param no_error_variances Logical,
 #' If `TRUE`, the default, then all
 #' free error variances are excluded.
-#' Variances will not be excluded if
-#' `no_variance` is `TRUE`.
 #'
-#' @param no_error_covariances. Logical.
+#' @param no_error_covariances Logical.
 #' If `TRUE`, the default, then all
 #' free error covariances are excluded.
 #'
