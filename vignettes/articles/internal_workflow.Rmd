@@ -38,7 +38,7 @@ flowchart TD
   D[[\"Call match_ptable_est() for mapping parameter table rows to\\nparameter estimates data frame rows\"]]
   E[\"Insert LRT p-values to the parameter estimates data frame\"]
   F[[\"Call copy_est_attributes() to add info necessary\nfor printing the results in lavaan style\"]]
-  Z([\"Return the parameter estimates data frame\"])
+  Z([\"Return a 'lrtp' object\"])
   AA:::startend --> A:::subnode
   A --> B:::subnode
   B --> C
@@ -88,8 +88,8 @@ flowchart TD
   AA([\"Start\"])
   A[[\"Call fix_to_zero() to fix the requested parameter to 0\"]]
   B[\"Call lavaan::lavTestLRT() to do the LR test\"]
-  C[\"Store the results in a list, along with other info\"]
-  Z([\"Return the output\"])
+  C[\"Store the results and other info\"]
+  Z([\"Return an 'lrt' object\"])
   AA:::startend --> A:::subnode
   A --> B
   B --> C
@@ -109,19 +109,33 @@ flowchart TD
   classDef subnode fill:#FFFFDD;
 
   AA([\"Start\"])
-  A[\"Set columns such as 'free' to 0\"]
+
+  A0{{\"Labelled or constrained By a plabel\"}}
+  A0A[\"Add an equality constraint '== 0'\"]
+  A0B[\"Set columns such as 'free' to 0\"]
+
+  A1{{\"A variance?\"}}
+  A1A[\"Fix related covariance to zero\"]
+
   B[\"Extract slots from the lavaan object\"]
   C[\"Fit a model with the updated parameter table\"]
-  D{{\"Check if the model df is reduced by one\"}}
+  %% D{{\"Check if the model df is reduced by one\"}}
   E2[\"Store the results in a list, along with other info\"]
-  E1([\"Error: Df change not 1\"])
-  Z([\"Return the output\"])
-  AA:::startend --> A
-  A --> B
+  %%E1([\"Error: Df change not 1\"])
+  Z([\"Return a 'fit_to_zero' object\"])
+  AA:::startend --> A0
+  A0 -- Yes --> A0A
+  A0 -- No --> A0B
+  A0A --> A1
+  A0B --> A1
+  A1 -- Yes --> A1A
+  A1 -- No --> B
+  A1A --> B
   B --> C
-  C --> D
-  D -- 1 df --> E2
-  D -- Not 1 df --> E1:::errornode
+  %% C --> D
+  %% D -- 1 df --> E2
+  %% D -- Not 1 df --> E1:::errornode
+  C --> E2
   E2 --> Z:::startend
-", height = 600, width = 500)
+", height = 800, width = 500)
 ```
