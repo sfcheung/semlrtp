@@ -42,25 +42,46 @@ passed to \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}.
 }
 \value{
 An \code{lrt}-class object, which is a
-data-frame-like object with the
+data-frame-like object similar to the
 output of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}},
 with a column \code{LRTp} for the LRT
-\emph{p}-values. Has a print method
+\emph{p}-values, as well as other columns
+such as the chi-square difference in
+the test. it has a print method,
 \code{\link[=print.lrtp]{print.lrtp()}}.
 }
 \description{
 Compute the likelihood ratio
-test \emph{p}-values for free parameters in
-a lavaan output.
+test (LRT) \emph{p}-values for free
+parameters in
+a \code{lavaan} output.
 }
 \details{
-It find free parameters in a
-\code{lavaan}-class object, compute the
+It finds free parameters in a
+\code{lavaan}-class object, computes the
 likelihood ratio test (LRT) \emph{p}-value
 for each of them when fixed to zero,
-and return a parameter estimates data
-frame with the LRT \emph{p}-values
+and returns a parameter estimates table
+with the LRT \emph{p}-values
 included.
+
+By default, it only computes LRT
+\emph{p}-values for regression paths
+and covariances, except for
+error covariances. This default
+can be overridden using arguments
+such as \code{op}, \code{no_variances},
+\code{no_error_variances},
+and \code{no_error_covariances}.
+\subsection{Technical Details}{
+
+It first identify the parameters
+to be processed, and then call
+\code{\link[=lrt]{lrt()}} on each of them.
+Please refer to
+\url{https://sfcheung.github.io/semlrtp/articles/internal_workflow.html}
+for the internal workflow.
+}
 }
 \examples{
 

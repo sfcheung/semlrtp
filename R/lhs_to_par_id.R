@@ -1,7 +1,7 @@
-#' @title Convert Model Syntax To Parameter ID
+#' @title Convert a Model Syntax To Parameter ID
 #'
 #' @description Convert a string of the
-#' form "lhs-op-rhs" or "lhs-op-rhs.gX"
+#' form "lhs-op-rhs" or "lhs-op-rhs"
 #' to the row number of a parameter
 #' in the parameter table.
 #'
@@ -15,14 +15,19 @@
 #' @param fit A `lavaan`-class object.
 #'
 #' @param par A string, which must be
-#' a valid `lavaan` model syntax, or
+#' a valid `lavaan` model syntax,
+#' for a parameter (e.g., `"y ~ x"`)
+#' or
 #' the label of a labelled parameter.
+#' For multigroup models, the group
+#' is specified in the argument
+#' `group`.
 #'
 #' @param group Either a string or
 #' an integer. For a multigroup model,
 #' it should be either the label of
 #' a group or the group number. Raise
-#' an warning if specified for a
+#' a warning if specified for a
 #' single-group model.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>

@@ -2,7 +2,7 @@
 % Please edit documentation in R/print_lrtp.R
 \name{print.lrtp}
 \alias{print.lrtp}
-\title{Print a \code{lrtp}- Class Object}
+\title{Print an 'lrtp'- Class Object}
 \usage{
 \method{print}{lrtp}(
   x,
@@ -14,7 +14,7 @@
 )
 }
 \arguments{
-\item{x}{A \code{lrtp}-class object.}
+\item{x}{An \code{lrtp}-class object.}
 
 \item{digits}{Integer. The number of
 decimal places to print. Default is
@@ -29,7 +29,8 @@ the usual Wald statistics (e.g.,
 z statistics,
 \emph{p}-values, CIs) are printed. \code{FALSE}
 by default, assuming that users
-prefer using LRT statistics.}
+prefer using LRT statistics when
+using \code{\link[=lrtp]{lrtp()}}.}
 
 \item{output}{The format of the
 printout. If \code{"text"}, then the
@@ -48,7 +49,7 @@ Called for its side effect.
 }
 \description{
 Print the content of
-a \code{lrtp}-class object.
+an \code{lrtp}-class object.
 }
 \details{
 The print method for the

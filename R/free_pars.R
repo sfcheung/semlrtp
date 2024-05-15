@@ -5,12 +5,20 @@
 #'
 #' @details This function identifies
 #' the free parameters that meets user
-#' requirements.
+#' requirements specified by
+#' arguments such as `op`,
+#' `no_variances`, `no_error_variances`,
+#' and `no_error_covariances`.
+#'
+#' Users should usually call
+#' [lrtp()] directly instead of calling
+#' this function. It is exported for
+#' developers.
 #'
 #' @return
 #' A numeric vector of the row number(s)
 #' in the parameter table of the
-#' lavaan object
+#' lavaan object (`fit`).
 #'
 #' @param fit A `lavaan`-class object.
 #'
@@ -21,16 +29,17 @@
 #' by other arguments. Default is
 #' `c("~", "~~")`.
 #'
-#' @param no_variances. Logical. If
+#' @param no_variances Logical. If
 #' `TRUE`, the default, then all
-#' free variances, including error
-#' variances, are excluded.
+#' free variances are excluded.
+#' (Error variances are handled
+#'  by `no_error_variances`.)
 #'
-#' @param no_error_variances. Logical,
+#' @param no_error_variances Logical,
 #' If `TRUE`, the default, then all
 #' free error variances are excluded.
 #'
-#' @param no_error_covariances. Logical.
+#' @param no_error_covariances Logical.
 #' If `TRUE`, the default, then all
 #' free error covariances are excluded.
 #'

@@ -1,23 +1,44 @@
 #' @title Likelihood Ratio Test P-Values
 #'
 #' @description Compute the likelihood ratio
-#' test *p*-values for free parameters in
-#' a lavaan output.
+#' test (LRT) *p*-values for free
+#' parameters in
+#' a `lavaan` output.
 #'
-#' @details It find free parameters in a
-#' `lavaan`-class object, compute the
+#' @details It finds free parameters in a
+#' `lavaan`-class object, computes the
 #' likelihood ratio test (LRT) *p*-value
 #' for each of them when fixed to zero,
-#' and return a parameter estimates data
-#' frame with the LRT *p*-values
+#' and returns a parameter estimates table
+#' with the LRT *p*-values
 #' included.
+#'
+#' By default, it only computes LRT
+#' *p*-values for regression paths
+#' and covariances, except for
+#' error covariances. This default
+#' can be overridden using arguments
+#' such as `op`, `no_variances`,
+#' `no_error_variances`,
+#' and `no_error_covariances`.
+#'
+#' ## Technical Details
+#'
+#' It first identify the parameters
+#' to be processed, and then call
+#' [lrt()] on each of them.
+#' Please refer to
+#' <https://sfcheung.github.io/semlrtp/articles/internal_workflow.html>
+#' for the internal workflow.
 #'
 #' @return
 #' An `lrt`-class object, which is a
-#' data-frame-like object with the
+#' data-frame-like object similar to the
 #' output of [lavaan::parameterEstimates()],
 #' with a column `LRTp` for the LRT
-#' *p*-values. Has a print method
+#' *p*-values, as well as other columns
+#' such as the chi-square difference in
+#' the test. it has a print method,
 #' [print.lrtp()].
 #'
 #' @param fit A `lavaan`-class object.
