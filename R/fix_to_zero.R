@@ -144,6 +144,8 @@ fix_to_zero <- function(fit,
                 (ptable_i$lhs != par_lhs) &
                 (ptable_i$group == par_gp)
         tmp <- tmp1 | tmp2
+        # TODO:
+        # - May need to do the same check about labels and plabels
         ptable_i$free[tmp] <- 0
         ptable_i$ustart[tmp] <- 0
         ptable_i$start[tmp] <- 0

@@ -8,12 +8,16 @@
 
 **EXPERIMENTAL! DO NOT USE IT FOR NOW!**
 
-(Version 0.0.0.9023, updated on 2024-04-21, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
+(Version 0.0.0.9025, updated on 2024-05-15, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
 
 # semlrtp: Likelihood Ratio Test p-Values for Structural Equation Models
 
-This package includes is used for computing *p*-values for free parameters
-in structural equation model using likelihood ratio test.
+This package includes is used for computing *LRT* *p*-*values*
+for free parameters
+in structural equation model using likelihood ratio test (LRT).
+
+See [this article](https://sfcheung.github.io/semlrtp/docs/articles/semlrtp.html)
+for a quick demonstration on how to use this package.
 
 For more information on this package, please visit its GitHub page:
 
@@ -34,4 +38,5 @@ remotes::install_github("sfcheung/semlrtp")
 # Issues
 
 If you have any suggestions and found any bugs, please feel
-feel to open a GitHub issue. Thanks.
+feel to open a GitHub issue [here](https://github.com/sfcheung/semlrtp/issues).
+Thanks.

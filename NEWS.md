@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9023
+# semlrtp 0.0.0.9025
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -77,3 +77,5 @@
   parameter. (0.0.0.9022)
 - Added a print method for the output
   of `lrt()`. (0.0.0.9023)
+- Updated the workflow appendix. (0.0.0.9024)
+- Updated the `Get Started` vignette. (0.0.0.9025)
