@@ -109,19 +109,33 @@ flowchart TD
   classDef subnode fill:#FFFFDD;
 
   AA([\"Start\"])
-  A[\"Set columns such as 'free' to 0\"]
+
+  A0{{\"Labelled or constrained By a plabel\"}}
+  A0A[\"Add an equality constraint '== 0'\"]
+  A0B[\"Set columns such as 'free' to 0\"]
+
+  A1{{\"A variance?\"}}
+  A1A[\"Fix related covariance to zero\"]
+
   B[\"Extract slots from the lavaan object\"]
   C[\"Fit a model with the updated parameter table\"]
-  D{{\"Check if the model df is reduced by one\"}}
+  %% D{{\"Check if the model df is reduced by one\"}}
   E2[\"Store the results in a list, along with other info\"]
-  E1([\"Error: Df change not 1\"])
+  %%E1([\"Error: Df change not 1\"])
   Z([\"Return the output\"])
-  AA:::startend --> A
-  A --> B
+  AA:::startend --> A0
+  A0 -- Yes --> A0A
+  A0 -- No --> A0B
+  A0A --> A1
+  A0B --> A1
+  A1 -- Yes --> A1A
+  A1 -- No --> B
+  A1A --> B
   B --> C
-  C --> D
-  D -- 1 df --> E2
-  D -- Not 1 df --> E1:::errornode
+  %% C --> D
+  %% D -- 1 df --> E2
+  %% D -- Not 1 df --> E1:::errornode
+  C --> E2
   E2 --> Z:::startend
-", height = 600, width = 500)
+", height = 800, width = 500)
 ```
