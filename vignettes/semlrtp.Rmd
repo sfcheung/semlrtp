@@ -24,16 +24,53 @@ knitr::opts_chunk$set(
 )
 ```
 
-# WORK-IN-PROGRESS
+# Introduction
 
-# Data
+This article illustrates how to use
+[`semlrtp`](https://sfcheung.github.io/semlrtp/) to
+compute LRT *p*-values for selected free parameters in
+a model fitted by `lavaan`.
+
+These are the packages needed for this illustration:
 
 ```{r}
 library(lavaan)
 library(semlrtp)
-# Use a smaller sample to show the impact of using LRT p-values
-set.seed(1234)
+```
+
+# LRT *p*-Values
+
+What we called the LRT *p*-value of a parameter is
+simply the *p*-value of the likelihood
+ratio test (LRT, a.k.a. $\chi^2$ difference test)
+comparing the fitted model with the model with
+this parameter fixed to zero. It is not new but
+we are not aware of using it as the default
+*p*-value in testing model parameters.
+The package
+[`semlrtp`](https://sfcheung.github.io/semlrtp/)
+is developed to facilitate the use of
+this *p*-value.
+
+# Basic Workflow
+
+## Data
+
+This is the sample dataset from the package,
+with 16 variables and a group variable:
+
+```{r}
 data(data_sem16)
+print(head(data_sem16), digits = 2)
+```
+
+## Model
+
+This is a model to be fitted, with
+four latent factors, and a structural
+model for the factors:
+
+```{r}
 mod <-
 "
 f1 =~ x1 + x2 + x3
@@ -43,44 +80,184 @@ f4 =~ x13 + x14 + x15
 f3 ~ f1 + f2
 f4 ~ f3
 "
-fit <- cfa(mod,
-           data_sem16,
-           group = "group")
-fit_nogp <- cfa(mod,
-                data_sem16)
 ```
 
-# LRT *p*-values
+We first fit a model to the whole sample:
+
+```{r}
+fit <- sem(mod,
+           data_sem16)
+```
+
+## LRT *p*-Values For Selected Parameters
+
+If the default settings are what desired,
+we can compute the LRT *p*-values just
+by calling `lrtp()` on the `lavann`
+output.
+
+By default, LRT *p*-values will be computed
+only for regression paths
+(`"~"`) and covariances (`"~~"`),
+excluding variances and error covariances.
 
 ```{r}
 fit_lrtp <- lrtp(fit)
+```
+
+By default, the output will be printed
+in `lavaan` style, and only parameters
+with LRT *p*-values are printed:
+
+```{r}
 fit_lrtp
 ```
 
-```{r}
-fit_lrtp_b <- lrtp(fit,
-                   op = "~")
-fit_lrtp_b
-```
+The column `Chisq` shows the $\chi^2$
+difference of the likelihood ratio test
+when a parameter is fixed to zero.
+
+The column `LRTp` shows the LRT *p*-value.
+
+## How LRT *p*-Values Are Computed
+
+It can be verified that the LRT *p*-value
+of a parameter is the likelihood ratio
+test (LRT) *p*-value (a.k.a. the $\chi^2$
+difference test) when this parameter is
+fitted to zero.
+
+For example, we fix the path from `f2`
+to `f3` and then do an LR test:
 
 ```{r}
-fit_nogp_lrtp <- lrtp(fit_nogp)
-fit_nogp_lrtp
+mod_f3_f2 <-
+"
+f1 =~ x1 + x2 + x3
+f2 =~ x5 + x6 + x7
+f3 =~ x9 + x10 + x11
+f4 =~ x13 + x14 + x15
+f3 ~ f1 + 0*f2
+f4 ~ f3
+"
+fit_f3_f2 <- sem(mod_f3_f2,
+                 data_sem16)
+lavTestLRT(fit_f3_f2,
+           fit)
 ```
+
+```{r echo = FALSE}
+est <- parameterEstimates(fit)
+f3_f2_wald_p <- est[14, "pvalue"]
+f3_f2_lrt_p <- fit_lrtp[14, "LRTp"]
+```
+
+Unlike the original *p*-value of
+this path,
+`r formatC(f3_f2_wald_p, digits = 3, format = "f")`,
+the LRT *p*-value is
+`r formatC(f3_f2_lrt_p, digits = 3, format = "f")`,
+suggesting that the path from `f2` to `f2`
+is significant.
+
+# WHy LRT *p*-Value
+
+The example above illustrates the importance
+of the LRT *p*-value. The usual *p*
+values in `lavaan` (and many other SEM
+programs) are Wald-based *p*-values,
+which is an approximation of the
+LRT *p*-value when a parameter is fixed
+to zero. They are approximationa and
+so can be different from the
+LRT *p*-value, and they may also depends on
+the parameterization [@gonzalez_testing_2001].
+
+For example, we can fit the same model
+by changing the indicators being fixed to 1.
 
 ```{r}
-fit_nogp_lrtp_b <- lrtp(fit_nogp,
-                        op = "~")
-fit_nogp_lrtp_b
+mod2 <-
+"
+f1 =~ x2 + x1 + x3
+f2 =~ x7 + x5 + x6
+f3 =~ x11 + x9 + x10
+f4 =~ x14 + x13 + x15
+f3 ~ f1 + f2
+f4 ~ f3
+"
+fit2 <- sem(mod2,
+            data_sem16)
 ```
 
-Allow error variances
+This model and the previous have exactly
+identical model fit, as expected:
 
 ```{r}
-fit_nogp_lrtp_evar <- lrtp(fit_nogp,
-                           no_error_variances = FALSE)
-fit_nogp_lrtp_evar
+fitMeasures(fit, c("chisq", "df"))
+fitMeasures(fit2, c("chisq", "df"))
 ```
 
+This is the parameter estimates with
+Wald *p*-values (only those for
+the regression paths are displayed)
+
+```{r echo = FALSE}
+est2 <- parameterEstimates(fit2, output = "text")
+tmp <- capture.output(est2)
+f3_f2_wald_p2 <- est2[14, "pvalue"]
+```
+
+```r
+parameterEstimates(fit2,
+                   output = "text")
+```
+
+```{r echo = FALSE}
+cat(tmp[21:27], sep = "\n")
+```
+
+The Wald *p*-value is
+`r formatC(f3_f2_wald_p2, digits = 3, format = "f")`,
+even larger than
+`r formatC(f3_f2_wald_p, digits = 3, format = "f")`.
+
+However, the LRT *p*-values are the same:
+
+```{r}
+fit2_lrtp <- lrtp(fit2)
+fit2_lrtp
+```
+
+It is because LRT *p*-value is invariant to
+parameterization.
+
+# Limitations
+
+Because LRT *p*-value are computed by
+fixing a parameter to zero, there are
+parameter for which the LRT *p*-value
+cannot be computed. For example,
+suppose we request LRT *p*-values for
+factor loadings using the argument
+`op`:
+
+```{r}
+fit_lrtp_loadings <- lrtp(fit,
+                          op = "=~")
+fit_lrtp_loadings
+```
+
+As shown above, LRT *p*-values are not
+computed for indicators with loadings
+fixed to zero.
+
+# Further Information
+
+Please refer to the help page of
+`lrtp()` for other arguments, and
+the print method of `lrtp()` output
+(`print.lrtp()`) for options
+in printing.
 
 # References

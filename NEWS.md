@@ -78,3 +78,4 @@
 - Added a print method for the output
   of `lrt()`. (0.0.0.9023)
 - Updated the workflow appendix. (0.0.0.9024)
+- Updated the `Get Started` vignette. (0.0.0.9025)
