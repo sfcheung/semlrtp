@@ -16,7 +16,7 @@ This package includes is used for computing *LRT* *p*-*values*
 for free parameters
 in structural equation model using likelihood ratio test (LRT).
 
-See [this article](https://sfcheung.github.io/semlrtp/docs/articles/semlrtp.html)
+See [this article](https://sfcheung.github.io/semlrtp/articles/semlrtp.html)
 for a quick demonstration on how to use this package.
 
 For more information on this package, please visit its GitHub page:
