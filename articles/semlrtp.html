@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9023</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9025</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Mark Hok Chio Lai</h4>
             
-            <h4 data-toc-skip class="date">2024-04-21</h4>
+            <h4 data-toc-skip class="date">2024-05-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/semlrtp/blob/HEAD/vignettes/semlrtp.Rmd" class="external-link"><code>vignettes/semlrtp.Rmd</code></a></small>
       <div class="d-none name"><code>semlrtp.Rmd</code></div>
@@ -89,21 +89,61 @@
     
     
 <div class="section level2">
-<h2 id="work-in-progress">WORK-IN-PROGRESS<a class="anchor" aria-label="anchor" href="#work-in-progress"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-</div>
-<div class="section level2">
-<h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
-</h2>
+<p>This article illustrates how to use <a href="https://sfcheung.github.io/semlrtp/"><code>semlrtp</code></a> to
+compute LRT <em>p</em>-values for selected free parameters in a model
+fitted by <code>lavaan</code>.</p>
+<p>These are the packages needed for this illustration:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; This is lavaan 0.6-17</span></span>
 <span><span class="co">#&gt; lavaan is FREE software! Please report any bugs.</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sfcheung.github.io/semlrtp/">semlrtp</a></span><span class="op">)</span></span>
-<span><span class="co"># Use a smaller sample to show the impact of using LRT p-values</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_sem16</span><span class="op">)</span></span>
-<span><span class="va">mod</span> <span class="op">&lt;-</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sfcheung.github.io/semlrtp/">semlrtp</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="lrt-p-values">LRT <em>p</em>-Values<a class="anchor" aria-label="anchor" href="#lrt-p-values"></a>
+</h2>
+<p>What we called the LRT <em>p</em>-value of a parameter is simply the
+<em>p</em>-value of the likelihood ratio test (LRT, a.k.a. <span class="math inline">\(\chi^2\)</span> difference test) comparing the
+fitted model with the model with this parameter fixed to zero. It is not
+new but we are not aware of using it as the default <em>p</em>-value in
+testing model parameters. The package <a href="https://sfcheung.github.io/semlrtp/"><code>semlrtp</code></a> is
+developed to facilitate the use of this <em>p</em>-value.</p>
+</div>
+<div class="section level2">
+<h2 id="basic-workflow">Basic Workflow<a class="anchor" aria-label="anchor" href="#basic-workflow"></a>
+</h2>
+<div class="section level3">
+<h3 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+</h3>
+<p>This is the sample dataset from the package, with 16 variables and a
+group variable:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_sem16</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_sem16</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      x1    x2    x3    x4     x5     x6    x7    x8    x9   x10   x11    x12</span></span>
+<span><span class="co">#&gt; 1  1.00 -1.43  0.45 -0.67 -0.044 -1.316 -0.52 -0.35 -1.01  1.40 -0.22 -1.879</span></span>
+<span><span class="co">#&gt; 2  0.07 -0.45  1.85 -0.68  0.524 -0.172  0.52 -2.46 -0.34 -0.20 -0.55 -0.948</span></span>
+<span><span class="co">#&gt; 3  0.95  0.24  0.07  0.69 -0.726  0.164 -0.55 -0.69 -1.36  0.36  0.16  0.758</span></span>
+<span><span class="co">#&gt; 4  0.28  0.92  0.29 -0.93 -1.516 -0.047 -0.37  0.69  0.38  0.19  0.21  1.089</span></span>
+<span><span class="co">#&gt; 5 -2.10 -0.55 -1.22 -1.57 -0.886  1.405  1.28  1.00 -1.74 -0.96 -1.51 -0.062</span></span>
+<span><span class="co">#&gt; 6  1.01  1.05  0.93  0.70 -0.380  1.513 -1.97  1.44  2.42  1.45  0.60  0.521</span></span>
+<span><span class="co">#&gt;      x13   x14    x15    x16 group</span></span>
+<span><span class="co">#&gt; 1 -0.110 -0.89  0.572  0.093 gamma</span></span>
+<span><span class="co">#&gt; 2 -0.036 -1.65  0.142 -0.506 gamma</span></span>
+<span><span class="co">#&gt; 3 -0.562 -0.53  0.508  1.549 gamma</span></span>
+<span><span class="co">#&gt; 4 -0.885  0.93 -0.824  2.374 gamma</span></span>
+<span><span class="co">#&gt; 5  0.076  1.16 -0.011  0.491 gamma</span></span>
+<span><span class="co">#&gt; 6  0.830  0.45  1.886  1.489 gamma</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="model">Model<a class="anchor" aria-label="anchor" href="#model"></a>
+</h3>
+<p>This is a model to be fitted, with four latent factors, and a
+structural model for the factors:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span></span>
 <span><span class="st">"</span></span>
 <span><span class="st">f1 =~ x1 + x2 + x3</span></span>
 <span><span class="st">f2 =~ x5 + x6 + x7</span></span>
@@ -111,95 +151,27 @@
 <span><span class="st">f4 =~ x13 + x14 + x15</span></span>
 <span><span class="st">f3 ~ f1 + f2</span></span>
 <span><span class="st">f4 ~ f3</span></span>
-<span><span class="st">"</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/cfa.html" class="external-link">cfa</a></span><span class="op">(</span><span class="va">mod</span>,</span>
-<span>           <span class="va">data_sem16</span>,</span>
-<span>           group <span class="op">=</span> <span class="st">"group"</span><span class="op">)</span></span>
-<span><span class="va">fit_nogp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/cfa.html" class="external-link">cfa</a></span><span class="op">(</span><span class="va">mod</span>,</span>
-<span>                <span class="va">data_sem16</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="lrt-p-values">LRT <em>p</em>-values<a class="anchor" aria-label="anchor" href="#lrt-p-values"></a>
-</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_lrtp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="va">fit_lrtp</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Parameter Estimates:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Standard errors                             Standard</span></span>
-<span><span class="co">#&gt;   Information                                 Expected</span></span>
-<span><span class="co">#&gt;   Information saturated (h1) model          Structured</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Group 1 [gamma]:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Regressions:</span></span>
-<span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
-<span><span class="co">#&gt;   f3 ~                                                </span></span>
-<span><span class="co">#&gt;     f1                0.718    0.269    6.235    0.013</span></span>
-<span><span class="co">#&gt;     f2                0.765    0.322    6.499    0.011</span></span>
-<span><span class="co">#&gt;   f4 ~                                                </span></span>
-<span><span class="co">#&gt;     f3                0.499    0.130   32.074    0.000</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Covariances:</span></span>
-<span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
-<span><span class="co">#&gt;   f1 ~~                                               </span></span>
-<span><span class="co">#&gt;     f2                0.116    0.052    8.709    0.003</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Group 2 [alpha]:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Regressions:</span></span>
-<span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
-<span><span class="co">#&gt;   f3 ~                                                </span></span>
-<span><span class="co">#&gt;     f1                0.509    0.239    7.538    0.006</span></span>
-<span><span class="co">#&gt;     f2               -0.033    0.156    0.036    0.849</span></span>
-<span><span class="co">#&gt;   f4 ~                                                </span></span>
-<span><span class="co">#&gt;     f3                0.740    0.268   18.860    0.000</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Covariances:</span></span>
-<span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
-<span><span class="co">#&gt;   f1 ~~                                               </span></span>
-<span><span class="co">#&gt;     f2                0.082    0.060   Failed   Failed</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; NOTE: 'Failed' indicates that LRT p-value is requested but the </span></span>
-<span><span class="co">#&gt; likelihood ratio test failed.</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_lrtp_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit</span>,</span>
-<span>                   op <span class="op">=</span> <span class="st">"~"</span><span class="op">)</span></span>
-<span><span class="va">fit_lrtp_b</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Parameter Estimates:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Standard errors                             Standard</span></span>
-<span><span class="co">#&gt;   Information                                 Expected</span></span>
-<span><span class="co">#&gt;   Information saturated (h1) model          Structured</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Group 1 [gamma]:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Regressions:</span></span>
-<span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
-<span><span class="co">#&gt;   f3 ~                                                </span></span>
-<span><span class="co">#&gt;     f1                0.718    0.269    6.235    0.013</span></span>
-<span><span class="co">#&gt;     f2                0.765    0.322    6.499    0.011</span></span>
-<span><span class="co">#&gt;   f4 ~                                                </span></span>
-<span><span class="co">#&gt;     f3                0.499    0.130   32.074    0.000</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Group 2 [alpha]:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Regressions:</span></span>
-<span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
-<span><span class="co">#&gt;   f3 ~                                                </span></span>
-<span><span class="co">#&gt;     f1                0.509    0.239    7.538    0.006</span></span>
-<span><span class="co">#&gt;     f2               -0.033    0.156    0.036    0.849</span></span>
-<span><span class="co">#&gt;   f4 ~                                                </span></span>
-<span><span class="co">#&gt;     f3                0.740    0.268   18.860    0.000</span></span></code></pre></div>
+<span><span class="st">"</span></span></code></pre></div>
+<p>We first fit a model to the whole sample:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_nogp_lrtp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit_nogp</span><span class="op">)</span></span>
-<span><span class="va">fit_nogp_lrtp</span></span>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod</span>,</span>
+<span>           <span class="va">data_sem16</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="lrt-p-values-for-selected-parameters">LRT <em>p</em>-Values For Selected Parameters<a class="anchor" aria-label="anchor" href="#lrt-p-values-for-selected-parameters"></a>
+</h3>
+<p>If the default settings are what desired, we can compute the LRT
+<em>p</em>-values just by calling <code><a href="../reference/lrtp.html">lrtp()</a></code> on the
+<code>lavann</code> output.</p>
+<p>By default, LRT <em>p</em>-values will be computed only for
+regression paths (<code>"~"</code>) and covariances (<code>"~~"</code>),
+excluding variances and error covariances.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_lrtp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<p>By default, the output will be printed in <code>lavaan</code> style,
+and only parameters with LRT <em>p</em>-values are printed:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_lrtp</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Parameter Estimates:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -219,10 +191,95 @@
 <span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
 <span><span class="co">#&gt;   f1 ~~                                               </span></span>
 <span><span class="co">#&gt;     f2                0.099    0.039    9.729    0.002</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_nogp_lrtp_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit_nogp</span>,</span>
-<span>                        op <span class="op">=</span> <span class="st">"~"</span><span class="op">)</span></span>
-<span><span class="va">fit_nogp_lrtp_b</span></span>
+<p>The column <code>Chisq</code> shows the <span class="math inline">\(\chi^2\)</span> difference of the likelihood ratio
+test when a parameter is fixed to zero.</p>
+<p>The column <code>LRTp</code> shows the LRT <em>p</em>-value.</p>
+</div>
+<div class="section level3">
+<h3 id="how-lrt-p-values-are-computed">How LRT <em>p</em>-Values Are Computed<a class="anchor" aria-label="anchor" href="#how-lrt-p-values-are-computed"></a>
+</h3>
+<p>It can be verified that the LRT <em>p</em>-value of a parameter is
+the likelihood ratio test (LRT) <em>p</em>-value (a.k.a. the <span class="math inline">\(\chi^2\)</span> difference test) when this
+parameter is fitted to zero.</p>
+<p>For example, we fix the path from <code>f2</code> to <code>f3</code>
+and then do an LR test:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mod_f3_f2</span> <span class="op">&lt;-</span></span>
+<span><span class="st">"</span></span>
+<span><span class="st">f1 =~ x1 + x2 + x3</span></span>
+<span><span class="st">f2 =~ x5 + x6 + x7</span></span>
+<span><span class="st">f3 =~ x9 + x10 + x11</span></span>
+<span><span class="st">f4 =~ x13 + x14 + x15</span></span>
+<span><span class="st">f3 ~ f1 + 0*f2</span></span>
+<span><span class="st">f4 ~ f3</span></span>
+<span><span class="st">"</span></span>
+<span><span class="va">fit_f3_f2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod_f3_f2</span>,</span>
+<span>                 <span class="va">data_sem16</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/lavTestLRT.html" class="external-link">lavTestLRT</a></span><span class="op">(</span><span class="va">fit_f3_f2</span>,</span>
+<span>           <span class="va">fit</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Chi-Squared Difference Test</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;           Df   AIC   BIC  Chisq Chisq diff    RMSEA Df diff Pr(&gt;Chisq)  </span></span>
+<span><span class="co">#&gt; fit       50 12206 12313 41.183                                         </span></span>
+<span><span class="co">#&gt; fit_f3_f2 51 12208 12311 45.199      4.016 0.094743       1    0.04507 *</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre></div>
+<p>Unlike the original <em>p</em>-value of this path, 0.052, the LRT
+<em>p</em>-value is 0.045, suggesting that the path from <code>f2</code>
+to <code>f2</code> is significant.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="why-lrt-p-value">WHy LRT <em>p</em>-Value<a class="anchor" aria-label="anchor" href="#why-lrt-p-value"></a>
+</h2>
+<p>The example above illustrates the importance of the LRT
+<em>p</em>-value. The usual <em>p</em> values in <code>lavaan</code>
+(and many other SEM programs) are Wald-based <em>p</em>-values, which is
+an approximation of the LRT <em>p</em>-value when a parameter is fixed
+to zero. They are approximationa and so can be different from the LRT
+<em>p</em>-value, and they may also depends on the parameterization
+<span class="citation">(Gonzalez &amp; Griffin, 2001)</span>.</p>
+<p>For example, we can fit the same model by changing the indicators
+being fixed to 1.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mod2</span> <span class="op">&lt;-</span></span>
+<span><span class="st">"</span></span>
+<span><span class="st">f1 =~ x2 + x1 + x3</span></span>
+<span><span class="st">f2 =~ x7 + x5 + x6</span></span>
+<span><span class="st">f3 =~ x11 + x9 + x10</span></span>
+<span><span class="st">f4 =~ x14 + x13 + x15</span></span>
+<span><span class="st">f3 ~ f1 + f2</span></span>
+<span><span class="st">f4 ~ f3</span></span>
+<span><span class="st">"</span></span>
+<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod2</span>,</span>
+<span>            <span class="va">data_sem16</span><span class="op">)</span></span></code></pre></div>
+<p>This model and the previous have exactly identical model fit, as
+expected:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/fitMeasures.html" class="external-link">fitMeasures</a></span><span class="op">(</span><span class="va">fit</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"df"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  chisq     df </span></span>
+<span><span class="co">#&gt; 41.183 50.000</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/fitMeasures.html" class="external-link">fitMeasures</a></span><span class="op">(</span><span class="va">fit2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"df"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  chisq     df </span></span>
+<span><span class="co">#&gt; 41.183 50.000</span></span></code></pre></div>
+<p>This is the parameter estimates with Wald <em>p</em>-values (only
+those for the regression paths are displayed)</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit2</span>,</span>
+<span>                   output <span class="op">=</span> <span class="st">"text"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt; Regressions:</span></span>
+<span><span class="co">#&gt;                    Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper</span></span>
+<span><span class="co">#&gt;   f3 ~                                                                  </span></span>
+<span><span class="co">#&gt;     f1                0.714    0.220    3.239    0.001    0.282    1.146</span></span>
+<span><span class="co">#&gt;     f2                0.505    0.276    1.828    0.067   -0.036    1.047</span></span>
+<span><span class="co">#&gt;   f4 ~                                                                  </span></span>
+<span><span class="co">#&gt;     f3                0.683    0.148    4.599    0.000    0.392    0.974</span></span></code></pre>
+<p>The Wald <em>p</em>-value is 0.067, even larger than 0.052.</p>
+<p>However, the LRT <em>p</em>-values are the same:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit2_lrtp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span>
+<span><span class="va">fit2_lrtp</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Parameter Estimates:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -233,55 +290,70 @@
 <span><span class="co">#&gt; Regressions:</span></span>
 <span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
 <span><span class="co">#&gt;   f3 ~                                                </span></span>
-<span><span class="co">#&gt;     f1                0.656    0.191   13.381    0.000</span></span>
-<span><span class="co">#&gt;     f2                0.347    0.179    4.016    0.045</span></span>
+<span><span class="co">#&gt;     f1                0.714    0.220   13.381    0.000</span></span>
+<span><span class="co">#&gt;     f2                0.505    0.276    4.016    0.045</span></span>
 <span><span class="co">#&gt;   f4 ~                                                </span></span>
-<span><span class="co">#&gt;     f3                0.602    0.131   44.155    0.000</span></span></code></pre></div>
-<p>Allow error variances</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit_nogp_lrtp_evar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit_nogp</span>,</span>
-<span>                           no_error_variances <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">fit_nogp_lrtp_evar</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Parameter Estimates:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Standard errors                             Standard</span></span>
-<span><span class="co">#&gt;   Information                                 Expected</span></span>
-<span><span class="co">#&gt;   Information saturated (h1) model          Structured</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Regressions:</span></span>
-<span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
-<span><span class="co">#&gt;   f3 ~                                                </span></span>
-<span><span class="co">#&gt;     f1                0.656    0.191   13.381    0.000</span></span>
-<span><span class="co">#&gt;     f2                0.347    0.179    4.016    0.045</span></span>
-<span><span class="co">#&gt;   f4 ~                                                </span></span>
-<span><span class="co">#&gt;     f3                0.602    0.131   44.155    0.000</span></span>
+<span><span class="co">#&gt;     f3                0.683    0.148   44.155    0.000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Covariances:</span></span>
 <span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
 <span><span class="co">#&gt;   f1 ~~                                               </span></span>
-<span><span class="co">#&gt;     f2                0.099    0.039    9.729    0.002</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Variances:</span></span>
-<span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
-<span><span class="co">#&gt;     x1                1.019    0.101   35.764    0.000</span></span>
-<span><span class="co">#&gt;     x2                1.107    0.100   48.279    0.000</span></span>
-<span><span class="co">#&gt;     x3                0.653    0.092   17.071    0.000</span></span>
-<span><span class="co">#&gt;     x5                0.917    0.108   15.593    0.000</span></span>
-<span><span class="co">#&gt;     x6                0.864    0.121   11.322    0.001</span></span>
-<span><span class="co">#&gt;     x7                1.067    0.092   32.796    0.000</span></span>
-<span><span class="co">#&gt;     x9                0.963    0.105   49.525    0.000</span></span>
-<span><span class="co">#&gt;     x10               1.037    0.098   70.760    0.000</span></span>
-<span><span class="co">#&gt;     x11               0.943    0.097   57.873    0.000</span></span>
-<span><span class="co">#&gt;     x13               1.100    0.122   23.582    0.000</span></span>
-<span><span class="co">#&gt;     x14               1.131    0.128   22.152    0.000</span></span>
-<span><span class="co">#&gt;     x15               1.071    0.088   57.325    0.000</span></span>
-<span><span class="co">#&gt;    .f3                0.293    0.083   20.443    0.000</span></span>
-<span><span class="co">#&gt;    .f4                0.185    0.082    7.363    0.007</span></span></code></pre></div>
+<span><span class="co">#&gt;     f2                0.053    0.024    9.729    0.002</span></span></code></pre></div>
+<p>It is because LRT <em>p</em>-value is invariant to
+parameterization.</p>
 </div>
 <div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 id="limitations">Limitations<a class="anchor" aria-label="anchor" href="#limitations"></a>
 </h2>
+<p>Because LRT <em>p</em>-value are computed by fixing a parameter to
+zero, there are parameter for which the LRT <em>p</em>-value cannot be
+computed. For example, suppose we request LRT <em>p</em>-values for
+factor loadings using the argument <code>op</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit_lrtp_loadings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit</span>,</span>
+<span>                          op <span class="op">=</span> <span class="st">"=~"</span><span class="op">)</span></span>
+<span><span class="va">fit_lrtp_loadings</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Parameter Estimates:</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   Standard errors                             Standard</span></span>
+<span><span class="co">#&gt;   Information                                 Expected</span></span>
+<span><span class="co">#&gt;   Information saturated (h1) model          Structured</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Latent Variables:</span></span>
+<span><span class="co">#&gt;                    Estimate  Std.Err    Chisq     LRTp</span></span>
+<span><span class="co">#&gt;   f1 =~                                               </span></span>
+<span><span class="co">#&gt;     x2                0.844    0.206   27.682    0.000</span></span>
+<span><span class="co">#&gt;     x3                1.145    0.255   54.842    0.000</span></span>
+<span><span class="co">#&gt;   f2 =~                                               </span></span>
+<span><span class="co">#&gt;     x6                1.127    0.331   33.687    0.000</span></span>
+<span><span class="co">#&gt;     x7                0.630    0.207   13.364    0.000</span></span>
+<span><span class="co">#&gt;   f3 =~                                               </span></span>
+<span><span class="co">#&gt;     x10               0.823    0.143   50.232    0.000</span></span>
+<span><span class="co">#&gt;     x11               0.918    0.151   60.791    0.000</span></span>
+<span><span class="co">#&gt;   f4 =~                                               </span></span>
+<span><span class="co">#&gt;     x14               1.043    0.240   40.668    0.000</span></span>
+<span><span class="co">#&gt;     x15               0.475    0.152   12.393    0.000</span></span></code></pre></div>
+<p>As shown above, LRT <em>p</em>-values are not computed for indicators
+with loadings fixed to zero.</p>
+</div>
+<div class="section level2">
+<h2 id="further-information">Further Information<a class="anchor" aria-label="anchor" href="#further-information"></a>
+</h2>
+<p>Please refer to the help page of <code><a href="../reference/lrtp.html">lrtp()</a></code> for other
+arguments, and the print method of <code><a href="../reference/lrtp.html">lrtp()</a></code> output
+(<code><a href="../reference/print.lrtp.html">print.lrtp()</a></code>) for options in printing.</p>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0" line-spacing="2">
+<div id="ref-gonzalez_testing_2001" class="csl-entry">
+Gonzalez, R., &amp; Griffin, D. (2001). Testing parameters in structural
+equation modeling: Every "one" matters. <em>Psychological Methods</em>,
+<em>6</em>(3), 258–269. <a href="https://doi.org/10.1037//1082-989X.6.3.258" class="external-link">https://doi.org/10.1037//1082-989X.6.3.258</a>
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

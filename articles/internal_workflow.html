@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9023</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9025</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,7 +93,7 @@ Cheung</h4>
 </h2>
 <div class="figure">
 <div id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:400px;height:700px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[[\"Call free_pars() to identify desired free parameters\"]]\n  B[[\"Call lrt() to do LRT for each free parameter\"]]\n  C[\"Get the parameter estimates data frame\"]\n  D[[\"Call match_ptable_est() for mapping parameter table rows to\\nparameter estimates data frame rows\"]]\n  E[\"Insert LRT p-values to the parameter estimates data frame\"]\n  F[[\"Call copy_est_attributes() to add info necessary\nfor printing the results in lavaan style\"]]\n  Z([\"Return the parameter estimates data frame\"])\n  AA:::startend --> A:::subnode\n  A --> B:::subnode\n  B --> C\n  C --> D:::subnode\n  D --> E\n  E --> F:::subnode\n  F --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[[\"Call free_pars() to identify desired free parameters\"]]\n  B[[\"Call lrt() to do LRT for each free parameter\"]]\n  C[\"Get the parameter estimates data frame\"]\n  D[[\"Call match_ptable_est() for mapping parameter table rows to\\nparameter estimates data frame rows\"]]\n  E[\"Insert LRT p-values to the parameter estimates data frame\"]\n  F[[\"Call copy_est_attributes() to add info necessary\nfor printing the results in lavaan style\"]]\n  Z([\"Return a 'lrtp' object\"])\n  AA:::startend --> A:::subnode\n  A --> B:::subnode\n  B --> C\n  C --> D:::subnode\n  D --> E\n  E --> F:::subnode\n  F --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code><a href="../reference/lrtp.html">semlrtp::lrtp()</a></code>
 </p>
 </div>
@@ -113,7 +113,7 @@ Workflow of <code>semlrtp:::free_pars()</code>
 </h2>
 <div class="figure">
 <div id="htmlwidget-36aa3d2a04d42bbc2145" style="width:400px;height:400px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[[\"Call fix_to_zero() to fix the requested parameter to 0\"]]\n  B[\"Call lavaan::lavTestLRT() to do the LR test\"]\n  C[\"Store the results in a list, along with other info\"]\n  Z([\"Return the output\"])\n  AA:::startend --> A:::subnode\n  A --> B\n  B --> C\n  C --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[[\"Call fix_to_zero() to fix the requested parameter to 0\"]]\n  B[\"Call lavaan::lavTestLRT() to do the LR test\"]\n  C[\"Store the results and other info\"]\n  Z([\"Return an 'lrt' object\"])\n  AA:::startend --> A:::subnode\n  A --> B\n  B --> C\n  C --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code>semlrtp:::lrt()</code>
 </p>
 </div>
@@ -122,8 +122,8 @@ Workflow of <code>semlrtp:::lrt()</code>
 <h2 id="the-workflow-of-fix_to_zero">The Workflow of <code>fix_to_zero()</code><a class="anchor" aria-label="anchor" href="#the-workflow-of-fix_to_zero"></a>
 </h2>
 <div class="figure">
-<div id="htmlwidget-febe03efa1a2d8d52a86" style="width:500px;height:600px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-febe03efa1a2d8d52a86">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n  A[\"Set columns such as 'free' to 0\"]\n  B[\"Extract slots from the lavaan object\"]\n  C[\"Fit a model with the updated parameter table\"]\n  D{{\"Check if the model df is reduced by one\"}}\n  E2[\"Store the results in a list, along with other info\"]\n  E1([\"Error: Df change not 1\"])\n  Z([\"Return the output\"])\n  AA:::startend --> A\n  A --> B\n  B --> C\n  C --> D\n  D -- 1 df --> E2\n  D -- Not 1 df --> E1:::errornode\n  E2 --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
+<div id="htmlwidget-febe03efa1a2d8d52a86" style="width:500px;height:800px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-febe03efa1a2d8d52a86">{"x":{"diagram":"\nflowchart TD\n  classDef default fill:#EEEEFF;\n  classDef errornode fill:#FFDDDD;\n  classDef startend fill:#DDFFDD;\n  classDef subnode fill:#FFFFDD;\n\n  AA([\"Start\"])\n\n  A0{{\"Labelled or constrained By a plabel\"}}\n  A0A[\"Add an equality constraint '== 0'\"]\n  A0B[\"Set columns such as 'free' to 0\"]\n\n  A1{{\"A variance?\"}}\n  A1A[\"Fix related covariance to zero\"]\n\n  B[\"Extract slots from the lavaan object\"]\n  C[\"Fit a model with the updated parameter table\"]\n  %% D{{\"Check if the model df is reduced by one\"}}\n  E2[\"Store the results in a list, along with other info\"]\n  %%E1([\"Error: Df change not 1\"])\n  Z([\"Return a 'fit_to_zero' object\"])\n  AA:::startend --> A0\n  A0 -- Yes --> A0A\n  A0 -- No --> A0B\n  A0A --> A1\n  A0B --> A1\n  A1 -- Yes --> A1A\n  A1 -- No --> B\n  A1A --> B\n  B --> C\n  %% C --> D\n  %% D -- 1 df --> E2\n  %% D -- Not 1 df --> E1:::errornode\n  C --> E2\n  E2 --> Z:::startend\n"},"evals":[],"jsHooks":[]}</script><p class="caption">
 Workflow of <code>semlrtp:::fix_to_zero()</code>
 </p>
 </div>
