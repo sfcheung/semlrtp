@@ -1,7 +1,7 @@
-#' @title Print a `lrtp`- Class Object
+#' @title Print an 'lrtp'- Class Object
 #'
 #' @description Print the content of
-#' a `lrtp`-class object.
+#' an `lrtp`-class object.
 #'
 #' @details The print method for the
 #' output of [lrtp()].
@@ -10,7 +10,7 @@
 #' `x` is returned invisibly.
 #' Called for its side effect.
 #'
-#' @param x A `lrtp`-class object.
+#' @param x An `lrtp`-class object.
 #'
 #' @param digits Integer. The number of
 #' decimal places to print. Default is
@@ -25,7 +25,8 @@
 #' z statistics,
 #' *p*-values, CIs) are printed. `FALSE`
 #' by default, assuming that users
-#' prefer using LRT statistics.
+#' prefer using LRT statistics when
+#' using [lrtp()].
 #'
 #' @param output The format of the
 #' printout. If `"text"`, then the

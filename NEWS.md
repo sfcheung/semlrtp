@@ -1,4 +1,4 @@
-# semlrtp 0.0.0.9025
+# semlrtp 0.0.1.0
 
 - Initialized the package. (0.0.0.9000)
 - Setup `pkgdown` site. (0.0.0.9001)
@@ -79,3 +79,5 @@
   of `lrt()`. (0.0.0.9023)
 - Updated the workflow appendix. (0.0.0.9024)
 - Updated the `Get Started` vignette. (0.0.0.9025)
+- Make the package nearly CRAN-ready.
+  (0.0.1.0)

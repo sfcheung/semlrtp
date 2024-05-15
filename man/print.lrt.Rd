@@ -2,12 +2,12 @@
 % Please edit documentation in R/print_lrt.R
 \name{print.lrt}
 \alias{print.lrt}
-\title{Print a \code{lrt}- Class Object}
+\title{Print an 'lrt'- Class Object}
 \usage{
 \method{print}{lrt}(x, digits = 3, ...)
 }
 \arguments{
-\item{x}{A \code{lrt}-class object.}
+\item{x}{An \code{lrt}-class object.}
 
 \item{digits}{Integer. The number of
 decimal places to print. Default is
@@ -22,11 +22,11 @@ Called for its side effect.
 }
 \description{
 Print the content of
-a \code{lrt}-class object.
+an \code{lrt}-class object.
 }
 \details{
-The print method for the
-output of \code{\link[=lrt]{lrt()}}.
+It is the print method for
+the output of \code{\link[=lrt]{lrt()}}.
 }
 \examples{
 

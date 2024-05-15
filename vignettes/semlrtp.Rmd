@@ -45,7 +45,7 @@ simply the *p*-value of the likelihood
 ratio test (LRT, a.k.a. $\chi^2$ difference test)
 comparing the fitted model with the model with
 this parameter fixed to zero. It is not new but
-we are not aware of using it as the default
+we are not aware of packages using it as the default
 *p*-value in testing model parameters.
 The package
 [`semlrtp`](https://sfcheung.github.io/semlrtp/)
@@ -91,7 +91,7 @@ fit <- sem(mod,
 
 ## LRT *p*-Values For Selected Parameters
 
-If the default settings are what desired,
+If we use the default settings,
 we can compute the LRT *p*-values just
 by calling `lrtp()` on the `lavann`
 output.
@@ -128,7 +128,7 @@ difference test) when this parameter is
 fitted to zero.
 
 For example, we fix the path from `f2`
-to `f3` and then do an LR test:
+to `f3` to zero and then do an LR test:
 
 ```{r}
 mod_f3_f2 <-
@@ -160,17 +160,19 @@ the LRT *p*-value is
 suggesting that the path from `f2` to `f2`
 is significant.
 
-# WHy LRT *p*-Value
+# Why LRT *p*-Value
 
 The example above illustrates the importance
-of the LRT *p*-value. The usual *p*
-values in `lavaan` (and many other SEM
-programs) are Wald-based *p*-values,
-which is an approximation of the
+of the LRT *p*-value. The usual *p*-values
+in `lavaan` (and many other SEM
+programs) are Wald-based *p*-values.
+The Wald-based p-value is an approximation
+of the
 LRT *p*-value when a parameter is fixed
-to zero. They are approximationa and
+to zero. It is an approximation and
 so can be different from the
-LRT *p*-value, and they may also depends on
+LRT *p*-value. Moreover, they may also
+depend on
 the parameterization [@gonzalez_testing_2001].
 
 For example, we can fit the same model
@@ -220,7 +222,8 @@ cat(tmp[21:27], sep = "\n")
 The Wald *p*-value is
 `r formatC(f3_f2_wald_p2, digits = 3, format = "f")`,
 even larger than
-`r formatC(f3_f2_wald_p, digits = 3, format = "f")`.
+`r formatC(f3_f2_wald_p, digits = 3, format = "f")`
+in the original model.
 
 However, the LRT *p*-values are the same:
 

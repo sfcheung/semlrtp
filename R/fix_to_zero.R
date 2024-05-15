@@ -7,41 +7,54 @@
 #' table of a `lavaan`-class object and
 #' then fits the model again.
 #'
+#' Users should usually call
+#' [lrtp()] directly instead of calling
+#' this function. It is exported for
+#' developers.
+#'
 #' @return
 #' A `fix_to_zero`-class object, which
-#' is a list with these elements:call
+#' is a list with these elements:
 #'
 #' - `fit0` is the `lavaan` output of the
 #' refitted object. `NA` if the fit
-#' failed for some reasons. A model
-#' must converged, passed `lavaan`'s
-#' post check, variance covariance
-#' matrix of estimates can be computed,
-#' and has one more degree of freedom
-#' than the original model to be
-#' considered acceptable.
+#' failed for some reasons. To be
+#' considered an acceptable solution,
+#' the optimization must converge,
+#' the solution passes `lavaan`'s
+#' post check,
+#' the variance-covariance matrix of
+#' estimates successfully computed,
+#' and the increase in the model
+#' degree of freedom equal to the
+#' expected change.
 #'
 #' - `fit1` is the original `lavaan`
 #' output if `store_fit` is `TRUE`. It
-#' is `NULL` otherwise
+#' is `NULL` if `store_fit` is `FALSE`,
+#' the default.
 #'
 #' - `par_id` is the row number of the
-#' designated free parameter.
+#' designated free parameter in the
+#' parameter table.
 #'
 #' - `call` is the original call to this
 #' function.
 #'
 #' - `ptable0` is the parameter table
-#' of with the designated parameter fixed
+#' with the designated parameter fixed
 #' to zero. It can be used for diagnostic
 #' purpose if the fit failed.
 #'
 #' - `fit0_error` is the error
-#' message in refitting, if any. If
+#' message in refitting the model
+#' (`ptable0`), if
+#' any. If
 #' no error, it is `NA``.
 #'
-#' - `vcov_ok` is `TRUE` if the variance
-#' covariance matrix of the estimates
+#' - `vcov_ok` is `TRUE` if the
+#' variance-covariance matrix of the
+#' estimates
 #' can be computed without error nor
 #' warning. `FALSE` otherwise.
 #'
@@ -53,11 +66,13 @@
 #' error nor warning. Can be used for
 #' diagnostic purposes.
 #'
-#' - `converged`: Whether the modified
-#' model converged.
+#' - `converged`: Whether refitting
+#' the modified model (`ptable0`)
+#' converged.
 #'
 #' - `post_check_passed`: Whether the
-#' solution of the modified model passed
+#' solution of the modified model
+#' (`ptable0`) passed
 #' `lavaan`s post check.
 #'
 #' - `fit_not_ok`: If the fit failed
@@ -70,7 +85,12 @@
 #' - `df_diff_one`: Whether the
 #' difference in model degrees of
 #' freedom between the modified model
-#' and the original model is one.
+#' and the original model is one. If
+#' a variance is fitted to zero, related
+#' covariance(s) is/are also fitted to
+#' zero and so the difference in
+#' model degrees of freedom can be
+#' legitimately greater than one.
 #'
 #' @param fit A `lavaan`-class object.
 #'
@@ -97,6 +117,8 @@
 #' # Fix the factor covariance to zero
 #' out <- fix_to_zero(fit, par_id = 15)
 #' summary(out$fit0)
+#'
+#' @seealso [lrtp()]
 #'
 #' @export
 
