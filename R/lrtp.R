@@ -166,7 +166,50 @@ lrtp <- function(fit,
         out[est_id, "Chisq"] <- lrt_chisqs
         out[est_id, "LRTp"] <- lrt_pvalues
         out[est_id, "LRT"] <- lrt_status
+
+        # Fit no error
+        fit0_ok <- sapply(lrt_out, function(x) {
+            suppressWarnings(is.na(x$fix_to_zero$fit0_error))
+          })
+        out[est_id, "fit0_ok"] <- fit0_ok
+
+        # Converged?
+        converge_ok <- sapply(lrt_out, function(x) {
+            x$fix_to_zero$converged
+          })
+        out[est_id, "converge_ok"] <- converge_ok
+
+        # VCOV no warning
+        vcov_ok <- sapply(lrt_out, function(x) {
+            x$fix_to_zero$vcov_ok
+          })
+        out[est_id, "vcov_ok"] <- vcov_ok
+
+        # LRT OK?
+        # NA: LRT was not conducted
+        lrt_ok <- sapply(lrt_out, function(x) {
+            if (inherits(x$lrt, "anova")) {
+                return(TRUE)
+              } else {
+                if (is.na(x$lrt)) {
+                    return(NA)
+                  } else {
+                    return(FALSE)
+                  }
+              }
+          })
+        out[est_id, "LRT_ok"] <- lrt_ok
+
+        # Post.check OK?
+        post_check_ok <- sapply(lrt_out, function(x) {
+            x$fix_to_zero$post_check_passed
+          })
+        out[est_id, "post_check_ok"] <- post_check_ok
+
+        out[est_id, "LRT_id"] <- ids
+
         attr(out, "lrt") <- lrt_out
+        attr(out, "ids") <- ids
       }
     attr(out, "call") <- match.call
     fit_summary <- lavaan::summary(fit)
