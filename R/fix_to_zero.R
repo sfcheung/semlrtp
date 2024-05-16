@@ -196,7 +196,10 @@ fix_to_zero <- function(fit,
 
         fit0_converged <- lavaan::lavTech(fit_i, "converged")
 
-        fit0_check_passed <- suppressWarnings(lavaan::lavTech(fit_i, "post.check"))
+        # fit0_check_output stores the warning, if any.
+        # TRUE is the check is passed
+        fit0_check_output <- tryCatch(lavaan::lavTech(fit_i, "post.check"),
+                                      warning = function(w) w)
 
         df <- lavaan::fitMeasures(fit, "df")
         if (!fit0_converged) {
@@ -256,9 +259,9 @@ fix_to_zero <- function(fit,
             fit0_really_zero <- TRUE && fit0_really_zero
           }
       }
+    # Accept the Heywood case result
+    # NOTE: fit0_check_passed may not be a logical
     if (!all(fit0_converged,
-             # Accept the Heywood case result
-#             fit0_check_passed,
              fit0_vcov_ok,
              ifelse(is_variance, TRUE, fit0_df_diff_one))) {
         fit_not_ok <- fit_i
@@ -277,7 +280,10 @@ fix_to_zero <- function(fit,
                 vcov_ok = fit0_vcov_ok,
                 vcov_msg = vcov_msg,
                 converged = fit0_converged,
-                post_check_passed = fit0_check_passed,
+                post_check_passed = isTRUE(fit0_check_output),
+                post_check_msg = ifelse(inherits(fit0_check_output, "warning"),
+                                        fit0_check_output,
+                                        NA),
                 fit_not_ok = fit_not_ok,
                 df_diff_one = fit0_df_diff_one)
     if (store_fit) {
