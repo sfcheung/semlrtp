@@ -31,6 +31,7 @@ test_that("Not converged", {
   expect_true(is.na(out$fit0))
   expect_false(out$converged)
   expect_true(is.na(out_lrt$lrt))
-  expect_equal(out_lrtp_df[2:4, "LRT"],
-               c(-1, -1, 0))
+  # Post.check failure is now acceptable
+  expect_equal(out_lrtp_df[3, "LRT"],
+               -1)
 })

@@ -9,7 +9,7 @@
   digits = 3,
   lrtp_only = TRUE,
   wald_stats = FALSE,
-  output = c("text", "data.frame"),
+  output = c("text", "data.frame", "table"),
   ...
 )
 }
@@ -36,7 +36,7 @@ using \code{\link[=lrtp]{lrtp()}}.}
 printout. If \code{"text"}, then the
 style in the \code{\link[=summary]{summary()}}
 of the \code{lavaan}-class object is used.
-If \code{"data.frame"}, then the data
+If \code{"data.frame"} or \code{"table"}, then the data
 frame format of \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}
 is used.}
 
@@ -54,6 +54,11 @@ an \code{lrtp}-class object.
 \details{
 The print method for the
 output of \code{\link[=lrtp]{lrtp()}}.
+
+Additional diagnostic information
+will be printed if one or more
+likelihood tests encounter some
+errors or warnings.
 }
 \examples{
 

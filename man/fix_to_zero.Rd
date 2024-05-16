@@ -51,7 +51,7 @@ purpose if the fit failed.
 message in refitting the model
 (\code{ptable0}), if
 any. If
-no error, it is `NA``.
+no error, it is \code{NA}.
 \item \code{vcov_ok} is \code{TRUE} if the
 variance-covariance matrix of the
 estimates
@@ -70,7 +70,12 @@ converged.
 \item \code{post_check_passed}: Whether the
 solution of the modified model
 (\code{ptable0}) passed
-\code{lavaan}s post check.
+\code{lavaan}'s post check.
+\item \code{post_check_msg}: If the solution
+failed \code{lavaan}'s post check,
+it stores the warning message.
+If the solution passes the check,
+it is \code{NA}.
 \item \code{fit_not_ok}: If the fit failed
 for some reasons, the fit object,
 if available, is stored in this

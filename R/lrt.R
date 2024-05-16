@@ -136,6 +136,10 @@ lrt <- function(fit,
     fit0 <- fit_i$fit0
     lrt_out <- NA
     lrt_msg <- NA
+    # fit0 is NA if
+    # - Failed to converge (fit0_converged == FALSE), or
+    # - VCOV warning (fit0_vcov_ok == FALSE), or
+    # - DF change > 1 and the par is not a variance
     if (inherits(fit0, "lavaan")) {
         lrt_msg <- tryCatch(lrt_out <- lavaan::lavTestLRT(fit,
                                                           fit0),
@@ -143,6 +147,9 @@ lrt <- function(fit,
                                warning = function(w) w)
       }
     lrt_status <- c(NotOK = -1)
+    # lrt_out is NA if
+    # - LRT failed (error or warning), or
+    # - LRT is not an ANOVA table for whatever reason
     if (inherits(lrt_out, "anova")) {
         if (inherits(lrt_msg, "error") ||
             inherits(lrt_msg, "warning")) {
