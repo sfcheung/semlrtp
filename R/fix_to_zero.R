@@ -257,7 +257,8 @@ fix_to_zero <- function(fit,
           }
       }
     if (!all(fit0_converged,
-             fit0_check_passed,
+             # Accept the Heywood case result
+#             fit0_check_passed,
              fit0_vcov_ok,
              ifelse(is_variance, TRUE, fit0_df_diff_one))) {
         fit_not_ok <- fit_i
