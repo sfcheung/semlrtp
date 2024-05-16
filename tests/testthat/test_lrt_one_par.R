@@ -75,6 +75,7 @@ lrt_21 <- lrt(fit, par_id = "f1 =~ x2", group = "Pasteur")
 lrt_22 <- lrt(fit_nogp, par_id = "f3 ~~ f2")
 
 test_that("print.lrt()", {
-  expect_output(print(lrt_21), "failed")
+  # Post.check failure is now acceptable
+  expect_output(print(lrt_21), "warning")
   expect_output(print(lrt_22), "LRT test")
 })

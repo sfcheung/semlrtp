@@ -58,34 +58,54 @@ print.lrt <- function(x,
         cat("\n")
         cat("Results in fixing", par_label, "to zero:\n")
         cat("\n")
-        cat("Error message:", ifelse(is.na(out$fix_to_zero$fit0_error),
+        cat("- Error message:", ifelse(is.na(out$fix_to_zero$fit0_error),
                                      "Nil\n",
                                      paste0("\n", as.character(out$fix_to_zero$fit0_error))))
-        cat("VCOV of parameters:", ifelse(isTRUE(out$fix_to_zero$vcov_ok),
-                                          "OK\n",
-                                          paste0(as.character(out$fix_to_zero$vcov_msg), "\n")))
-        cat("Estimation convergence:", ifelse(isTRUE(out$fix_to_zero$converged),
+        cat("- VCOV of parameters:")
+        if (isTRUE(out$fix_to_zero$vcov_ok)) {
+            cat(" OK\n")
+          } else {
+            cat("\n")
+            cat(strwrap(as.character(out$fix_to_zero$vcov_msg),
+                        indent = 2,
+                        exdent = 2), sep = "\n")
+          }
+        cat("- Estimation convergence:", ifelse(isTRUE(out$fix_to_zero$converged),
                                             "Converged\n",
                                             "Failed to converge\n"))
-        cat("Solution post.check:", ifelse(isTRUE(out$fix_to_zero$post_check_passed),
+        cat("- Solution post.check:", ifelse(isTRUE(out$fix_to_zero$post_check_passed),
                                            "Passed\n",
                                            "Failed\n"))
-        if (!isTRUE(out$fix_to_zero$post_check_passed)) {
-            tmp <- tryCatch(lavaan::lavInspect(out$fix_to_zero$fit_not_ok, "post.check"),
-                            warning = function(w) w)
-            if (inherits(tmp, "warning")) {
-                cat("Post check warning:\n")
-                tmp2 <- as.character(tmp)
-                tmp2 <- strwrap(tmp2)
-                cat(tmp2, sep = "\n")
-              }
-          }
-        return(invisible(x))
+      } else {
+        cat("LRT test with the selected parameter fixed to zero:\n")
+
+        print(out$lrt, digits = digits)
+        cat("\n")
       }
 
-    cat("LRT test with the selected parameter fixed to zero:\n")
-
-    print(out$lrt, digits = digits)
+    # LRT result is accepted even if post.check failed
+    if (isFALSE(out$fix_to_zero$post_check_passed)) {
+        cat("- Post check warning:\n")
+        tmp2 <- paste(as.character(unlist(out$fix_to_zero$post_check_msg)),
+                      collapse = ",")
+        tmp2 <- strwrap(tmp2,
+                        indent = 2,
+                        exdent = 2)
+        cat(tmp2, sep = "\n")
+        if (isTRUE(lrt_status == 0)) {
+            tmp2 <- paste("- Note that if there are no other warnings or",
+                          "errors, this likelihood ratio test may still",
+                          "be acceptable because the Heywood case",
+                          "does not necessarily mean model misspecification.",
+                          "Nevertheless, it is still advised to check the",
+                          "fit results, which can be inspected by",
+                          "'summary(x$fix_to_zero$fit0)',",
+                          "x being the name of this object.")
+            tmp2 <- strwrap(tmp2,
+                            exdent = 2)
+            cat(tmp2, sep = "\n")
+          }
+      }
 
     invisible(x)
   }

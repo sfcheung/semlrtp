@@ -6,6 +6,11 @@
 #' @details The print method for the
 #' output of [lrtp()].
 #'
+#' Additional diagnostic information
+#' will be printed if one or more
+#' likelihood tests encounter some
+#' errors or warnings.
+#'
 #' @return
 #' `x` is returned invisibly.
 #' Called for its side effect.
@@ -32,7 +37,7 @@
 #' printout. If `"text"`, then the
 #' style in the [summary()]
 #' of the `lavaan`-class object is used.
-#' If `"data.frame"`, then the data
+#' If `"data.frame"` or `"table"`, then the data
 #' frame format of [lavaan::parameterEstimates()]
 #' is used.
 #'
@@ -64,7 +69,7 @@ print.lrtp <- function(x,
                        digits = 3,
                        lrtp_only = TRUE,
                        wald_stats = FALSE,
-                       output = c("text", "data.frame"),
+                       output = c("text", "data.frame", "table"),
                        ...) {
     output <- match.arg(output)
     out <- x
@@ -112,6 +117,49 @@ print.lrtp <- function(x,
     out1$LRTp <- LRTptxt
     out1$Chisq <- Chisqtxt
     out1$LRT <- NULL
+
+    fit0_ok_s <- ifelse(out1$fit0_ok,
+                        "",
+                        "f")
+    fit0_ok_s[is.na(fit0_ok_s)] <- ""
+    out1$fit0_ok <- NULL
+
+    converge_ok_s <- ifelse(out1$converge_ok,
+                            "",
+                            "c")
+    converge_ok_s[is.na(converge_ok_s)] <- ""
+    out1$converge_ok <- NULL
+
+    vcov_ok_s <- ifelse(out1$vcov_ok,
+                        "",
+                        "v")
+    vcov_ok_s[is.na(vcov_ok_s)] <- ""
+    out1$vcov_ok <- NULL
+
+    LRT_ok_s <- ifelse(out1$LRT_ok,
+                       "",
+                       "L")
+    LRT_ok_s[is.na(LRT_ok_s)] <- ""
+    out1$LRT_ok <- NULL
+
+    pc_ok_s <- ifelse(out1$post_check_ok,
+                       "",
+                       "p")
+    pc_ok_s[is.na(pc_ok_s)] <- ""
+    out1$post_check_ok <- NULL
+
+    LRTCode <- paste0(fit0_ok_s,
+                        converge_ok_s,
+                        vcov_ok_s,
+                        LRT_ok_s,
+                        pc_ok_s)
+
+    if (any(LRTCode != "")) {
+        out1$LRTCode <- LRTCode
+      } else {
+        out1$LRT_id <- NULL
+      }
+
     if (lrtp_only) {
         out1 <- out1[did_LRT, ]
       }
@@ -121,7 +169,8 @@ print.lrtp <- function(x,
         out1$ci.lower <- NULL
         out1$ci.upper <- NULL
       }
-    if (output == "data.frame") {
+
+    if (output %in% c("data.frame", "table")) {
         out1 <- data.frame(out1)
         class(out1) <- c("lavaan.data.frame",
                         class(out1))
@@ -133,12 +182,75 @@ print.lrtp <- function(x,
         cat(strwrap("NOTE: No free parameters have LRT p-values.\n"),
             fill = TRUE)
       } else {
-        if (length(LRTNotOK) > 0) {
-        tmp <- paste("NOTE: 'Failed' indicates that LRT p-value is",
-                     "requested but the likelihood ratio test failed.\n")
-        cat(strwrap(tmp),
-            fill = TRUE)
-        }
+        if (!is.null(out1$LRTCode)) {
+            cat("NOTE:\n")
+            tmp <- paste("- 'Failed' indicates that LRT p-value is",
+                        "requested but the likelihood ratio test failed.")
+            cat(strwrap(tmp,
+                        exdent = 2),
+                sep = "\n")
+            cat("- Interpreting the LRTCode:\n")
+            if (any(grepl("f", out1$LRTCode))) {
+                tmp <- paste("  - f: Error in fitting the restricted model.")
+                cat(strwrap(tmp,
+                            indent = 2,
+                            exdent = 4),
+                    sep = "\n")
+              }
+            if (any(grepl("c", out1$LRTCode))) {
+                tmp <- paste("  - c: The restricted model did not converge.")
+                cat(strwrap(tmp,
+                            indent = 2,
+                            exdent = 4),
+                    sep = "\n")
+              }
+            if (any(grepl("v", out1$LRTCode))) {
+                tmp <- paste("  - v: Problems in computing the variance-covariance",
+                             "matrix of the parameters. The restricted",
+                             "model may not be identified.")
+                cat(strwrap(tmp,
+                            indent = 2,
+                            exdent = 4),
+                    sep = "\n")
+              }
+            if (any(grepl("L", out1$LRTCode))) {
+                tmp <- paste("  - L: Error in doing the",
+                             "likelihood ratio test.")
+                cat(strwrap(tmp,
+                            indent = 2,
+                            exdent = 4),
+                    sep = "\n")
+              }
+            pc_failed <- any(grepl("p", out1$LRTCode))
+            if (pc_failed) {
+                tmp <- paste("  - p: The restricted model failed the",
+                             "post.check of lavaan.")
+                cat(strwrap(tmp,
+                            indent = 2,
+                            exdent = 4),
+                    sep = "\n")
+              }
+            if (pc_failed) {
+                tmp <- paste("- Note that if there are no other warnings or",
+                             "errors, the likelihood ratio test may still",
+                             "be acceptable even if failing the post.check.",
+                             "Heywood case",
+                             "does not necessarily mean model misspecification.",
+                             "Nevertheless, it is still advised to check the",
+                             "fit results.")
+                tmp <- strwrap(tmp,
+                               exdent = 2)
+                cat(tmp, sep = "\n")
+              }
+            tmp <- paste("- The detail of a test can be examined by",
+                         "attr(x, 'lrt')$`j`, j being the number in",
+                         "the column LRT_id, and x the name of this",
+                         "object. Typing attr(x, 'lrt') prints",
+                         "all the tests.")
+            cat(strwrap(tmp,
+                        exdent = 2),
+                sep = "\n")
+          }
       }
     invisible(x)
   }
