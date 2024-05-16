@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
                         <h4 data-toc-skip class="author">Shu Fai Cheung
 &amp; Mark Hok Chio Lai</h4>
             
-            <h4 data-toc-skip class="date">2024-05-15</h4>
+            <h4 data-toc-skip class="date">2024-05-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/sfcheung/semlrtp/blob/HEAD/vignettes/semlrtp.Rmd" class="external-link"><code>vignettes/semlrtp.Rmd</code></a></small>
       <div class="d-none name"><code>semlrtp.Rmd</code></div>
@@ -98,8 +98,9 @@ fitted by <code>lavaan</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lavaan.ugent.be" class="external-link">lavaan</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; This is lavaan 0.6-17</span></span>
-<span><span class="co">#&gt; lavaan is FREE software! Please report any bugs.</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sfcheung.github.io/semlrtp/">semlrtp</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; lavaan is FREE software! Please report any bugs.</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sfcheung.github.io/semlrtp/">semlrtp</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="lrt-p-values">LRT <em>p</em>-Values<a class="anchor" aria-label="anchor" href="#lrt-p-values"></a>
@@ -119,7 +120,7 @@ developed to facilitate the use of this <em>p</em>-value.</p>
 </h3>
 <p>This is the sample dataset from the package, with 16 variables and a
 group variable:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">data_sem16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data_sem16</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      x1    x2    x3    x4     x5     x6    x7    x8    x9   x10   x11    x12</span></span>
@@ -142,7 +143,7 @@ group variable:</p>
 </h3>
 <p>This is a model to be fitted, with four latent factors, and a
 structural model for the factors:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span></span>
 <span><span class="st">"</span></span>
 <span><span class="st">f1 =~ x1 + x2 + x3</span></span>
@@ -153,7 +154,7 @@ structural model for the factors:</p>
 <span><span class="st">f4 ~ f3</span></span>
 <span><span class="st">"</span></span></code></pre></div>
 <p>We first fit a model to the whole sample:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">sem</a></span><span class="op">(</span><span class="va">mod</span>,</span>
 <span>           <span class="va">data_sem16</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -166,11 +167,11 @@ structural model for the factors:</p>
 <p>By default, LRT <em>p</em>-values will be computed only for
 regression paths (<code>"~"</code>) and covariances (<code>"~~"</code>),
 excluding variances and error covariances.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_lrtp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <p>By default, the output will be printed in <code>lavaan</code> style,
 and only parameters with LRT <em>p</em>-values are printed:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_lrtp</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Parameter Estimates:</span></span>
@@ -203,7 +204,7 @@ the likelihood ratio test (LRT) <em>p</em>-value (a.k.a. the <span class="math i
 parameter is fitted to zero.</p>
 <p>For example, we fix the path from <code>f2</code> to <code>f3</code>
 to zero and then do an LR test:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_f3_f2</span> <span class="op">&lt;-</span></span>
 <span><span class="st">"</span></span>
 <span><span class="st">f1 =~ x1 + x2 + x3</span></span>
@@ -243,7 +244,7 @@ on the parameterization <span class="citation">(Gonzalez &amp; Griffin,
 2001)</span>.</p>
 <p>For example, we can fit the same model by changing the indicators
 being fixed to 1.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod2</span> <span class="op">&lt;-</span></span>
 <span><span class="st">"</span></span>
 <span><span class="st">f1 =~ x2 + x1 + x3</span></span>
@@ -257,16 +258,17 @@ being fixed to 1.</p>
 <span>            <span class="va">data_sem16</span><span class="op">)</span></span></code></pre></div>
 <p>This model and the previous have exactly identical model fit, as
 expected:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/fitMeasures.html" class="external-link">fitMeasures</a></span><span class="op">(</span><span class="va">fit</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"df"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  chisq     df </span></span>
-<span><span class="co">#&gt; 41.183 50.000</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/fitMeasures.html" class="external-link">fitMeasures</a></span><span class="op">(</span><span class="va">fit2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"df"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 41.183 50.000</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/fitMeasures.html" class="external-link">fitMeasures</a></span><span class="op">(</span><span class="va">fit2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chisq"</span>, <span class="st">"df"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  chisq     df </span></span>
 <span><span class="co">#&gt; 41.183 50.000</span></span></code></pre></div>
 <p>This is the parameter estimates with Wald <em>p</em>-values (only
 those for the regression paths are displayed)</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">parameterEstimates</a></span><span class="op">(</span><span class="va">fit2</span>,</span>
 <span>                   output <span class="op">=</span> <span class="st">"text"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt; Regressions:</span></span>
@@ -279,7 +281,7 @@ those for the regression paths are displayed)</p>
 <p>The Wald <em>p</em>-value is 0.067, even larger than 0.052 in the
 original model.</p>
 <p>However, the LRT <em>p</em>-values are the same:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit2_lrtp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span>
 <span><span class="va">fit2_lrtp</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -311,7 +313,7 @@ parameterization.</p>
 zero, there are parameter for which the LRT <em>p</em>-value cannot be
 computed. For example, suppose we request LRT <em>p</em>-values for
 factor loadings using the argument <code>op</code>:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_lrtp_loadings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lrtp.html">lrtp</a></span><span class="op">(</span><span class="va">fit</span>,</span>
 <span>                          op <span class="op">=</span> <span class="st">"=~"</span><span class="op">)</span></span>
 <span><span class="va">fit_lrtp_loadings</span></span>

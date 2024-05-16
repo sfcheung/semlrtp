@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,38 +54,10 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.1.0" id="semlrtp-0010">semlrtp 0.0.1.0<a class="anchor" aria-label="anchor" href="#semlrtp-0010"></a></h2>
-<ul><li>Initialized the package. (0.0.0.9000)</li>
-<li>Setup <code>pkgdown</code> site. (0.0.0.9001)</li>
-<li>Added a dataset for testing.</li>
-<li>Added <code>free_pars()</code> (an internal function), with tests. (0.0.0.9002)</li>
-<li>Added <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code>, with tests. (0.0.0.9002)</li>
-<li>Added <code><a href="../reference/lrt.html">lrt()</a></code>, with tests. (0.0.0.9003)</li>
-<li>Added <code><a href="../reference/lrtp.html">lrtp()</a></code> and its print method, with tests. (0.0.0.9004)</li>
-<li>Added a vignette, <code>Get Started</code>. (0.0.0.9005)</li>
-<li>Fixed issues with vignettes. (0.0.0.9006)</li>
-<li>Moved “TODOs” to issues. (0.0.0.9007)</li>
-<li>By default, the method <code><a href="../reference/print.lrtp.html">print.lrtp()</a></code> will not print Wald statistics (z statistics, Wald p-values, Wald confidence intervals). (0.0.0.9008)</li>
-<li>The chi-squared difference for each LRT <em>p</em>-value will also be printed. (0.0.0.9009)</li>
-<li>Fixed a bug with inserting columns in <code><a href="../reference/lrtp.html">lrtp()</a></code>. (0.0.0.9010)</li>
-<li>
-<code>free_pars()</code> can identify apparently free parameters which are actually fixed due to an equality constraint on a constant. (0.0.0.9011)</li>
-<li>Updated <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code> to check whether the requested parameter is successfully fixed to zero. (0.0.0.9012)</li>
-<li>Updated <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code> to handle parameters involved in internal a equality constraint (e.g, constrained to be equal between groups by the <code>group.equal</code> argument of <code><a href="https://rdrr.io/pkg/lavaan/man/lavaan.html" class="external-link">lavaan::lavaan()</a></code>). (0.0.0.9013)</li>
-<li>Updated <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code> to handle labelled parameters. (0.0.0.9014)</li>
-<li>Updated <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code> to check the VCOV of the modified model. If failed to get VCOV, the modified model may not be identified. (0.0.0.9015)</li>
-<li>Updated <code><a href="../reference/lrt.html">lrt()</a></code>, <code><a href="../reference/lrtp.html">lrtp()</a></code>, and <code><a href="../reference/print.lrtp.html">print.lrtp()</a></code> to handle error in doing the LR test. (0.0.0.9016)</li>
-<li>Updated the theme of the <code>pkgdown</code> site. (0.0.0.9017)</li>
-<li>Revised several functions such that problems in fitting the modified model are recorded, instead of raising an error. The structure of the output of <code><a href="../reference/lrt.html">lrt()</a></code> and <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code> are also modified to include indicators of error. To avoid unnecessarily storing many copies of the original fit object, a change is made in the output of <code><a href="../reference/lrt.html">lrt()</a></code> which will some times break code for previous versions of <code>semlrtp</code>. (0.0.0.9018)</li>
-<li>
-<code>no_variances</code> in <code><a href="../reference/lrtp.html">lrtp()</a></code> revised to handle only variances, not error variances. (0.0.0.9019)</li>
-<li>Fixed a bug with labelled variance. (0.0.0.9020)</li>
-<li>Added an internal function <code>lhs_to_par_id()</code> for converting model syntax string to parameter table row number. (0.0.0.9021)</li>
-<li>Updated <code><a href="../reference/lrt.html">lrt()</a></code> to allow users to use model syntax or parameter label to specify the target parameter. (0.0.0.9022)</li>
-<li>Added a print method for the output of <code><a href="../reference/lrt.html">lrt()</a></code>. (0.0.0.9023)</li>
-<li>Updated the workflow appendix. (0.0.0.9024)</li>
-<li>Updated the <code>Get Started</code> vignette. (0.0.0.9025)</li>
-<li>Make the package nearly CRAN-ready. (0.0.1.0)</li>
+<h2 class="pkg-version" data-toc-text="0.0.1.1" id="semlrtp-0011">semlrtp 0.0.1.1<a class="anchor" aria-label="anchor" href="#semlrtp-0011"></a></h2>
+<ul><li>First stable release. (0.0.1.0)</li>
+<li>Revised <code><a href="../reference/fix_to_zero.html">fix_to_zero()</a></code>, <code><a href="../reference/lrt.html">lrt()</a></code>, and <code><a href="../reference/lrtp.html">lrtp()</a></code> to accept a solution that failed the post.check test of <code>lavaan</code>. (0.0.1.1)</li>
+<li>Detailed diagnostic information and instruction will be provided if any of the likelihood ratio tests encountered any error or warning. (0.0.1.1)</li>
 </ul></div>
   </main></div>
 

@@ -12,7 +12,7 @@ an lrtp-class object."><!-- mathjax --><script src="https://cdnjs.cloudflare.com
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@ an <code>lrtp</code>-class object.</p>
 <span>  digits <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  lrtp_only <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  wald_stats <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"data.frame"</span><span class="op">)</span>,</span>
+<span>  output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"data.frame"</span>, <span class="st">"table"</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -107,7 +107,7 @@ using <code><a href="lrtp.html">lrtp()</a></code>.</p></dd>
 printout. If <code>"text"</code>, then the
 style in the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
 of the <code>lavaan</code>-class object is used.
-If <code>"data.frame"</code>, then the data
+If <code>"data.frame"</code> or <code>"table"</code>, then the data
 frame format of <code><a href="https://rdrr.io/pkg/lavaan/man/parameterEstimates.html" class="external-link">lavaan::parameterEstimates()</a></code>
 is used.</p></dd>
 
@@ -128,6 +128,10 @@ Called for its side effect.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The print method for the
 output of <code><a href="lrtp.html">lrtp()</a></code>.</p>
+<p>Additional diagnostic information
+will be printed if one or more
+likelihood tests encounter some
+errors or warnings.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
