@@ -50,7 +50,7 @@
 #' message in refitting the model
 #' (`ptable0`), if
 #' any. If
-#' no error, it is `NA``.
+#' no error, it is `NA`.
 #'
 #' - `vcov_ok` is `TRUE` if the
 #' variance-covariance matrix of the
@@ -73,7 +73,13 @@
 #' - `post_check_passed`: Whether the
 #' solution of the modified model
 #' (`ptable0`) passed
-#' `lavaan`s post check.
+#' `lavaan`'s post check.
+#'
+#' - `post_check_msg`: If the solution
+#' failed `lavaan`'s post check,
+#' it stores the warning message.
+#' If the solution passes the check,
+#' it is `NA`.
 #'
 #' - `fit_not_ok`: If the fit failed
 #' for some reasons, the fit object,
