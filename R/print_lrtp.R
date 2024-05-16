@@ -6,6 +6,11 @@
 #' @details The print method for the
 #' output of [lrtp()].
 #'
+#' Additional diagnostic information
+#' will be printed if one or more
+#' likelihood tests encounter some
+#' errors or warnings.
+#'
 #' @return
 #' `x` is returned invisibly.
 #' Called for its side effect.
@@ -32,7 +37,7 @@
 #' printout. If `"text"`, then the
 #' style in the [summary()]
 #' of the `lavaan`-class object is used.
-#' If `"data.frame"`, then the data
+#' If `"data.frame"` or `"table"`, then the data
 #' frame format of [lavaan::parameterEstimates()]
 #' is used.
 #'
@@ -64,7 +69,7 @@ print.lrtp <- function(x,
                        digits = 3,
                        lrtp_only = TRUE,
                        wald_stats = FALSE,
-                       output = c("text", "data.frame"),
+                       output = c("text", "data.frame", "table"),
                        ...) {
     output <- match.arg(output)
     out <- x
@@ -165,7 +170,7 @@ print.lrtp <- function(x,
         out1$ci.upper <- NULL
       }
 
-    if (output == "data.frame") {
+    if (output %in% c("data.frame", "table")) {
         out1 <- data.frame(out1)
         class(out1) <- c("lavaan.data.frame",
                         class(out1))
