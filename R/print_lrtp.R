@@ -265,6 +265,33 @@ print.lrtp <- function(x,
                           exdent = 2)
             cat(tmp, sep = "\n")
           }
+        lrt_heading <- sapply(lrt_out,
+            function(x) tryCatch(attr(x$lrt, "heading")))
+        s2000 <- ifelse(any(grepl("satorra.2000", lrt_heading, fixed = TRUE)),
+                        "satorra.2000",
+                        NA)
+        sb2001 <- ifelse(any(grepl("satorra.bentler.2001", lrt_heading, fixed = TRUE)),
+                         "satorra.bentler.2001",
+                         NA)
+        sb2010 <- ifelse(any(grepl("satorra.bentler.2010", lrt_heading, fixed = TRUE)),
+                         "satorra.bentler.2010",
+                         NA)
+        if (any(is.character(s2000),
+                is.character(sb2001),
+                is.character(sb2010), na.rm = TRUE)) {
+            tmp <- c(s2000, sb2001, sb2010)
+            tmp <- tmp[!is.na(tmp)]
+            len1 <- length(tmp) == 1
+            tmp <- paste0("- ",
+                          ifelse(len1,
+                                 "This method was",
+                                 "THese methods were"),
+                          " used in one or more of the likelihood ratio test(s): ",
+                          paste(tmp, collapse = ", "))
+            tmp <- strwrap(tmp,
+                           exdent = 2)
+            cat(tmp, sep = "\n")
+          }
       }
     invisible(x)
   }

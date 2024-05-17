@@ -74,6 +74,30 @@
 #' to `"standard"` if it is `"bootstrap"`
 #' in `fit`, to speed up the computation.
 #'
+#' @param LRT_method String. Passed to
+#' the `method` argument of
+#' [lavaan::lavTestLRT()]. Default is
+#' `"default"`, and let
+#' [lavaan::lavTestLRT()] decide the
+#' method based on `fit`.
+#'
+#' @param scaled.shifted Logical.
+#' Used when the method used in
+#' [lavaan::lavTestLRT()] is
+#' `"satorra.2000"`. Default is
+#' `TRUE` and a scaled and shifted
+#' test statistic is used, the same
+#' default of [lavaan::lavTestLRT()].
+#'
+#' @param fallback_method The default
+#' method of [lavaan::lavTestLRT()],
+#' `"satorra.bentler.2001"`,
+#' may sometimes fail. If failed,
+#' this function will call
+#' [lavaan::lavTestLRT()]
+#' again using `fallback_method`. which
+#' is `"satorra.2000"` by default.
+#'
 #' @param ... Optional arguments to be
 #' passed to [lavaan::parameterEstimates()].
 #'
@@ -107,6 +131,9 @@ lrtp <- function(fit,
                  no_error_variances = TRUE,
                  no_error_covariances = TRUE,
                  se_keep_bootstrap = FALSE,
+                 LRT_method = "default",
+                 scaled.shifted = TRUE,
+                 fallback_method = "satorra.2000",
                  ...) {
     ids <- free_pars(fit = fit,
                      op = op,
@@ -116,7 +143,10 @@ lrtp <- function(fit,
     if (length(ids) > 0) {
         lrt_out <- lapply(ids, lrt,
                           fit = fit,
-                          se_keep_bootstrap = se_keep_bootstrap)
+                          se_keep_bootstrap = se_keep_bootstrap,
+                          LRT_method = LRT_method,
+                          scaled.shifted = scaled.shifted,
+                          fallback_method = fallback_method)
         names(lrt_out) <- ids
       } else {
         lrt_out <- NULL
