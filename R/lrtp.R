@@ -64,6 +64,16 @@
 #' If `TRUE`, the default, then all
 #' free error covariances are excluded.
 #'
+#' @param se_keep_bootstrap Logical.
+#' If `TRUE` and `fit` used
+#' bootstrapping standard error
+#' (with `se = "bootstrap"`), bootstrapping
+#' will also be use in fitting the
+#' restricted model. If `FALSE`, the
+#' default, then `se` will be set
+#' to `"standard"` if it is `"bootstrap"`
+#' in `fit`, to speed up the computation.
+#'
 #' @param ... Optional arguments to be
 #' passed to [lavaan::parameterEstimates()].
 #'
@@ -96,6 +106,7 @@ lrtp <- function(fit,
                  no_variances = TRUE,
                  no_error_variances = TRUE,
                  no_error_covariances = TRUE,
+                 se_keep_bootstrap = FALSE,
                  ...) {
     ids <- free_pars(fit = fit,
                      op = op,
@@ -104,7 +115,8 @@ lrtp <- function(fit,
                      no_error_covariances = no_error_covariances)
     if (length(ids) > 0) {
         lrt_out <- lapply(ids, lrt,
-                          fit = fit)
+                          fit = fit,
+                          se_keep_bootstrap = se_keep_bootstrap)
         names(lrt_out) <- ids
       } else {
         lrt_out <- NULL
