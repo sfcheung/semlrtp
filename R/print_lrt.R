@@ -106,6 +106,17 @@ print.lrt <- function(x,
             cat(tmp2, sep = "\n")
           }
       }
+    if (out$fix_to_zero$se_force_standard) {
+        tmp <- paste("- Bootstrapping standard errors were requested",
+                     "in the original model but was changed to",
+                     "'standard' when fitting the restricted model.",
+                     "Set se_keep_bootstrap to TRUE to keep using",
+                     "bootstrapping standard errors but note that",
+                     "this can take a long time to run.")
+        tmp <- strwrap(tmp,
+                       exdent = 2)
+        cat(tmp, sep = "\n")
+      }
 
     invisible(x)
   }

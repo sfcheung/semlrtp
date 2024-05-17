@@ -88,6 +88,40 @@
 #' be either the group label or the
 #' group number of the parameter.
 #'
+#' @param se_keep_bootstrap Logical.
+#' If `TRUE` and `fit` used
+#' bootstrapping standard error
+#' (with `se = "bootstrap"`), bootstrapping
+#' will also be use in fitting the
+#' restricted model. If `FALSE`, the
+#' default, then `se` will be set
+#' to `"standard"` if it is `"bootstrap"`
+#' in `fit`, to speed up the computation.
+#'
+#' @param LRT_method String. Passed to
+#' the `method` argument of
+#' [lavaan::lavTestLRT()]. Default is
+#' `"default"`, and let
+#' [lavaan::lavTestLRT()] decide the
+#' method based on `fit`.
+#'
+#' @param scaled.shifted Logical.
+#' Used when the method used in
+#' [lavaan::lavTestLRT()] is
+#' `"satorra.2000"`. Default is
+#' `TRUE` and a scaled and shifted
+#' test statistic is used, the same
+#' default of [lavaan::lavTestLRT()].
+#'
+#' @param fallback_method The default
+#' method of [lavaan::lavTestLRT()],
+#' `"satorra.bentler.2001"`,
+#' may sometimes fail. If failed,
+#' this function will call
+#' [lavaan::lavTestLRT()]
+#' again using `fallback_method`. which
+#' is `"satorra.2000"` by default.
+#'
 #' @seealso [print.lrt()] for its
 #' print-method, and [lrtp()] for the
 #' main function.
@@ -119,7 +153,11 @@
 lrt <- function(fit,
                 par_id,
                 store_fit = FALSE,
-                group = NULL) {
+                group = NULL,
+                se_keep_bootstrap = FALSE,
+                LRT_method = "default",
+                scaled.shifted = TRUE,
+                fallback_method = "satorra.2000") {
     if (isFALSE(inherits(fit, "lavaan"))) {
         stop("The fit object is not a lavaan object.")
       }
@@ -132,7 +170,8 @@ lrt <- function(fit,
                                 group = group)
       }
     fit_i <- fix_to_zero(fit,
-                         par_id = par_id)
+                         par_id = par_id,
+                         se_keep_bootstrap = se_keep_bootstrap)
     fit0 <- fit_i$fit0
     lrt_out <- NA
     lrt_msg <- NA
@@ -142,9 +181,24 @@ lrt <- function(fit,
     # - DF change > 1 and the par is not a variance
     if (inherits(fit0, "lavaan")) {
         lrt_msg <- tryCatch(lrt_out <- lavaan::lavTestLRT(fit,
-                                                          fit0),
+                                                          fit0,
+                                                          method = LRT_method,
+                                                          scaled.shifted = scaled.shifted),
                                error = function(e) e,
                                warning = function(w) w)
+        if (inherits(lrt_msg, "warning")) {
+            tmp <- as.character(lrt_msg)
+            # Satorra-Bentler 2001 failed. Use Satorra 2000
+            if (grepl("scaling factor is negative",
+                      tmp, fixed = TRUE)) {
+                lrt_msg <- tryCatch(lrt_out <-  lavaan::lavTestLRT(fit,
+                                                                   fit0,
+                                                                   method = fallback_method,
+                                                                   scaled.shifted = scaled.shifted),
+                                      error = function(e) e,
+                                      warning = function(w) w)
+              }
+          }
       }
     lrt_status <- c(NotOK = -1)
     # lrt_out is NA if

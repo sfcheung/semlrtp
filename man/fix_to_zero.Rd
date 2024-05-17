@@ -4,7 +4,7 @@
 \alias{fix_to_zero}
 \title{Fix a Free Parameter To Zero And Fit a Model Again}
 \usage{
-fix_to_zero(fit, par_id, store_fit = FALSE)
+fix_to_zero(fit, par_id, store_fit = FALSE, se_keep_bootstrap = FALSE)
 }
 \arguments{
 \item{fit}{A \code{lavaan}-class object.}
@@ -17,6 +17,16 @@ fixed.}
 \item{store_fit}{Logical. If \code{TRUE},
 \code{fit} will be stored in the output.
 Default is \code{FALSE}.}
+
+\item{se_keep_bootstrap}{Logical.
+If \code{TRUE} and \code{fit} used
+bootstrapping standard error
+(with \code{se = "bootstrap"}), bootstrapping
+will also be use in fitting the
+restricted model. If \code{FALSE}, the
+default, then \code{se} will be set
+to \code{"standard"} if it is \code{"bootstrap"}
+in \code{fit}, to speed up the computation.}
 }
 \value{
 A \code{fix_to_zero}-class object, which
@@ -91,6 +101,13 @@ covariance(s) is/are also fitted to
 zero and so the difference in
 model degrees of freedom can be
 legitimately greater than one.
+\item \code{se_force_standard}: Whether
+\code{se} was forced to be \code{"standard"}
+even if it is \code{"bootstrap"} in
+\code{fit}. If \code{FALSE}, then either
+\code{se} is not \code{"bootstrap"} in
+\code{fit} or it was not changed in
+fitting the restricted model.
 }
 }
 \description{
