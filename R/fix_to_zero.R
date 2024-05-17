@@ -98,6 +98,14 @@
 #' model degrees of freedom can be
 #' legitimately greater than one.
 #'
+#' - `se_force_standard`: Whether
+#' `se` was forced to be `"standard"`
+#' even if it is `"bootstrap"` in
+#' `fit`. If `FALSE`, then either
+#' `se` is not `"bootstrap"` in
+#' `fit` or it was not changed in
+#' fitting the restricted model.
+#'
 #' @param fit A `lavaan`-class object.
 #'
 #' @param par_id An integer. The row
@@ -108,6 +116,16 @@
 #' @param store_fit Logical. If `TRUE`,
 #' `fit` will be stored in the output.
 #' Default is `FALSE`.
+#'
+#' @param se_keep_bootstrap Logical.
+#' If `TRUE` and `fit` used
+#' bootstrapping standard error
+#' (with `se = "bootstrap"`), bootstrapping
+#' will also be use in fitting the
+#' restricted model. If `FALSE`, the
+#' default, then `se` will be set
+#' to `"standard"` if it is `"bootstrap"`
+#' in `fit`, to speed up the computation.
 #'
 #' @author Shu Fai Cheung <https://orcid.org/0000-0002-9871-9448>
 #'
@@ -130,7 +148,8 @@
 
 fix_to_zero <- function(fit,
                         par_id,
-                        store_fit = FALSE) {
+                        store_fit = FALSE,
+                        se_keep_bootstrap = FALSE) {
     if (isFALSE(inherits(fit, "lavaan"))) {
         stop("The fit object is not a lavaan object.")
       }
@@ -181,12 +200,17 @@ fix_to_zero <- function(fit,
       } else {
         is_variance <- FALSE
       }
-
     slot_opt <- fit@Options
     slot_pat <- fit@ParTable
     slot_mod <- fit@Model
     slot_smp <- fit@SampleStats
     slot_dat <- fit@Data
+
+    se_force_standard <- FALSE
+    if (("bootstrap" %in% slot_opt$se) && !se_keep_bootstrap) {
+        se_force_standard <- TRUE
+        slot_opt$se <- "standard"
+      }
 
     fit0_error <- tryCatch(suppressWarnings(fit_i <- lavaan::lavaan(
                                 model = ptable_i,
@@ -291,7 +315,8 @@ fix_to_zero <- function(fit,
                                         fit0_check_output,
                                         NA),
                 fit_not_ok = fit_not_ok,
-                df_diff_one = fit0_df_diff_one)
+                df_diff_one = fit0_df_diff_one,
+                se_force_standard = se_force_standard)
     if (store_fit) {
         out$fit1 <- fit
       }
