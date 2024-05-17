@@ -4,7 +4,7 @@
 \alias{lrt}
 \title{Fix a Free Parameter to Zero and Do an LR Test}
 \usage{
-lrt(fit, par_id, store_fit = FALSE, group = NULL)
+lrt(fit, par_id, store_fit = FALSE, group = NULL, se_keep_bootstrap = FALSE)
 }
 \arguments{
 \item{fit}{A \code{lavaan}-class object.}
@@ -29,6 +29,16 @@ is used in \code{par_id} and the model
 is a multigroup model, this should
 be either the group label or the
 group number of the parameter.}
+
+\item{se_keep_bootstrap}{Logical.
+If \code{TRUE} and \code{fit} used
+bootstrapping standard error
+(with \code{se = "bootstrap"}), bootstrapping
+will also be use in fitting the
+restricted model. If \code{FALSE}, the
+default, then \code{se} will be set
+to \code{"standard"} if it is \code{"bootstrap"}
+in \code{fit}, to speed up the computation.}
 }
 \value{
 A \code{lrt}-class object, which is a

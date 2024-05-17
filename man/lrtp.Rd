@@ -10,6 +10,7 @@ lrtp(
   no_variances = TRUE,
   no_error_variances = TRUE,
   no_error_covariances = TRUE,
+  se_keep_bootstrap = FALSE,
   ...
 )
 }
@@ -36,6 +37,16 @@ free error variances are excluded.}
 \item{no_error_covariances}{Logical.
 If \code{TRUE}, the default, then all
 free error covariances are excluded.}
+
+\item{se_keep_bootstrap}{Logical.
+If \code{TRUE} and \code{fit} used
+bootstrapping standard error
+(with \code{se = "bootstrap"}), bootstrapping
+will also be use in fitting the
+restricted model. If \code{FALSE}, the
+default, then \code{se} will be set
+to \code{"standard"} if it is \code{"bootstrap"}
+in \code{fit}, to speed up the computation.}
 
 \item{...}{Optional arguments to be
 passed to \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}.}

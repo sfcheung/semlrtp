@@ -251,6 +251,20 @@ print.lrtp <- function(x,
                         exdent = 2),
                 sep = "\n")
           }
+        lrt_out <- attr(out, "lrt")
+        se_force_standard_vector <- sapply(lrt_out,
+            function(x) x$fix_to_zero$se_force_standard)
+        if (any(se_force_standard_vector)) {
+            tmp <- paste("- Bootstrapping standard errors were requested",
+                        "in the original model but was changed to",
+                        "'standard' when fitting the restricted model.",
+                        "Set se_keep_bootstrap to TRUE to keep using",
+                        "bootstrapping standard errors but note that",
+                        "this can take a long time to run.")
+            tmp <- strwrap(tmp,
+                          exdent = 2)
+            cat(tmp, sep = "\n")
+          }
       }
     invisible(x)
   }
