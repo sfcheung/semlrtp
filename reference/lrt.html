@@ -14,7 +14,7 @@ likelihood ratio test."><!-- mathjax --><script src="https://cdnjs.cloudflare.co
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,16 @@ likelihood ratio test.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lrt</span><span class="op">(</span><span class="va">fit</span>, <span class="va">par_id</span>, store_fit <span class="op">=</span> <span class="cn">FALSE</span>, group <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lrt</span><span class="op">(</span></span>
+<span>  <span class="va">fit</span>,</span>
+<span>  <span class="va">par_id</span>,</span>
+<span>  store_fit <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  group <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  se_keep_bootstrap <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  LRT_method <span class="op">=</span> <span class="st">"default"</span>,</span>
+<span>  scaled.shifted <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  fallback_method <span class="op">=</span> <span class="st">"satorra.2000"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -100,6 +109,48 @@ is used in <code>par_id</code> and the model
 is a multigroup model, this should
 be either the group label or the
 group number of the parameter.</p></dd>
+
+
+<dt>se_keep_bootstrap</dt>
+<dd><p>Logical.
+If <code>TRUE</code> and <code>fit</code> used
+bootstrapping standard error
+(with <code>se = "bootstrap"</code>), bootstrapping
+will also be use in fitting the
+restricted model. If <code>FALSE</code>, the
+default, then <code>se</code> will be set
+to <code>"standard"</code> if it is <code>"bootstrap"</code>
+in <code>fit</code>, to speed up the computation.</p></dd>
+
+
+<dt>LRT_method</dt>
+<dd><p>String. Passed to
+the <code>method</code> argument of
+<code><a href="https://rdrr.io/pkg/lavaan/man/lavTestLRT.html" class="external-link">lavaan::lavTestLRT()</a></code>. Default is
+<code>"default"</code>, and let
+<code><a href="https://rdrr.io/pkg/lavaan/man/lavTestLRT.html" class="external-link">lavaan::lavTestLRT()</a></code> decide the
+method based on <code>fit</code>.</p></dd>
+
+
+<dt>scaled.shifted</dt>
+<dd><p>Logical.
+Used when the method used in
+<code><a href="https://rdrr.io/pkg/lavaan/man/lavTestLRT.html" class="external-link">lavaan::lavTestLRT()</a></code> is
+<code>"satorra.2000"</code>. Default is
+<code>TRUE</code> and a scaled and shifted
+test statistic is used, the same
+default of <code><a href="https://rdrr.io/pkg/lavaan/man/lavTestLRT.html" class="external-link">lavaan::lavTestLRT()</a></code>.</p></dd>
+
+
+<dt>fallback_method</dt>
+<dd><p>The default
+method of <code><a href="https://rdrr.io/pkg/lavaan/man/lavTestLRT.html" class="external-link">lavaan::lavTestLRT()</a></code>,
+<code>"satorra.bentler.2001"</code>,
+may sometimes fail. If failed,
+this function will call
+<code><a href="https://rdrr.io/pkg/lavaan/man/lavTestLRT.html" class="external-link">lavaan::lavTestLRT()</a></code>
+again using <code>fallback_method</code>. which
+is <code>"satorra.2000"</code> by default.</p></dd>
 
 </dl></div>
     <div class="section level2">
