@@ -4,7 +4,16 @@
 \alias{lrt}
 \title{Fix a Free Parameter to Zero and Do an LR Test}
 \usage{
-lrt(fit, par_id, store_fit = FALSE, group = NULL, se_keep_bootstrap = FALSE)
+lrt(
+  fit,
+  par_id,
+  store_fit = FALSE,
+  group = NULL,
+  se_keep_bootstrap = FALSE,
+  LRT_method = "default",
+  scaled.shifted = TRUE,
+  fallback_method = "satorra.2000"
+)
 }
 \arguments{
 \item{fit}{A \code{lavaan}-class object.}
@@ -39,6 +48,30 @@ restricted model. If \code{FALSE}, the
 default, then \code{se} will be set
 to \code{"standard"} if it is \code{"bootstrap"}
 in \code{fit}, to speed up the computation.}
+
+\item{LRT_method}{String. Passed to
+the \code{method} argument of
+\code{\link[lavaan:lavTestLRT]{lavaan::lavTestLRT()}}. Default is
+\code{"default"}, and let
+\code{\link[lavaan:lavTestLRT]{lavaan::lavTestLRT()}} decide the
+method based on \code{fit}.}
+
+\item{scaled.shifted}{Logical.
+Used when the method used in
+\code{\link[lavaan:lavTestLRT]{lavaan::lavTestLRT()}} is
+\code{"satorra.2000"}. Default is
+\code{TRUE} and a scaled and shifted
+test statistic is used, the same
+default of \code{\link[lavaan:lavTestLRT]{lavaan::lavTestLRT()}}.}
+
+\item{fallback_method}{The default
+method of \code{\link[lavaan:lavTestLRT]{lavaan::lavTestLRT()}},
+\code{"satorra.bentler.2001"},
+may sometimes fail. If failed,
+this function will call
+\code{\link[lavaan:lavTestLRT]{lavaan::lavTestLRT()}}
+again using \code{fallback_method}. which
+is \code{"satorra.2000"} by default.}
 }
 \value{
 A \code{lrt}-class object, which is a
