@@ -43,6 +43,26 @@ navbar:
 #      - text: Title
 #        href: articles/doc4.html
 
+reference:
+- title: Main Functions
+  desc:  >
+    Compute LRT p-values.
+- contents:
+  - lrtp
+- title: Helper functions
+- contents:
+  - lrt
+  - fix_to_zero
+- title: Methods
+- contents:
+  - print.lrt
+  - print.lrtp
+- title: Datasets
+  desc: Datasets used in examples.
+- contents:
+  - has_keyword("datasets")
+
+
 # reference:
 # - title: Section Title
 #   desc:  >
