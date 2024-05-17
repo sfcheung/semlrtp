@@ -88,6 +88,16 @@
 #' be either the group label or the
 #' group number of the parameter.
 #'
+#' @param se_keep_bootstrap Logical.
+#' If `TRUE` and `fit` used
+#' bootstrapping standard error
+#' (with `se = "bootstrap"`), bootstrapping
+#' will also be use in fitting the
+#' restricted model. If `FALSE`, the
+#' default, then `se` will be set
+#' to `"standard"` if it is `"bootstrap"`
+#' in `fit`, to speed up the computation.
+#'
 #' @seealso [print.lrt()] for its
 #' print-method, and [lrtp()] for the
 #' main function.
@@ -119,7 +129,8 @@
 lrt <- function(fit,
                 par_id,
                 store_fit = FALSE,
-                group = NULL) {
+                group = NULL,
+                se_keep_bootstrap = FALSE) {
     if (isFALSE(inherits(fit, "lavaan"))) {
         stop("The fit object is not a lavaan object.")
       }
@@ -132,7 +143,8 @@ lrt <- function(fit,
                                 group = group)
       }
     fit_i <- fix_to_zero(fit,
-                         par_id = par_id)
+                         par_id = par_id,
+                         se_keep_bootstrap = se_keep_bootstrap)
     fit0 <- fit_i$fit0
     lrt_out <- NA
     lrt_msg <- NA
