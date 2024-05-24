@@ -1,4 +1,4 @@
-# semlrtp 0.0.1.4
+# semlrtp 0.0.1.5
 
 - First stable release. (0.0.1.0)
 - Revised `fix_to_zero()`, `lrt()`, and
@@ -20,3 +20,4 @@
   with models fitted by methods like
   `MLR` and `MLM`. (0.0.1.3)
 - Updated the `pkgdown` site. (0.0.1.4)
+- Minor change in README.md. (0.0.1.5)
