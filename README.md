@@ -6,9 +6,9 @@
 [![R-CMD-check](https://github.com/sfcheung/semlrtp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/semlrtp/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.0.1.5, updated on 2024-05-24, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
+(Version 0.0.1.6, updated on 2024-05-25, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
 
-# semlrtp: Likelihood Ratio Test p-Values for Structural Equation Models
+# semlrtp: Likelihood Ratio Test p-Values for Structural Equation Models <img src="man/figures/logo.png" align="right" height="150" />
 
 This package includes is used for computing *LRT* *p*-*values*
 for free parameters
