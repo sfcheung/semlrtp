@@ -1,4 +1,4 @@
-# semlrtp 0.0.1.7
+# semlrtp 0.0.1.8
 
 - First stable release. (0.0.1.0)
 - Revised `fix_to_zero()`, `lrt()`, and
@@ -24,3 +24,6 @@
 - Added a logo. (0.0.1.6)
 - Added support for user-defined
   parameters. (0.0.1.7)
+- Added support for parallel processing
+  in computing LRT *p*-values.
+  (0.0.1.8)
