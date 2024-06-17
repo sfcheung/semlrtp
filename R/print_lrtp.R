@@ -76,6 +76,7 @@ print.lrtp <- function(x,
     tmp <- class(out)
     class(out) <- class(out)[-which(tmp == "lrtp")]
     did_LRT <- !is.na(out$LRT)
+    user_only <- identical(unique(out$op[did_LRT]), ":=")
     LRTstatus <- out$LRT
     LRTNotOK <- which(LRTstatus != 0)
     LRTp0 <- out$LRTp
@@ -159,8 +160,8 @@ print.lrtp <- function(x,
       } else {
         out1$LRT_id <- NULL
       }
-
-    if (lrtp_only) {
+    if (lrtp_only && !user_only) {
+        # Delete rows later if user_only
         out1 <- out1[did_LRT, ]
       }
     if (!wald_stats) {
@@ -177,6 +178,18 @@ print.lrtp <- function(x,
       }
     pout <- utils::capture.output(print(out1,
                                         nd = digits))
+    # Delete rows here if user_only
+    if (user_only) {
+        tmp1 <- which(grepl("Group 1", pout, fixed = TRUE))
+        tmp2 <- which(grepl("Latent", pout, fixed = TRUE))
+        tmp3 <- which(grepl("Regression", pout, fixed = TRUE))
+        tmp4 <- which(grepl("Variance", pout, fixed = TRUE))
+        tmp5 <- which(grepl("Intercept", pout, fixed = TRUE))
+        tmp6 <- which(grepl("Threshold", pout, fixed = TRUE))
+        tmpx <- which(grepl("Defined Parameters:", pout, fixed = TRUE))
+        tmp0 <- sort(c(tmp1, tmp2, tmp3, tmp4, tmp5, tmp6))[1]
+        pout <- pout[-(tmp0:(tmpx - 1))]
+      }
     cat(pout, sep = "\n")
     if (!any(did_LRT)) {
         cat(strwrap("NOTE: No free parameters have LRT p-values.\n"),

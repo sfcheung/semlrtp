@@ -91,7 +91,8 @@ free_pars <- function(fit,
     ids_error_covariances <- which(ids_error_covariances)
     ids_se_na <- which(is.na(ptable$se))
     ids_labelled_constrained <- ids_labelled_constrained_const(ptable)
-    i <- intersect(which((ptable$free > 0)), ids_op)
+    i <- intersect(c(which(ptable$free > 0),
+                     which(ptable$op == ":=")) , ids_op)
     if (no_variances) {
         i <- setdiff(i, ids_variances)
       }
