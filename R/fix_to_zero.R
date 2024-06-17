@@ -154,8 +154,11 @@ fix_to_zero <- function(fit,
         stop("The fit object is not a lavaan object.")
       }
     ptable <- lavaan::parameterTable(fit)
-    if (isFALSE(ptable[par_id, "free"] > 0)) {
-        stop("The target parameter is not free in the object.")
+    # If it is a user-parameter, do not check "free"
+    if (ptable[par_id, "op"] != ":=") {
+        if (isFALSE(ptable[par_id, "free"] > 0)) {
+            stop("The target parameter is not free in the object.")
+          }
       }
     par_lhs <- ptable[par_id, "lhs"]
     par_op <- ptable[par_id, "op"]

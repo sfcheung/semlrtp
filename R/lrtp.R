@@ -266,8 +266,9 @@ lrtp <- function(fit,
 match_ptable_est <- function(ptable,
                              est) {
     if (max(ptable$group) == 1) {
-        est$group <- 1
+        est$group[est$op != ":="] <- 1
       }
+    est$group[est$op == ":="] <- 0
     est$est_id <- seq_len(nrow(est))
     id_out <- merge(ptable[, c("lhs", "op", "rhs", "group", "id")],
                     est[, c("lhs", "op", "rhs", "group", "est_id")])
