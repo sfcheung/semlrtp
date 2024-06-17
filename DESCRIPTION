@@ -1,6 +1,6 @@
 Package: semlrtp
 Title: Likelihood Ratio Test P-Values For Structural Equation Models
-Version: 0.0.1.7
+Version: 0.0.1.8
 Authors@R: c(
     person(given = "Shu Fai",
            family = "Cheung",
@@ -30,7 +30,9 @@ Config/testthat/edition: 3
 Config/testthat/parallel: true
 Imports:
     lavaan,
-    utils
+    utils,
+    parallel,
+    pbapply
 VignetteBuilder: knitr
 URL: https://sfcheung.github.io/semlrtp/
 BugReports: https://github.com/sfcheung/semlrtp/issues

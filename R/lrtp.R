@@ -98,6 +98,33 @@
 #' again using `fallback_method`. which
 #' is `"satorra.2000"` by default.
 #'
+#' @param progress Logical. If `TRUE`,
+#' the default, a progress bar will be
+#' displayed to show the progress (using
+#' the `pbapply` package).
+#'
+#' @param parallel Logical. If `TRUE`,
+#' parallel processing will be used to
+#' compute the LRT *p*-values for
+#' selected parameters. Default is
+#' `FALSE`. Set it to `TRUE` if the
+#' number of selected parameters is
+#' large.
+#'
+#' @param ncores Integer. The number of
+#' CPU cores to use if `parallel` is
+#' `TRUE`. Default is the number of
+#' physical cores (determined by
+#' [parallel::detectCores()]) minus 1.
+#'
+#' @param load_balancing Logical. If
+#' `TRUE`, the default, and `parallel`
+#' is `TRUE`, then load balancing will
+#' be used. May shorten the total
+#' processing time if the time to
+#' compute LRT *p*-values vary a lot
+#' across parameters.
+#'
 #' @param ... Optional arguments to be
 #' passed to [lavaan::parameterEstimates()].
 #'
@@ -134,6 +161,10 @@ lrtp <- function(fit,
                  LRT_method = "default",
                  scaled.shifted = TRUE,
                  fallback_method = "satorra.2000",
+                 progress = TRUE,
+                 parallel = FALSE,
+                 ncores = parallel::detectCores(logical = FALSE) - 1,
+                 load_balancing = TRUE,
                  ...) {
     ids <- free_pars(fit = fit,
                      op = op,
@@ -141,12 +172,62 @@ lrtp <- function(fit,
                      no_error_variances = no_error_variances,
                      no_error_covariances = no_error_covariances)
     if (length(ids) > 0) {
-        lrt_out <- lapply(ids, lrt,
-                          fit = fit,
-                          se_keep_bootstrap = se_keep_bootstrap,
-                          LRT_method = LRT_method,
-                          scaled.shifted = scaled.shifted,
-                          fallback_method = fallback_method)
+        if (parallel) {
+            cl <- parallel::makeCluster(ncores)
+            on.exit(parallel::stopCluster(cl), add = TRUE)
+            tmp <- parallel::clusterEvalQ(cl, library(semlrtp))
+            if (progress) {
+                if (load_balancing) {
+                    pbopt_old <- pbapply::pboptions(use_lb = TRUE)
+                    on.exit(pbapply::pboptions(pbopt_old), add = TRUE)
+                  }
+                lrt_out <- pbapply::pblapply(ids, lrt,
+                                  fit = fit,
+                                  se_keep_bootstrap = se_keep_bootstrap,
+                                  LRT_method = LRT_method,
+                                  scaled.shifted = scaled.shifted,
+                                  fallback_method = fallback_method,
+                                  cl = cl)
+              } else {
+                if (load_balancing) {
+                    lrt_out <- parallel::parLapplyLB(cl = cl,
+                                      X = ids,
+                                      fun = lrt,
+                                      fit = fit,
+                                      se_keep_bootstrap = se_keep_bootstrap,
+                                      LRT_method = LRT_method,
+                                      scaled.shifted = scaled.shifted,
+                                      fallback_method = fallback_method,
+                                      chunk.size = 1)
+                  } else {
+                    lrt_out <- parallel::parLapply(cl = cl,
+                                      X = ids,
+                                      fun = lrt,
+                                      fit = fit,
+                                      se_keep_bootstrap = se_keep_bootstrap,
+                                      LRT_method = LRT_method,
+                                      scaled.shifted = scaled.shifted,
+                                      fallback_method = fallback_method)
+                  }
+              }
+          } else {
+            # Serial
+            if (progress) {
+                lrt_out <- pbapply::pblapply(ids, lrt,
+                                  fit = fit,
+                                  se_keep_bootstrap = se_keep_bootstrap,
+                                  LRT_method = LRT_method,
+                                  scaled.shifted = scaled.shifted,
+                                  fallback_method = fallback_method)
+              } else {
+                lrt_out <- lapply(ids, lrt,
+                                  fit = fit,
+                                  se_keep_bootstrap = se_keep_bootstrap,
+                                  LRT_method = LRT_method,
+                                  scaled.shifted = scaled.shifted,
+                                  fallback_method = fallback_method)
+              }
+          }
         names(lrt_out) <- ids
       } else {
         lrt_out <- NULL
