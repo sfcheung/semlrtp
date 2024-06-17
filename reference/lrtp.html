@@ -16,7 +16,7 @@ a lavaan output."><meta property="og:image" content="https://sfcheung.github.io/
     
     <a class="navbar-brand me-2" href="../index.html">semlrtp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.1.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,6 +79,10 @@ a <code>lavaan</code> output.</p>
 <span>  LRT_method <span class="op">=</span> <span class="st">"default"</span>,</span>
 <span>  scaled.shifted <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fallback_method <span class="op">=</span> <span class="st">"satorra.2000"</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  ncores <span class="op">=</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span>logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>,</span>
+<span>  load_balancing <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -158,6 +162,41 @@ this function will call
 <code><a href="https://rdrr.io/pkg/lavaan/man/lavTestLRT.html" class="external-link">lavaan::lavTestLRT()</a></code>
 again using <code>fallback_method</code>. which
 is <code>"satorra.2000"</code> by default.</p></dd>
+
+
+<dt>progress</dt>
+<dd><p>Logical. If <code>TRUE</code>,
+the default, a progress bar will be
+displayed to show the progress (using
+the <code>pbapply</code> package).</p></dd>
+
+
+<dt>parallel</dt>
+<dd><p>Logical. If <code>TRUE</code>,
+parallel processing will be used to
+compute the LRT <em>p</em>-values for
+selected parameters. Default is
+<code>FALSE</code>. Set it to <code>TRUE</code> if the
+number of selected parameters is
+large.</p></dd>
+
+
+<dt>ncores</dt>
+<dd><p>Integer. The number of
+CPU cores to use if <code>parallel</code> is
+<code>TRUE</code>. Default is the number of
+physical cores (determined by
+<code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>) minus 1.</p></dd>
+
+
+<dt>load_balancing</dt>
+<dd><p>Logical. If
+<code>TRUE</code>, the default, and <code>parallel</code>
+is <code>TRUE</code>, then load balancing will
+be used. May shorten the total
+processing time if the time to
+compute LRT <em>p</em>-values vary a lot
+across parameters.</p></dd>
 
 
 <dt>...</dt>
