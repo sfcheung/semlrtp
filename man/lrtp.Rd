@@ -14,6 +14,10 @@ lrtp(
   LRT_method = "default",
   scaled.shifted = TRUE,
   fallback_method = "satorra.2000",
+  progress = TRUE,
+  parallel = FALSE,
+  ncores = parallel::detectCores(logical = FALSE) - 1,
+  load_balancing = TRUE,
   ...
 )
 }
@@ -74,6 +78,33 @@ this function will call
 \code{\link[lavaan:lavTestLRT]{lavaan::lavTestLRT()}}
 again using \code{fallback_method}. which
 is \code{"satorra.2000"} by default.}
+
+\item{progress}{Logical. If \code{TRUE},
+the default, a progress bar will be
+displayed to show the progress (using
+the \code{pbapply} package).}
+
+\item{parallel}{Logical. If \code{TRUE},
+parallel processing will be used to
+compute the LRT \emph{p}-values for
+selected parameters. Default is
+\code{FALSE}. Set it to \code{TRUE} if the
+number of selected parameters is
+large.}
+
+\item{ncores}{Integer. The number of
+CPU cores to use if \code{parallel} is
+\code{TRUE}. Default is the number of
+physical cores (determined by
+\code{\link[parallel:detectCores]{parallel::detectCores()}}) minus 1.}
+
+\item{load_balancing}{Logical. If
+\code{TRUE}, the default, and \code{parallel}
+is \code{TRUE}, then load balancing will
+be used. May shorten the total
+processing time if the time to
+compute LRT \emph{p}-values vary a lot
+across parameters.}
 
 \item{...}{Optional arguments to be
 passed to \code{\link[lavaan:parameterEstimates]{lavaan::parameterEstimates()}}.}
