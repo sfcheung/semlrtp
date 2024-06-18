@@ -13,7 +13,7 @@ Authors@R: c(
            email = "marklhc@gmail.com ",
            comment = c(ORCID = "0000-0002-9196-7406"))
            )
-Description: Computes likehood ratio test (LRT) p-values
+Description: Computes likelihood ratio test (LRT) p-values
   for free parameters in a structural equation model.
   Currently supports models fitted by the lavaan package by
   Rosseel (2012) <doi:10.18637/jss.v048.i02>.
