@@ -1,6 +1,6 @@
 Package: semlrtp
 Title: Likelihood Ratio Test P-Values For Structural Equation Models
-Version: 0.0.1.8
+Version: 0.1.0
 Authors@R: c(
     person(given = "Shu Fai",
            family = "Cheung",
@@ -14,10 +14,9 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-9196-7406"))
            )
 Description: Computes likehood ratio test (LRT) p-values
-  for free
-  parameters in a structural equation model. Currently
-  supports models fitted by the lavaan package by Rosseel
-  (2012) <doi:10.18637/jss.v048.i02>.
+  for free parameters in a structural equation model.
+  Currently supports models fitted by the lavaan package by
+  Rosseel (2012) <doi:10.18637/jss.v048.i02>.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

@@ -35,8 +35,7 @@
 #' @seealso [lrt()]
 #'
 #' @examples
-#' \donttest{
-#' }
+#' # This function is not exported
 #'
 #' @noRd
 
