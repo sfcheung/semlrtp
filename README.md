@@ -6,15 +6,24 @@
 [![R-CMD-check](https://github.com/sfcheung/semlrtp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/semlrtp/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.0.1.8, updated on 2024-06-17, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
+(Version 0.1.0, updated on 2024-06-18, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
 
 # semlrtp: Likelihood Ratio Test p-Values for Structural Equation Models <img src="man/figures/logo.png" align="right" height="150" />
 
-This package includes is used for computing *LRT* *p*-*values*
+This package is used for computing *LRT* *p*-*values*
 for free parameters
 in structural equation model using likelihood ratio test (LRT).
+As demonstrated in the [Get-Started article](https://sfcheung.github.io/semlrtp/articles/semlrtp.html),
+the LRT *p*-value has some advantages over the usual *p*-values
+reported in SEM program.
 
-See [this article](https://sfcheung.github.io/semlrtp/articles/semlrtp.html)
+However, it is not easy to compute
+them because each *p*-value requires fitting one additional
+model. We developed this package to make this process simple
+and automatic such that it is practical to use LRT *p*-values
+in most commonly interpreted parameters.
+
+See [the Get-Started article](https://sfcheung.github.io/semlrtp/articles/semlrtp.html)
 for a quick demonstration on how to use this package.
 
 For more information on this package, please visit its GitHub page:
