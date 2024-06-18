@@ -192,7 +192,7 @@ fit2 <- sem(mod2,
             data_sem16)
 ```
 
-This model and the previous have exactly
+This model and the previous one have exactly
 identical model fit, as expected:
 
 ```{r}
