@@ -6,7 +6,7 @@
 [![R-CMD-check](https://github.com/sfcheung/semlrtp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sfcheung/semlrtp/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-(Version 0.1.1, updated on 2024-06-19, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
+(Version 0.1.1.1, updated on 2025-01-25, [release history](https://sfcheung.github.io/semlrtp/news/index.html))
 
 # semlrtp: Likelihood Ratio Test p-Values for Structural Equation Models <img src="man/figures/logo.png" align="right" height="150" />
 
@@ -31,6 +31,12 @@ For more information on this package, please visit its GitHub page:
 https://sfcheung.github.io/semlrtp/
 
 # Installation
+
+The stable version at CRAN can be installed by `install.packages()`:
+
+```r
+install.packages("semlrtp")
+```
 
 The latest developmental version of this package can be installed by `remotes::install_github`:
 
