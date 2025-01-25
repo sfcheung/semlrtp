@@ -1,6 +1,6 @@
 Package: semlrtp
 Title: Likelihood Ratio Test P-Values for Structural Equation Models
-Version: 0.1.1
+Version: 0.1.1.1
 Authors@R: c(
     person(given = "Shu Fai",
            family = "Cheung",
@@ -20,7 +20,7 @@ Description: Computes likelihood ratio test (LRT) p-values
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests:
     knitr,
     rmarkdown,
