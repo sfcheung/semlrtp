@@ -204,8 +204,8 @@ fix_to_zero <- function(fit,
         is_variance <- FALSE
       }
     slot_opt <- fit@Options
-    slot_pat <- fit@ParTable
-    slot_mod <- fit@Model
+    # slot_pat <- fit@ParTable
+    # slot_mod <- fit@Model
     slot_smp <- fit@SampleStats
     slot_dat <- fit@Data
 
@@ -221,6 +221,18 @@ fix_to_zero <- function(fit,
                                 slotSampleStats = slot_smp,
                                 slotData = slot_dat)),
                             error = function(e) e)
+    # Retry with automatic starting values and random start
+    if (!lavaan::lavTech(fit_i, "converged") &&
+      lavaan::lavTech(fit_i, "iterations") == 0) {
+        ptable_i_no_start <-
+          ptable_i[, !colnames(ptable_i) %in% c("start", "est", "se")]
+        fit0_error <- tryCatch(suppressWarnings(fit_i <- lavaan::lavaan(
+                                     model = ptable_i_no_start,
+                                     slotOptions = slot_opt,
+                                     slotSampleStats = slot_smp,
+                                     slotData = slot_dat)),
+                                 error = function(e) e)
+    }
     fit0_has_error <- inherits(fit0_error, "error")
     if (fit0_has_error) {
         fit_i <- NA
