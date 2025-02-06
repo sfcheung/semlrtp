@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   articles/internal_workflow: internal_workflow.html
   semlrtp: semlrtp.html
-last_built: 2025-01-25T12:40Z
+last_built: 2025-02-06T00:00Z
 urls:
   reference: https://sfcheung.github.io/semlrtp/reference
   article: https://sfcheung.github.io/semlrtp/articles
