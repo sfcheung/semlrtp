@@ -11,7 +11,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/sfcheung/semlrtp/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/sfcheung/semlrtp/blob/v0.1.2/DESCRIPTION)
 
 Cheung S, Lai M (2026). *semlrtp: Likelihood Ratio Test P-Values for
 Structural Equation Models*. R package version 0.1.2,
