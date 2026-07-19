@@ -214,26 +214,28 @@ fix_to_zero <- function(fit,
         se_force_standard <- TRUE
         slot_opt$se <- "standard"
       }
-
     fit0_error <- tryCatch(suppressWarnings(fit_i <- lavaan::lavaan(
                                 model = ptable_i,
                                 slotOptions = slot_opt,
                                 slotSampleStats = slot_smp,
                                 slotData = slot_dat)),
                             error = function(e) e)
-    # Retry with automatic starting values and random start
-    if (!lavaan::lavTech(fit_i, "converged") &&
-      lavaan::lavTech(fit_i, "iterations") == 0) {
-        ptable_i_no_start <-
-          ptable_i[, !colnames(ptable_i) %in% c("start", "est", "se")]
-        fit0_error <- tryCatch(suppressWarnings(fit_i <- lavaan::lavaan(
-                                     model = ptable_i_no_start,
-                                     slotOptions = slot_opt,
-                                     slotSampleStats = slot_smp,
-                                     slotData = slot_dat)),
-                                 error = function(e) e)
-    }
     fit0_has_error <- inherits(fit0_error, "error")
+    if (fit0_has_error ||
+        ((!lavaan::lavTech(fit_i, "converged") &&
+         lavaan::lavTech(fit_i, "iterations") == 0))) {
+      ptable_i_no_start <-
+        ptable_i[, !colnames(ptable_i) %in% c("start", "est", "se")]
+      # 2026-07-19: Add rstart
+      slot_opt$rstart <- getOption("semlrtp.rstart", 5)
+      fit0_error <- tryCatch(suppressWarnings(fit_i <- lavaan::lavaan(
+                                    model = ptable_i_no_start,
+                                    slotOptions = slot_opt,
+                                    slotSampleStats = slot_smp,
+                                    slotData = slot_dat)),
+                                error = function(e) e)
+      fit0_has_error <- inherits(fit0_error, "error")
+    }
     if (fit0_has_error) {
         fit_i <- NA
         vcov_msg <- NA
