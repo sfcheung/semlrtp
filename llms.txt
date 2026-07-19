@@ -1,0 +1,86 @@
+# semlrtp: Likelihood Ratio Test p-Values for Structural Equation Models
+
+(Version 0.1.2, updated on 2026-07-19, [release
+history](https://sfcheung.github.io/semlrtp/news/index.html))
+
+This package is used for computing *LRT* *p*-*values* for free
+parameters in structural equation model using likelihood ratio test
+(LRT). As demonstrated in the [Get-Started
+article](https://sfcheung.github.io/semlrtp/articles/semlrtp.html), the
+LRT *p*-value has some advantages over the usual *p*-values reported in
+SEM program.
+
+However, it is not easy to compute them because each *p*-value requires
+fitting one additional model. We developed this package to make this
+process simple and automatic such that it is practical to use LRT
+*p*-values in most commonly interpreted parameters.
+
+See [the Get-Started
+article](https://sfcheung.github.io/semlrtp/articles/semlrtp.html) for a
+quick demonstration on how to use this package.
+
+For more information on this package, please visit its GitHub page:
+
+<https://sfcheung.github.io/semlrtp/>
+
+# Installation
+
+The stable version at CRAN can be installed by
+[`install.packages()`](https://rdrr.io/r/utils/install.packages.html):
+
+``` r
+
+install.packages("semlrtp")
+```
+
+The latest developmental version of this package can be installed by
+`remotes::install_github`:
+
+``` r
+
+remotes::install_github("sfcheung/semlrtp")
+```
+
+# Issues
+
+If you have any suggestions and found any bugs, please feel feel to open
+a GitHub issue [here](https://github.com/sfcheung/semlrtp/issues).
+Thanks.
+
+# Package index
+
+## Main Functions
+
+Compute LRT p-values.
+
+- [`lrtp()`](https://sfcheung.github.io/semlrtp/reference/lrtp.md) :
+  Likelihood Ratio Test P-Values
+
+## Helper functions
+
+- [`lrt()`](https://sfcheung.github.io/semlrtp/reference/lrt.md) : Fix a
+  Free Parameter to Zero and Do an LR Test
+- [`fix_to_zero()`](https://sfcheung.github.io/semlrtp/reference/fix_to_zero.md)
+  : Fix a Free Parameter To Zero And Fit a Model Again
+
+## Methods
+
+- [`print(`*`<lrt>`*`)`](https://sfcheung.github.io/semlrtp/reference/print.lrt.md)
+  : Print an 'lrt'- Class Object
+- [`print(`*`<lrtp>`*`)`](https://sfcheung.github.io/semlrtp/reference/print.lrtp.md)
+  : Print an 'lrtp'- Class Object
+
+## Datasets
+
+Datasets used in examples.
+
+- [`data_sem16`](https://sfcheung.github.io/semlrtp/reference/data_sem16.md)
+  : Sample Dataset For Test (16 Items and 2 Groups)
+
+# Articles
+
+### All vignettes
+
+- [Technical Appendix: The Internal Workflow of Main
+  Functions](https://sfcheung.github.io/semlrtp/articles/internal_workflow.md):
+- [Get Started](https://sfcheung.github.io/semlrtp/articles/semlrtp.md):
